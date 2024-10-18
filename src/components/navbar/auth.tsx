@@ -8,6 +8,7 @@ import AdminNavbarOptions from "./admin";
 import GeneralNavbarOptions from "./general";
 import TechnicianNavbarOptions from "./technician";
 import { usePersistedStore } from "../../store/store";
+import SuperadminNavbarOptions from "./superadmin";
 
 function NotAuthenticatedNavbarOptions() {
   return (
@@ -117,6 +118,11 @@ function AuthNavbarSection(props: {authStatus: AuthStatus, roles: UserCompanyRol
 
     if (props.roles.includes(UserCompanyRole.TECHNICIAN)) {
       setOptions(<TechnicianNavbarOptions />);
+      return;
+    }
+
+    if (props.roles.includes(UserCompanyRole.SUPERADMIN)) {
+      setOptions(<SuperadminNavbarOptions />);
       return;
     }
   }, [props.roles]);
