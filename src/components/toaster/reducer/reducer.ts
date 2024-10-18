@@ -1,12 +1,21 @@
 import { MakeToastReducerActionType } from "./types";
 
-export const makeToastReducer = (_: {message: string; type: "SUCCESS" | "ERROR" | "CLEAR"}, action: MakeToastReducerActionType): {message: string; type: "SUCCESS" | "ERROR" | "CLEAR"}  => {
+interface ToastMessage {
+  message: string;
+  type: "SUCCESS" | "ERROR";
+}
+
+type ToastState = ToastMessage[];
+
+export const makeToastReducer = (state: ToastState, action: MakeToastReducerActionType): ToastState => {
   switch (action.type) {
     case "SUCCESS":
-      return { message: action.payload, type: "SUCCESS" };
+      return [...state, { message: action.payload, type: "SUCCESS" }];
     case "ERROR":
-      return { message: action.payload, type: "ERROR" };
+      return [...state, { message: action.payload, type: "ERROR" }];
     case "CLEAR":
-      return { message: "", type: "CLEAR" };
+      return [];
+    default:
+      return state;
   }
-}
+};

@@ -1,4 +1,12 @@
 import { createContext } from "react";
-import { ToasterContextProps } from "./types";
+import { MakeToastReducerActionType, ToastMessage } from "../reducer/types";
 
-export const ToasterContext = createContext<ToasterContextProps>({} as ToasterContextProps);
+export type ToasterContextProps = {
+  messages: ToastMessage[];
+  dispatch: React.Dispatch<MakeToastReducerActionType>;
+}
+
+export const ToasterContext = createContext<ToasterContextProps>({
+  messages: [],
+  dispatch: () => {},
+});

@@ -4,20 +4,26 @@ import toast, { Toaster } from "react-hot-toast";
 import { makeToastReducer } from "./reducer/reducer";
 
 export const ToasterProvider = (props: { children: ReactNode }) => {
-
-  const [state, dispatch] = useReducer(makeToastReducer, { message: "", type: "CLEAR"});
+  const [state, dispatch] = useReducer(makeToastReducer, []);
 
   useEffect(() => {
-    if (state.type === "SUCCESS")
-      toast.success(state.message);
-    if (state.type === "ERROR")
-      toast.error(state.message);
+    state.forEach(({ message, type }) => {
+      if (type === "SUCCESS") {
+        toast.success(message);
+      } else if (type === "ERROR") {
+        toast.error(message);
+      }
+    });
+
+    if (state.length > 0) {
+      dispatch({ type: 'CLEAR' });
+    }
   }, [state]);
 
   return (
-    <ToasterContext.Provider value={{ message: state.message, dispatch }}>
+    <ToasterContext.Provider value={{ messages: state, dispatch }}>
       <Toaster />
       {props.children}
     </ToasterContext.Provider>
-  )
+  );
 }

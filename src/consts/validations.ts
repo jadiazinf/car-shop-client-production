@@ -1,6 +1,7 @@
 class ValidationsConsts {
   static REQUIRED = 'Campo requerido';
   static MIN_8_CHARACTERS = 'Mínimo 8 caracteres';
+  static MIN_7_CHARACTERS = 'Mínimo 7 caracteres';
   static MIN_6_CHARACTERS = 'Mínimo 6 caracteres';
   static USER_GENDER = 'Solo está permitido hombre o mujer';
   static EMAIL_FORMAT = 'Formato de correo electrónico no válido';
@@ -10,6 +11,11 @@ class ValidationsConsts {
 
   static validateImageFile(file: File): boolean {
     const validExtensions = ['image/jpg', 'image/jpeg', 'image/png'];
+    return validExtensions.includes(file.type);
+  };
+
+  static validatePdfFile(file: File): boolean {
+    const validExtensions = ['application/pdf'];
     return validExtensions.includes(file.type);
   };
 }

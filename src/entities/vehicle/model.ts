@@ -16,7 +16,7 @@ type VehicleModel = {
   body_serial?: string;
   engine_type?: EngineType;
   is_active?: boolean;
-  photos?: Blob[] | File[];
+  vehicle_images?: Blob[] | File[];
   model?: ModelModel;
   model_id?: number;
   user?: UserModel;

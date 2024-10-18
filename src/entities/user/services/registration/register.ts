@@ -58,11 +58,11 @@ class RegisterUserService {
       this._payload = response.data.data || null;
       this._headers = response.headers as AxiosResponseHeaders;
       this._token = response.headers.authorization.split(' ')[1]
-      this._errorMessage = Array.isArray(response.data.errors) ? response.data.errors.join(" ") : response.data.errors;
+      this._errorMessage = Array.isArray(response.data.errors) ? response.data.errors[0] : response.data.errors;
     } catch(error: any) {
       const axiosError = error as AxiosError;
       this._status = StatusCodes[axiosError.response?.status as unknown as keyof typeof StatusCodes] || StatusCodes.INTERNAL_SERVER_ERROR;
-      this._errorMessage = error.response.data.errors
+      this._errorMessage = Array.isArray(error.response.data.errors) ? error.response.data.errors[0] : error.response.data.errors
     }
   }
 }

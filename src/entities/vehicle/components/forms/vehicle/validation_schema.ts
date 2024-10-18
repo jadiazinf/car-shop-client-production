@@ -5,7 +5,7 @@ function VehicleInfoSchema() {
   return Yup.object({
     color: Yup.string().required(ValidationsConsts.REQUIRED),
     license_plate: Yup.string().required(ValidationsConsts.REQUIRED).min(6, ValidationsConsts.MIN_6_CHARACTERS),
-    photos: Yup.array().of(
+    vehicle_images: Yup.array().of(
                             Yup.mixed()
                               .test({
                                 test: (value) => ValidationsConsts.validateImageFile(value as File),

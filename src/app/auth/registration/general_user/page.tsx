@@ -59,15 +59,20 @@ function Main() {
     const user = (payloadState as RegisterUserProps).payload;
     const token = (payloadState as RegisterUserProps).token;
 
-    await performRegisterVehicle({token: token!, vehicle: {...vehicle!, user_id: user.id!, model_id: brandAndModel!.model!.id}});
+    await performRegisterVehicle({
+      token: token!,
+      vehicle: {
+        ...vehicle!,
+        user_id: user.id!,
+        model_id: brandAndModel!.model!.id
+      }});
   }
 
   async function handleVehicleService() {
-    if ((vehiclePayload as RegisterVehicleProps).status !== StatusCodes.OK && (vehiclePayload as RegisterVehicleProps).status !== StatusCodes.CREATED) {
-      toasterDispatch({payload: (payloadState as RegisterUserProps).errorMessage || 'Error al registrar vehiculo', type: 'ERROR'});
-    }
-
-    toasterDispatch({payload: "Vehículo registrado con éxito", type: 'SUCCESS'});
+    if ((vehiclePayload as RegisterVehicleProps).status !== StatusCodes.OK && (vehiclePayload as RegisterVehicleProps).status !== StatusCodes.CREATED)
+      toasterDispatch({payload: (vehiclePayload as RegisterVehicleProps).errorMessage || 'Error al registrar vehiculo', type: 'ERROR'});
+    else
+      toasterDispatch({payload: "Vehículo registrado con éxito", type: 'SUCCESS'});
 
     authenticateUser();
   }

@@ -81,7 +81,7 @@ function VehicleInfoForm(props: { initialValues: VehicleModel, onSubmit: (values
       <Container>
         <SelectComponent
           label="Tipo de vehículo"
-          data={VEHICLE_TYPES_ARR.map( type => ({key: type, label: type}) )}
+          data={VEHICLE_TYPES_ARR.map( type => ({key: type.key, label: type.label}) )}
           key="vehicle_type"
           name="vehicle_type"
           onChange={formik.handleChange}
@@ -136,7 +136,7 @@ function VehicleInfoForm(props: { initialValues: VehicleModel, onSubmit: (values
           isError={formik.errors.engine_type && formik.touched.engine_type}
           errorMessage={formik.errors.engine_type}
           onBlur={formik.handleBlur}
-          data={ENGINE_TYPE_ARR.map( element => ({key: element, label: element}) )}
+          data={ENGINE_TYPE_ARR.map( element => ({key: element.key, label: element.label}) )}
         />
         <SelectComponent
           label="Transmisión"
@@ -144,7 +144,7 @@ function VehicleInfoForm(props: { initialValues: VehicleModel, onSubmit: (values
           name="transmission"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          data={VEHICLE_TRANSMISSION_ARR.map( element => ({key: element, label: element}) )}
+          data={VEHICLE_TRANSMISSION_ARR.map( element => ({key: element.key, label: element.label}) )}
           value={formik.values.transmission || ''}
           isError={formik.errors.transmission && formik.touched.transmission}
           errorMessage={formik.errors.transmission}
@@ -164,10 +164,10 @@ function VehicleInfoForm(props: { initialValues: VehicleModel, onSubmit: (values
         />
       </Container>
       <div className='text-center'>
-        { formik.errors.photos && <span className='text-red-500'>{ formik.errors.photos }</span> }
+        { formik.errors.vehicle_images && <span className='text-red-500'>{ formik.errors.vehicle_images }</span> }
         <FileDropzone
           text="Arrastra las imágenes del vehículo aquí"
-          onDrop={(photos) => formik.setFieldValue('photos', photos)}
+          onDrop={(photos) => formik.setFieldValue('vehicle_images', photos)}
         />
       </div>
       { props.children }

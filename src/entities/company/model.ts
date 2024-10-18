@@ -1,3 +1,4 @@
+import LocationModel from "../location/model";
 import UserModel from "../user/model";
 
 type CompanyModel = {
@@ -13,6 +14,8 @@ type CompanyModel = {
   company_charter?: Blob | File;
   company_images?: Blob[] | File[];
   users?: UserModel[];
+  location?: LocationModel;
+  location_id?: number;
 }
 
 export default CompanyModel;

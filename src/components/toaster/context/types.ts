@@ -1,6 +1,6 @@
-import { MakeToastReducerActionType } from "../reducer/types";
+import { MakeToastReducerActionType, ToastMessage } from "../reducer/types";
 
 export type ToasterContextProps = {
-  message: string;
+  messages: ToastMessage[];
   dispatch: React.Dispatch<MakeToastReducerActionType>;
 }
