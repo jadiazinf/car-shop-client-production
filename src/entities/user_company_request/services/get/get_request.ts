@@ -1,15 +1,17 @@
 import { StatusCodes } from "http-status-codes";
 import axios, { AxiosError } from "axios";
 import EnvironmentVariables from "../../../../helpers/environment/variables";
-import CompanyRequestModel from "../../model";
+import UserCompanyRequestModel from '../../model';
 
-class GetAllCompaniesRequestsService {
+class GetUserCompanyRequestService {
 
   private _status: StatusCodes | null;
-  private _payload: CompanyRequestModel[] | null;
+  private _payload: UserCompanyRequestModel | null;
   private _errorMessage: string | null;
+  private _request_id: number;
 
-  constructor() {
+  constructor(data: {request_id: number}) {
+    this._request_id = data.request_id;
     this._status = null;
     this._errorMessage = null;
     this._payload = null;
@@ -29,7 +31,7 @@ class GetAllCompaniesRequestsService {
 
   public async perform() {
     try {
-      const response = await axios.get<CompanyRequestModel[]>(`${EnvironmentVariables.API_BASE_ROUTE}/api/${EnvironmentVariables.API_VERSION}/users_companies_requests`,
+      const response = await axios.get<UserCompanyRequestModel>(`${EnvironmentVariables.API_BASE_ROUTE}/api/${EnvironmentVariables.API_VERSION}/users_companies_requests/${this._request_id}`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -39,7 +41,7 @@ class GetAllCompaniesRequestsService {
 
       this._status = response.status;
       this._payload = response.data || null;
-      this._errorMessage = response.status === StatusCodes.OK ? null : response.status === StatusCodes.NOT_FOUND ? "Sin peticiones que mostrar" : "Error al buscar la peticiones"
+      this._errorMessage = response.status === StatusCodes.OK ? null : response.status === StatusCodes.NOT_FOUND ? "Petición no encontrada" : "Error al buscar la peticion"
     } catch(error: any) {
       const axiosError = error as AxiosError;
       this._status = StatusCodes[axiosError.response?.status as unknown as keyof typeof StatusCodes] || StatusCodes.INTERNAL_SERVER_ERROR;
@@ -48,4 +50,4 @@ class GetAllCompaniesRequestsService {
   }
 }
 
-export default GetAllCompaniesRequestsService;
+export default GetUserCompanyRequestService;

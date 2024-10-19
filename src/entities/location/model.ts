@@ -3,7 +3,7 @@ import { LocationType } from "./types";
 type LocationModel = {
   id?: number;
   name: string;
-  type: LocationType;
+  location_type: LocationType;
   parent_id?: number;
   parent?: LocationModel | null;
 }

@@ -5,6 +5,7 @@ import ChooseUserCompanyPage from '../app/auth/choose_user_company/page';
 import DashboardPage from "../app/dashboard/page";
 import CompaniesSuperadminPage from "../app/dashboard/companies/superadmin_page";
 import CompaniesRequestsSuperadminPage from "../app/dashboard/companies/requests/superadmin_page";
+import CompanyRequestPage from "../app/dashboard/companies/requests/id/superadmin_page";
 
 const superadminRoutes = (
   <>
@@ -14,6 +15,7 @@ const superadminRoutes = (
     <Route path="/dashboard" element={<DashboardPage />} />
     <Route path="/dashboard/companies" element={<CompaniesSuperadminPage />} />
     <Route path="/dashboard/companies/requests" element={<CompaniesRequestsSuperadminPage />} />
+    <Route path="/dashboard/companies/requests/:id" element={<CompanyRequestPage />} />
     <Route path="*" element={<Navigate to="/" />} />
   </>
 );

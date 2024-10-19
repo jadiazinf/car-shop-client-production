@@ -14,7 +14,7 @@ function useGetCompanyCharter() {
 
   const [ isGettingCompanyCharterLoading, setIsGettingCompanyCharterLoading ] = useState<boolean>(false);
 
-  async function performGetCompanyImages(data: {company_id: number}, callback?: (data: GetCompanyCharterProps) => void) {
+  async function performGetCompanyCharter(data: {company_id: number}, callback?: (data: GetCompanyCharterProps) => void) {
     setIsGettingCompanyCharterLoading(true);
     const service = new GetCompanyCharterService({company_id: data.company_id});
     await service.perform();
@@ -30,7 +30,7 @@ function useGetCompanyCharter() {
 
   return {
     isGettingCompanyCharterLoading,
-    performGetCompanyImages,
+    performGetCompanyCharter,
     payloadState
   };
 }

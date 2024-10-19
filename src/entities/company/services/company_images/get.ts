@@ -29,7 +29,7 @@ class GetCompanyImagesService {
 
   public async perform() {
     try {
-      const response = await fetch(`${EnvironmentVariables.API_BASE_ROUTE}/api/${EnvironmentVariables.API_VERSION}/companies/${this._company_id}/download_company_images`, {
+      const response = await fetch(`${EnvironmentVariables.API_BASE_ROUTE}/api/${EnvironmentVariables.API_VERSION}/companies/${this._company_id}/company_images`, {
         method: 'GET',
         headers: {
           'Accept': 'application/zip'

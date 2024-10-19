@@ -79,7 +79,7 @@ function ChooseUserCompanyPage() {
       return;
     }
 
-    if (data.payload.length === 0)
+    if (data.payload.length === 1)
       getUserCompanyRoles(data.payload[0].id!);
   }
 

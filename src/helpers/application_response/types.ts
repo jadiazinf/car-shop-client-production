@@ -8,4 +8,13 @@ type ApplicationResponse<T> = {
   errors: string | string[];
 }
 
+export type PaginatedData<T> = {
+  current_page: number;
+  next_page: boolean | null;
+  prev_page: boolean | null;
+  total_pages: number;
+  total_count: number;
+  data: T[];
+}
+
 export default ApplicationResponse;

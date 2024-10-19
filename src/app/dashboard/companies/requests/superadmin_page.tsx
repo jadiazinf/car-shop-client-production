@@ -1,26 +1,72 @@
-import { Spinner } from "@nextui-org/react";
-import { useEffect } from "react";
-import useGetAllCompaniesRequests from "../../../../entities/companies_requests/services/get_all/use_get_all_requests";
+import { BreadcrumbItem, Breadcrumbs, Pagination, Spinner, Tab, Tabs } from "@nextui-org/react";
+import { useEffect, useState } from "react";
+import useGetAllUserCompaniesRequests, { GetAllUserCompaniesRequestsProps } from "../../../../entities/user_company_request/services/get_all/use_get_all_requests";
+import { UserCompanyRequestStatus } from "../../../../entities/user_company_request/types";
+import CardRequestComponent from "../../../../entities/user_company_request/components/requests/card_request";
+import { useNavigate } from "react-router-dom";
 
 function CompaniesSuperadminPage() {
 
-  const { isGettingAllCompaniesRequestsLoading, payloadState, performGetAllCompaniesRequests } = useGetAllCompaniesRequests();
+  const [ page, setPage ] = useState<number>(1);
+
+  const [ requestStatus, setRequestStatus ] = useState<UserCompanyRequestStatus>(UserCompanyRequestStatus.PENDING);
+
+  const { isGettingAllUsersCompaniesRequestsLoading, payloadState, performGetAllUsersCompaniesRequests } = useGetAllUserCompaniesRequests();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
-    performGetAllCompaniesRequests();
-  }, []);
+    performGetAllUsersCompaniesRequests({page_number: page, status: requestStatus});
+  }, [requestStatus]);
 
   return (
-    <div className='w-full h-screen flex justify-center items-center'>
-      {
-        isGettingAllCompaniesRequestsLoading ? <Spinner /> :
-        payloadState === 'not loaded' || !payloadState.payload ? <span>No hay data</span> :
-        payloadState.payload.map( request => (
-          <div className='flex flex-col gap-2 text-center'>
-            <span>{ request.created_at }</span>
-            <span>{ request.status }</span>
+    <div className='w-full h-full p-10 flex justify-center items-center flex-col'>
+      <div className='w-full'>
+        <Breadcrumbs underline="hover" color="foreground">
+          <BreadcrumbItem href="/dashboard">Dashboard</BreadcrumbItem>
+          <BreadcrumbItem href="/dashboard/companies">Compañías</BreadcrumbItem>
+          <BreadcrumbItem href="/dashbpard/companies/requests">Peticiones</BreadcrumbItem>
+        </Breadcrumbs>
+      </div>
+      <div className='w-full flex justify-center items-center'>
+        <Tabs color="primary" key="status" variant="underlined" aria-label="requests status" onSelectionChange={(value) => setRequestStatus(value as UserCompanyRequestStatus)}>
+          <Tab key={UserCompanyRequestStatus.PENDING} title="Pendientes por aprobación"/>
+          <Tab key={UserCompanyRequestStatus.APPROVED} title="Aprobadas"/>
+          <Tab key={UserCompanyRequestStatus.REJECTED} title="Rechazadas"/>
+        </Tabs>
+      </div>
+      <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3'>
+        {
+          isGettingAllUsersCompaniesRequestsLoading ?
+          <div className='col-span-full my-10'>
+            <Spinner />
           </div>
-        ) )
+          :
+          payloadState === 'not loaded' || !payloadState.payload ? <span>No hay data</span> :
+          payloadState.payload.data.length === 0 ?
+          <div className='col-span-full text-center flex justify-center items-center my-10'>
+            <span>No hay solicitudes</span>
+          </div> :
+          payloadState.payload.data.map( request => (
+            <CardRequestComponent
+              user_company_request={request}
+              onClick={() => navigate(`/dashboard/companies/requests/${request.id!}`)}
+            />
+          ) )
+        }
+      </div>
+      {
+        isGettingAllUsersCompaniesRequestsLoading || payloadState === 'not loaded' ? null :
+        <div className='w-full flex justify-center items-center mt-10'>
+          <Pagination
+            showControls
+            total={(payloadState as GetAllUserCompaniesRequestsProps).payload.total_pages}
+            color="primary"
+            page={page}
+            onChange={setPage}
+            variant="light"
+          />
+        </div>
       }
     </div>
   );
