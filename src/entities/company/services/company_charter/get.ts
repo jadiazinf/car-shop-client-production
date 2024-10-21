@@ -4,7 +4,7 @@ import EnvironmentVariables from "../../../../helpers/environment/variables";
 class GetCompanyCharterService {
 
   private _status: StatusCodes | null;
-  private _payload: Blob | null;
+  private _payload: string | null;
   private _errorMessage: string | null;
   private _company_id: number;
 
@@ -19,7 +19,7 @@ class GetCompanyCharterService {
     return this._status as StatusCodes;
   }
 
-  get payload(): Blob | null {
+  get payload(): string | null {
     return this._payload;
   }
 
@@ -44,9 +44,9 @@ class GetCompanyCharterService {
         return;
       }
 
-      const blob = await response.blob();
       this._status = response.status;
-      this._payload = blob;
+      const urlObject = await response.json();
+      this._payload = urlObject.company_charter_url;
 
     } catch (error: any) {
       this._status = StatusCodes.INTERNAL_SERVER_ERROR;

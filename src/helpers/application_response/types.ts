@@ -17,4 +17,7 @@ export type PaginatedData<T> = {
   data: T[];
 }
 
+export type ErrorsMessage = {errors: string[]};
+
+
 export default ApplicationResponse;

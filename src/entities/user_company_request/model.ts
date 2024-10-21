@@ -11,6 +11,7 @@ type UserCompanyRequestModel = {
   user_company?: UserCompanyModel;
   user?: UserModel;
   company?: CompanyModel;
+  company_id?: number;
   responder_user_id?: number;
   responder_user?: UserModel;
   created_at?: string;

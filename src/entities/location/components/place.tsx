@@ -1,17 +1,25 @@
 import { Input } from "@nextui-org/react";
 import LocationModel from "../model";
 
-type IPlaceProps = {
+type IPlaceComponentProps = {
   country: LocationModel;
   state: LocationModel;
   city: LocationModel;
   town: LocationModel;
+  direction?: 'vertical' | 'horizontal'
 };
 
-function PlaceComponent(props: IPlaceProps) {
+function PlaceComponent(props: IPlaceComponentProps) {
+
+  function getDirectionValue() {
+    if (props.direction === 'vertical')
+      return 'flex-col';
+    else
+      return 'flex-row';
+  }
 
   return (
-    <div className='w-full flex flex-col md:flex-row gap-3'>
+    <div className={`w-full flex gap-3 ${props.direction ? getDirectionValue() : 'flex-col md:flex-row'}`}>
       <Input
         key="country"
         type="text"

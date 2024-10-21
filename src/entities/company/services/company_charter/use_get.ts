@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import GetCompanyCharterService from "./get";
 
 export type GetCompanyCharterProps = {
-  payload: Blob | null;
+  payload: string | null;
   errorMessage: string | null;
   status: StatusCodes;
 }

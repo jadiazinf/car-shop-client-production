@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import GetCompanyImagesService from "./get";
 
 export type GetCompanyImagesProps = {
-  payload: Blob | null;
+  payload: string[] | null;
   errorMessage: string | null;
   status: StatusCodes;
 }

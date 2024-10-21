@@ -225,7 +225,7 @@ function Main() {
                     <div>
                       {
                         company ?
-                          <div className='flex flex-col gap-5'>
+                          <div className='w-full flex flex-col gap-5'>
                             <CompanyInfo
                               company={company}
                             />

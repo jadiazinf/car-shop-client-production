@@ -11,8 +11,8 @@ type CompanyModel = {
   social_networks?: string[];
   phone_numbers?: string[];
   address: string;
-  company_charter?: Blob | File;
-  company_images?: Blob[] | File[];
+  company_charter?: Blob | File | string;
+  company_images?: Blob[] | File[] | string[];
   users?: UserModel[];
   location?: LocationModel;
   location_id?: number;
