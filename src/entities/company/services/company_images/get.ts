@@ -45,7 +45,8 @@ class GetCompanyImagesService {
       }
 
       this._status = response.status;
-      this._payload = await response.json();
+      const data = await response.json();
+      this._payload = data.image_urls;
 
     } catch (error: any) {
       this._status = StatusCodes.INTERNAL_SERVER_ERROR;

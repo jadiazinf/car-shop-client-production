@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 type Props = {
   charter: File | string | null;
 }
@@ -7,15 +9,21 @@ function PdfViewer({ charter }: Props) {
   const isFile = charter instanceof File;
   const pdfUrl = isFile ? URL.createObjectURL(charter) : charter;
 
+  useEffect(() => {
+    // Limpia el objeto URL al desmontar el componente
+    return () => {
+      if (isFile) {
+        URL.revokeObjectURL(pdfUrl!);
+      }
+    };
+  }, [pdfUrl, isFile]);
+
   return (
     <div>
       {pdfUrl ? (
         <iframe
           src={pdfUrl}
-          width="100%"
-          height="600px"
-          title="PDF Viewer"
-          sandbox="allow-same-origin allow-scripts allow-popups"
+          className="w-full"
         />
       ) : (
         <p>No hay PDF disponible para mostrar.</p>

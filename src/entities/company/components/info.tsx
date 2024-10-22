@@ -10,6 +10,7 @@ import ButtonComponent from "../../../components/buttons/component";
 import { Modal, ModalBody, ModalContent, useDisclosure } from "@nextui-org/react";
 import { FaBuilding } from "react-icons/fa";
 import PdfViewer from "../../../components/pdf/pdf_viewer";
+import CarouselComponent from "../../../components/carousel/component";
 
 function CompanyInfo(props: { company: CompanyModel }) {
 
@@ -54,11 +55,13 @@ function CompanyInfo(props: { company: CompanyModel }) {
 
   return (
     <>
-      <Modal isOpen={isCompanyImagesOpen} onOpenChange={onOpenCompanyImagesChange} size="4xl" radius="sm">
+      <Modal isOpen={isCompanyImagesOpen} onOpenChange={onOpenCompanyImagesChange} size='5xl' radius="sm">
         <ModalContent>
-          <ModalBody className='p-5'>
-            <div className='w-full'>
+          <ModalBody className='p-10'>
+            <div className='w-full flex justify-center items-center'>
               {
+                companyImages !== "not loaded" && companyImages.payload &&
+                <CarouselComponent images={companyImages.payload.map( element => ({src: element}) )}/>
               }
             </div>
           </ModalBody>
@@ -66,7 +69,7 @@ function CompanyInfo(props: { company: CompanyModel }) {
       </Modal>
       <Modal isOpen={isCompanyCharterOpen} onOpenChange={onOpenCompanyCharterChange} size="4xl" radius="sm">
         <ModalContent>
-          <ModalBody>
+          <ModalBody className='p-10'>
             <PdfViewer charter={charter as string}/>
           </ModalBody>
         </ModalContent>

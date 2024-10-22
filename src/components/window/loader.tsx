@@ -2,7 +2,7 @@ import { Progress } from "@nextui-org/react";
 
 function WindowLoader() {
   return (
-    <div className="w-full h-full absolute flex justify-center items-center bg-white">
+    <div className="fixed inset-0 bg-opacity-50 flex items-center justify-center z-50 bg-white">
       <Progress
         size="sm"
         isIndeterminate
