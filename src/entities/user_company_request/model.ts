@@ -6,7 +6,7 @@ import CompanyModel from "../company/model";
 type UserCompanyRequestModel = {
   id?: number;
   status: UserCompanyRequestStatus;
-  message: string | null;
+  message?: string | null;
   user_company_id?: number;
   user_company?: UserCompanyModel;
   user?: UserModel;

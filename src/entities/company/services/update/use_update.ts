@@ -10,15 +10,15 @@ export type UpdateCompanyProps = {
   status: StatusCodes;
 }
 
-function useUpdateUserCompanyRequest() {
+function useUpdateCompany() {
 
   const [ payloadState, setPayloadState ] = useState<UpdateCompanyProps | "not loaded">("not loaded");
 
   const [ isUpdatingCompanyLoading, setIsUpdatingCompanyLoading ] = useState<boolean>(false);
 
-  async function performUpdateUserCompanyRequest(data: {company: any, company_id: number, token: string}, callback?: (data: UpdateCompanyProps) => void) {
+  async function performUpdateCompany(data: {company: any, user_id: number,company_id: number, token: string}, callback?: (data: UpdateCompanyProps) => void) {
     setIsUpdatingCompanyLoading(true);
-    const service = new UpdateCompanyService({company: data.company, company_id: data.company_id, token: data.token});
+    const service = new UpdateCompanyService({company: data.company, user_id: data.user_id, company_id: data.company_id, token: data.token});
     await service.perform();
     const response = {
       payload: service.payload,
@@ -32,9 +32,9 @@ function useUpdateUserCompanyRequest() {
 
   return {
     isUpdatingCompanyLoading,
-    performUpdateUserCompanyRequest,
+    performUpdateCompany,
     payloadState
   };
 }
 
-export default useUpdateUserCompanyRequest;
+export default useUpdateCompany;

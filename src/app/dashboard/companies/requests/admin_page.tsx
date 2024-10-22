@@ -1,34 +1,39 @@
 import { BreadcrumbItem, Breadcrumbs, Pagination, Spinner, Tab, Tabs } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import useGetAllUserCompaniesRequests, { GetAllUserCompaniesRequestsProps } from "../../../../entities/user_company_request/services/get_all/use_get_all_requests";
-import { UserCompanyRequestStatus } from "../../../../entities/user_company_request/types";
-import CardRequestComponent from "../../../../entities/user_company_request/components/requests/card_request";
 import { useNavigate } from "react-router-dom";
+import { UserCompanyRequestStatus } from "../../../../entities/user_company_request/types";
+import { GetAllUserCompaniesRequestsProps } from "../../../../entities/user_company_request/services/get_all/use_get_all_requests";
+import CardRequestComponent from "../../../../entities/user_company_request/components/requests/card_request";
+import useGetUserCompanyRequestsByCompany from "../../../../entities/user_company_request/services/get_all/by_company/use_get_by_company";
+import { usePersistedStore } from "../../../../store/store";
+import useCanUserMakeRequest from "../../../../entities/user_company_request/services/can_make_request/use_user_can_make_request";
+import ButtonComponent from "../../../../components/buttons/component";
+import { IoMdAdd } from "react-icons/io";
 
-function CompaniesRequestsSuperadminPage() {
+function CompaniesRequestsAdminPage() {
+
+  const { authReducer } = usePersistedStore();
+
+  const { token, sessionType } = authReducer;
 
   const [ page, setPage ] = useState<number>(1);
 
   const [ requestStatus, setRequestStatus ] = useState<UserCompanyRequestStatus>(UserCompanyRequestStatus.PENDING);
 
-  const { isGettingAllUsersCompaniesRequestsLoading, payloadState, performGetAllUsersCompaniesRequests } = useGetAllUserCompaniesRequests();
+  const { isGettingUserCompanyRequestsByCompanyLoading, payloadState, performGetUserCompanyRequestsByCompany } = useGetUserCompanyRequestsByCompany();
+
+  const { payloadState: requestPermission, performCanUserMakeRequest } = useCanUserMakeRequest();
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    performGetAllUsersCompaniesRequests({page_number: page, status: requestStatus});
+    performCanUserMakeRequest({company_id: sessionType!.company_id!, token: token!, user_id: sessionType!.user.id!});
+  }, []);
+
+  useEffect(() => {
+    performGetUserCompanyRequestsByCompany({page_number: page, status: requestStatus, company_id: sessionType!.company_id!, token: token!});
   }, [requestStatus]);
 
-  function getDataMessageWhenNone() {
-    switch (requestStatus) {
-      case UserCompanyRequestStatus.APPROVED:
-        return "No hay solicitudes aprobadas";
-      case UserCompanyRequestStatus.PENDING:
-        return "No hay solicitudes por responder";
-      case UserCompanyRequestStatus.REJECTED:
-        return "No hay solicitudes rechazadas"
-    }
-  }
 
   return (
     <div className='w-full h-full p-10 flex justify-center items-center flex-col'>
@@ -46,9 +51,24 @@ function CompaniesRequestsSuperadminPage() {
           <Tab key={UserCompanyRequestStatus.REJECTED} title="Rechazadas"/>
         </Tabs>
       </div>
-      <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-10'>
+      <div className='w-full flex justify-end'>
         {
-          isGettingAllUsersCompaniesRequestsLoading ?
+          requestPermission !== "not loaded" && requestPermission.payload &&
+          <div>
+            <ButtonComponent
+              color="primary"
+              text="Crear nueva solicitud"
+              type="button"
+              variant="solid"
+              startContent={<IoMdAdd className='w-5 h-5'/>}
+              onClick={() => navigate(`/dashboard/companies/requests/request/update`)}
+            />
+          </div>
+        }
+      </div>
+      <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3'>
+        {
+          isGettingUserCompanyRequestsByCompanyLoading ?
           <div className='col-span-full my-10'>
             <Spinner />
           </div>
@@ -56,18 +76,18 @@ function CompaniesRequestsSuperadminPage() {
           payloadState === 'not loaded' || !payloadState.payload ? <span>No hay data</span> :
           payloadState.payload.data.length === 0 ?
           <div className='col-span-full text-center flex justify-center items-center my-10'>
-            <span>{getDataMessageWhenNone()}</span>
+            <span>No hay solicitudes</span>
           </div> :
           payloadState.payload.data.map( request => (
             <CardRequestComponent
               user_company_request={request}
               onClick={() => navigate(`/dashboard/companies/requests/${request.id!}`)}
             />
-          ))
+          ) )
         }
       </div>
       {
-        isGettingAllUsersCompaniesRequestsLoading || payloadState === 'not loaded' ? null :
+        isGettingUserCompanyRequestsByCompanyLoading || payloadState === 'not loaded' ? null :
         <div className='w-full flex justify-center items-center mt-10'>
           <Pagination
             showControls
@@ -83,4 +103,4 @@ function CompaniesRequestsSuperadminPage() {
   );
 }
 
-export default CompaniesRequestsSuperadminPage;
+export default CompaniesRequestsAdminPage;

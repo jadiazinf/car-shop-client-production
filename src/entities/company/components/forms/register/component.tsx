@@ -4,7 +4,7 @@ import TextComponent from "../../../../../components/inputs/text";
 import SelectPlace from "../../../../location/components/select_place";
 import PlaceContext from "../../../../location/contexts/place";
 import CompanyModel from "../../../model";
-import CompnayInfoSchema from "./validation_schema";
+import CompanyInfoSchema from "./validation_schema";
 import FileDropzone from "../../../../../components/dragndrop/component";
 
 function Container(props: { children: ReactNode }) {
@@ -15,7 +15,7 @@ function Container(props: { children: ReactNode }) {
   )
 }
 
-function CompanyInfoForm(props: {initialValues: CompanyModel, onSubmit: (values: CompanyModel) => void; children?: ReactNode}) {
+function CompanyInfoForm(props: {initialValues: CompanyModel, onSubmit: (values: CompanyModel) => void; children?: ReactNode; validationSchema?: any}) {
 
   const { place } = useContext(PlaceContext);
 
@@ -23,9 +23,11 @@ function CompanyInfoForm(props: {initialValues: CompanyModel, onSubmit: (values:
     props.onSubmit(values);
   }
 
-  const formik = useFormik({initialValues: props.initialValues, onSubmit, validationSchema: CompnayInfoSchema()});
+  const formik = useFormik({initialValues: props.initialValues, onSubmit, validationSchema: props.validationSchema || CompanyInfoSchema()});
 
-  useEffect(() => {console.log('los errores', formik.errors)}, [formik.errors]);
+  useEffect(() => {
+    console.log("Los errores", formik.errors);
+  }, [formik.errors]);
 
   useEffect(() => {
     if (place?.town)

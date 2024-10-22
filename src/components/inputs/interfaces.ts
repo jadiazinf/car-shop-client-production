@@ -1,7 +1,6 @@
 import { ChangeEventHandler, ReactNode } from "react";
 
 export interface IBaseInputProps {
-  key: string;
   name: string;
   value: string;
   type: 'password' | 'text' | 'number' | 'date';
@@ -23,7 +22,6 @@ export type SelectDataProps = {
 
 export interface IBaseSelectProps {
   data: SelectDataProps[];
-  key: string;
   name: string;
   value: string;
   isError?: any;

@@ -11,10 +11,12 @@ class UpdateCompanyService {
   private _company: any;
   private _company_id: number;
   private _token: string;
+  private _user_id: number;
 
-  constructor(data: {company: any, company_id: number, token: string}) {
+  constructor(data: {company: any, user_id: number, company_id: number, token: string}) {
     this._company_id = data.company_id;
     this._company = data.company;
+    this._user_id = data.user_id
     this._token = data.token;
     this._status = null;
     this._errorMessage = null;
@@ -37,7 +39,7 @@ class UpdateCompanyService {
     try {
       const formData = this.getFormData();
       const response = await fetch(`${EnvironmentVariables.API_BASE_ROUTE}/api/${EnvironmentVariables.API_VERSION}/companies/${this._company_id}`, {
-        method: 'POST',
+        method: 'PATCH',
         headers: {
           'Accept': 'application/json',
           'Authorization': `Bearer ${this._token}`
@@ -63,6 +65,10 @@ class UpdateCompanyService {
 
   private getFormData() {
     const formData = new FormData();
+
+    formData.append('user_id', this._user_id.toString());
+
+    formData.append('company_id', this._company_id.toString());
 
     if (this._company.company_images)
       this._company.company_images!.forEach((file: File) => {

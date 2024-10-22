@@ -26,6 +26,9 @@ function CardRequestComponent(props: ICardRequestComponentProps) {
                         {helper.translateStatus()}
                       </span>
         </span>
+        {
+          props.user_company_request.message && <span>{props.user_company_request.message}</span>
+        }
         <div className='w-full flex justify-end'>
           <div className='w-28'>
             <ButtonComponent

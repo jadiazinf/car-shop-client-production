@@ -17,7 +17,6 @@ function SelectComponent(props: IBaseSelectProps) {
       isInvalid={props.isError}
       isDisabled={props.isDisabled}
       name={props.name}
-      key={props.key}
     >
       {
         props.data.map( element => (
