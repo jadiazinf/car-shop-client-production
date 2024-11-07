@@ -1,20 +1,19 @@
-// import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import { NextUIProvider } from '@nextui-org/react';
 import { persistorStore, store } from './store/store';
+import { App } from './app/App';
+import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import './static/fonts/playwriteCU/PlaywriteCU-VariableFont_wght.ttf';
-import { App } from './app/App';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   // <React.StrictMode>
     <PersistGate persistor={persistorStore}>
       <Provider store={store}>
-        <NextUIProvider>
+        <BrowserRouter>
           <App />
-        </NextUIProvider>
+        </BrowserRouter>
       </Provider>
     </PersistGate>
   // </React.StrictMode>

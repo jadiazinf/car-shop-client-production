@@ -77,7 +77,7 @@ function Main() {
 
 
   return (
-    <div className='w-full h-full flex justify-center items-center'>
+    <>
       {
         (isGettingCompanyLoading || companyPayload === 'not loaded') || (isGettingLocationParentsLoading || locationParentsPayload === 'not loaded') ? <Spinner /> :
         <div className='pt-5'>
@@ -135,7 +135,7 @@ function Main() {
           </Card>
         </div>
       }
-    </div>
+    </>
   );
 }
 

@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import useGetUserCompanyRequest, { GetUserCompanyRequestProps } from "../../../../../entities/user_company_request/services/get/use_get_request";
-import { BreadcrumbItem, Breadcrumbs, Button, ButtonGroup, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Modal, ModalBody, ModalContent, Spinner, Tab, Tabs, useDisclosure } from "@nextui-org/react";
+import { Button, ButtonGroup, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Modal, ModalBody, ModalContent, Spinner, Tab, Tabs, useDisclosure } from "@nextui-org/react";
 import { useContext, useEffect, useState } from "react";
 import CompanyInfo from "../../../../../entities/company/components/info";
 import UserInfo from "../../../../../entities/user/components/info";
@@ -14,6 +14,30 @@ import useUpdateUserCompanyRequest from "../../../../../entities/user_company_re
 import { usePersistedStore } from "../../../../../store/store";
 import { ToasterContext } from "../../../../../components/toaster/context/context";
 import { StatusCodes } from "http-status-codes";
+import HeaderBreadcrumbsComponent, { HeaderBreadcrumbItemProps } from "../../../../../components/breadcrumbs/header";
+
+const HEADER_BREADCRUMBS_OPTIONS: HeaderBreadcrumbItemProps[] = [
+  {
+    text: "Home",
+    url: "/"
+  },
+  {
+    text: "Dashboard",
+    url: "/dashboard"
+  },
+  {
+    text: "Compañía",
+    url: "/dashboard/companies"
+  },
+  {
+    text: "Peticiones",
+    url: "/dashboard/companies/requests"
+  },
+  {
+    text: "Petición",
+    url: "/dashboard/companies/requests"
+  }
+]
 
 function CompanyRequestPage() {
   const params = useParams();
@@ -141,14 +165,11 @@ function CompanyRequestPage() {
           </ModalBody>
         </ModalContent>
       </Modal>
-      <div className='w-full h-full p-10 flex justify-center items-center flex-col'>
+      <>
         <div className='w-full flex flex-col md:flex-row gap-5 justify-between items-center'>
-          <Breadcrumbs underline="hover" color="foreground">
-            <BreadcrumbItem href="/dashboard">Dashboard</BreadcrumbItem>
-            <BreadcrumbItem href="/dashboard/companies">Compañías</BreadcrumbItem>
-            <BreadcrumbItem href="/dashboard/companies/requests">Peticiones</BreadcrumbItem>
-            <BreadcrumbItem href={`/dashbpard/companies/requests/${params.id}`}>Petición</BreadcrumbItem>
-          </Breadcrumbs>
+        <div className='w-full'>
+          <HeaderBreadcrumbsComponent items={HEADER_BREADCRUMBS_OPTIONS}/>
+        </div>
           {
             request !== "not loaded" && request.payload.status === UserCompanyRequestStatus.PENDING &&
             <ButtonGroup variant="flat">
@@ -211,7 +232,7 @@ function CompanyRequestPage() {
               </div>
           }
         </div>
-      </div>
+      </>
     </>
   );
 }

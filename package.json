@@ -17,6 +17,7 @@
     "@nextui-org/react": "^2.4.8",
     "@reduxjs/toolkit": "^2.2.8",
     "axios": "^1.7.7",
+    "decimal.js": "^10.4.3",
     "formik": "^2.4.6",
     "framer-motion": "^11.11.8",
     "http-status-codes": "^2.3.0",

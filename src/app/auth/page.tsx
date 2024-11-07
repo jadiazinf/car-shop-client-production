@@ -10,22 +10,20 @@ function AuthPage() {
 
   return (
     <AuthLayout>
-      <div className='flex flex-col items-center px-5 w-full md:w-3/4 lg:w-3/5'>
-        <Card radius="sm" className='w-full md:1/2 lg:w-3/5 px-5 py-10'>
-          <CardBody className='p-5 text-center'>
-            {
-              componentState === 'login' ?
-                <LoginCardComponent
-                  setAuthOptionState={setComponentState}
-                />
-              :
-                <ChooseRegistrationOptionComponent
-                  setAuthOptionState={setComponentState}
-                />
-            }
-          </CardBody>
-        </Card>
-      </div>
+      <Card radius="sm" className='w-full md:w-2/3 lg:w-1/3'>
+        <CardBody className='p-5 text-center'>
+          {
+            componentState === 'login' ?
+              <LoginCardComponent
+                setAuthOptionState={setComponentState}
+              />
+            :
+              <ChooseRegistrationOptionComponent
+                setAuthOptionState={setComponentState}
+              />
+          }
+        </CardBody>
+      </Card>
     </AuthLayout>
   );
 }

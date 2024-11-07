@@ -1,4 +1,4 @@
-import { BreadcrumbItem, Breadcrumbs, Pagination, Spinner, Tab, Tabs } from "@nextui-org/react";
+import { Pagination, Spinner, Tab, Tabs } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserCompanyRequestStatus } from "../../../../entities/user_company_request/types";
@@ -9,6 +9,26 @@ import { usePersistedStore } from "../../../../store/store";
 import useCanUserMakeRequest from "../../../../entities/user_company_request/services/can_make_request/use_user_can_make_request";
 import ButtonComponent from "../../../../components/buttons/component";
 import { IoMdAdd } from "react-icons/io";
+import HeaderBreadcrumbsComponent, { HeaderBreadcrumbItemProps } from "../../../../components/breadcrumbs/header";
+
+const HEADER_BREADCRUMBS_OPTIONS: HeaderBreadcrumbItemProps[] = [
+  {
+    text: "Home",
+    url: "/"
+  },
+  {
+    text: "Dashboard",
+    url: "/dashboard"
+  },
+  {
+    text: "Compañía",
+    url: "/dashboard/companies"
+  },
+  {
+    text: "Peticiones",
+    url: "/dashboard/companies/requests"
+  }
+]
 
 function CompaniesRequestsAdminPage() {
 
@@ -36,13 +56,9 @@ function CompaniesRequestsAdminPage() {
 
 
   return (
-    <div className='w-full h-full p-10 flex justify-center items-center flex-col'>
+    <>
       <div className='w-full'>
-        <Breadcrumbs underline="hover" color="foreground">
-          <BreadcrumbItem href="/dashboard">Dashboard</BreadcrumbItem>
-          <BreadcrumbItem href="/dashboard/companies">Compañías</BreadcrumbItem>
-          <BreadcrumbItem href="/dashbpard/companies/requests">Peticiones</BreadcrumbItem>
-        </Breadcrumbs>
+        <HeaderBreadcrumbsComponent items={HEADER_BREADCRUMBS_OPTIONS}/>
       </div>
       <div className='w-full flex justify-center items-center'>
         <Tabs color="primary" key="status" variant="underlined" aria-label="requests status" onSelectionChange={(value) => setRequestStatus(value as UserCompanyRequestStatus)}>
@@ -99,7 +115,7 @@ function CompaniesRequestsAdminPage() {
           />
         </div>
       }
-    </div>
+    </>
   );
 }
 

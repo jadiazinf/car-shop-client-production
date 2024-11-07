@@ -1,7 +1,7 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AuthStatus } from "../../auth/types";
 import ButtonComponent from "../buttons/component";
-import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, NavbarContent } from '@nextui-org/react';
+import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Link, NavbarContent, NavbarItem } from '@nextui-org/react';
 import { useEffect, useState } from "react";
 import { UserCompanyRole } from "../../entities/users_companies/types";
 import AdminNavbarOptions from "./admin";
@@ -9,13 +9,7 @@ import GeneralNavbarOptions from "./general";
 import TechnicianNavbarOptions from "./technician";
 import { usePersistedStore } from "../../store/store";
 import SuperadminNavbarOptions from "./superadmin";
-
-function NotAuthenticatedNavbarOptions() {
-  return (
-    <>
-    </>
-  );
-}
+import NotAuthenticatedNavbarOptions from "./not_authenticated";
 
 function NotAuthenticatedNavbarActions() {
 
@@ -87,11 +81,18 @@ function AuthenticatedNavbarActions() {
   );
 }
 
+export type NavbarOptionsProps = {
+  text: string;
+  url: string;
+}
+
 function AuthNavbarSection(props: {authStatus: AuthStatus, roles: UserCompanyRole[] | null}): JSX.Element {
+
+  const location = useLocation();
 
   const [Actions, setActions] = useState<JSX.Element>(<NotAuthenticatedNavbarActions />);
 
-  const [Options, setOptions] = useState<JSX.Element>(<NotAuthenticatedNavbarOptions />)
+  const [Options, setOptions] = useState<NavbarOptionsProps[]>(NotAuthenticatedNavbarOptions())
 
   useEffect(() => {
     if (props.authStatus === AuthStatus.AUTHENTICATED)
@@ -102,27 +103,27 @@ function AuthNavbarSection(props: {authStatus: AuthStatus, roles: UserCompanyRol
 
   useEffect(() => {
     if (props.roles === null || props.roles.length === 0) {
-      setOptions(<NotAuthenticatedNavbarOptions />);
+      setOptions(NotAuthenticatedNavbarOptions());
       return;
     }
 
     if (props.roles.includes(UserCompanyRole.ADMIN)) {
-      setOptions(<AdminNavbarOptions />);
+      setOptions(AdminNavbarOptions());
       return;
     }
 
     if (props.roles.includes(UserCompanyRole.GENERAL)) {
-      setOptions(<GeneralNavbarOptions />);
+      setOptions(GeneralNavbarOptions());
       return;
     }
 
     if (props.roles.includes(UserCompanyRole.TECHNICIAN)) {
-      setOptions(<TechnicianNavbarOptions />);
+      setOptions(TechnicianNavbarOptions());
       return;
     }
 
     if (props.roles.includes(UserCompanyRole.SUPERADMIN)) {
-      setOptions(<SuperadminNavbarOptions />);
+      setOptions(SuperadminNavbarOptions());
       return;
     }
   }, [props.roles]);
@@ -130,7 +131,15 @@ function AuthNavbarSection(props: {authStatus: AuthStatus, roles: UserCompanyRol
   return (
     <>
       <NavbarContent justify="center">
-        { Options }
+        {
+          Options.map( (element, index) => (
+            <NavbarItem key={index.toString()} isActive={location.pathname.startsWith(element.url)}>
+              <Link color="foreground" href={element.url}>
+                { element.text }
+              </Link>
+            </NavbarItem>
+          ) )
+        }
       </NavbarContent>
       <NavbarContent justify="end">
         { Actions }

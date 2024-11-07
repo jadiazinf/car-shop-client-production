@@ -10,8 +10,11 @@ export interface IBaseInputProps {
   placeholder?:string;
   startContent?: ReactNode;
   endContent?: ReactNode;
-  onChange: React.ChangeEventHandler<HTMLInputElement> | undefined;
+  onChange?: React.ChangeEventHandler<HTMLInputElement> | undefined;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   onBlur?: (React.FocusEventHandler<HTMLInputElement> & ((e: React.FocusEvent<Element, Element>) => void)) | undefined;
+  variant?:  "bordered" | "underlined" | "flat" | "faded";
+  isDisabled?: boolean;
 }
 
 

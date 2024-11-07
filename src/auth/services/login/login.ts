@@ -62,7 +62,7 @@ class LoginService {
     } catch(error: any) {
       const axiosError = error as AxiosError;
       this._status = StatusCodes[axiosError.response?.status as unknown as keyof typeof StatusCodes] || StatusCodes.INTERNAL_SERVER_ERROR;
-      this._errorMessage = error.response.data.errors
+      this._errorMessage = error.response.data.error
     }
   }
 }

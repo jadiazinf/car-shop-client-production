@@ -8,7 +8,7 @@ function TextComponent(props: IBaseInputProps) {
       value={props.value}
       onChange={props.onChange}
       className='w-full'
-      variant='underlined'
+      variant={props.variant || 'underlined'}
       type={props.type}
       label={props.label}
       placeholder={props.placeholder}
@@ -17,6 +17,9 @@ function TextComponent(props: IBaseInputProps) {
       startContent={props.startContent}
       endContent={props.endContent}
       onBlur={props.onBlur}
+      radius="sm"
+      isDisabled={props.isDisabled}
+      onKeyDown={props.onKeyDown}
     />
   );
 }
