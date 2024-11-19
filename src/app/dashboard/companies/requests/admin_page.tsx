@@ -1,5 +1,5 @@
 import { Pagination, Spinner, Tab, Tabs } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserCompanyRequestStatus } from "../../../../entities/user_company_request/types";
 import { GetAllUserCompaniesRequestsProps } from "../../../../entities/user_company_request/services/get_all/use_get_all_requests";
@@ -9,7 +9,8 @@ import { usePersistedStore } from "../../../../store/store";
 import useCanUserMakeRequest from "../../../../entities/user_company_request/services/can_make_request/use_user_can_make_request";
 import ButtonComponent from "../../../../components/buttons/component";
 import { IoMdAdd } from "react-icons/io";
-import HeaderBreadcrumbsComponent, { HeaderBreadcrumbItemProps } from "../../../../components/breadcrumbs/header";
+import { HeaderBreadcrumbItemProps } from "../../../../components/breadcrumbs/header";
+import BreadcrumbsContext from "../../../../components/breadcrumbs/context";
 
 const HEADER_BREADCRUMBS_OPTIONS: HeaderBreadcrumbItemProps[] = [
   {
@@ -36,6 +37,8 @@ function CompaniesRequestsAdminPage() {
 
   const { token, sessionType } = authReducer;
 
+  const { setBreadcrumbs } = useContext(BreadcrumbsContext);
+
   const [ page, setPage ] = useState<number>(1);
 
   const [ requestStatus, setRequestStatus ] = useState<UserCompanyRequestStatus>(UserCompanyRequestStatus.PENDING);
@@ -48,6 +51,7 @@ function CompaniesRequestsAdminPage() {
 
   useEffect(() => {
     performCanUserMakeRequest({company_id: sessionType!.company_id!, token: token!, user_id: sessionType!.user.id!});
+    setBreadcrumbs(HEADER_BREADCRUMBS_OPTIONS);
   }, []);
 
   useEffect(() => {
@@ -56,10 +60,7 @@ function CompaniesRequestsAdminPage() {
 
 
   return (
-    <>
-      <div className='w-full'>
-        <HeaderBreadcrumbsComponent items={HEADER_BREADCRUMBS_OPTIONS}/>
-      </div>
+    <div className="flex flex-col justify-center w-full h-full">
       <div className='w-full flex justify-center items-center'>
         <Tabs color="primary" key="status" variant="underlined" aria-label="requests status" onSelectionChange={(value) => setRequestStatus(value as UserCompanyRequestStatus)}>
           <Tab key={UserCompanyRequestStatus.PENDING} title="Pendientes por aprobación"/>
@@ -115,7 +116,7 @@ function CompaniesRequestsAdminPage() {
           />
         </div>
       }
-    </>
+    </div>
   );
 }
 

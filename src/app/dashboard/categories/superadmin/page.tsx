@@ -1,5 +1,5 @@
 import { IoMdAdd } from "react-icons/io";
-import HeaderBreadcrumbsComponent, { HeaderBreadcrumbItemProps } from "../../../../components/breadcrumbs/header";
+import { HeaderBreadcrumbItemProps } from "../../../../components/breadcrumbs/header";
 import ButtonComponent from "../../../../components/buttons/component";
 import TextComponent from "../../../../components/inputs/text";
 import { IoSearchOutline } from "react-icons/io5";
@@ -21,6 +21,7 @@ import DatesHelpers from "../../../../helpers/dates/helper";
 import useUpdateCategory, { UpdateCategoryProps } from "../../../../entities/category/services/update/use_update_category";
 import { usePersistedStore } from "../../../../store/store";
 import LogoComponent from "../../../../components/logo/component";
+import BreadcrumbsContext from "../../../../components/breadcrumbs/context";
 
 const HEADER_BREADCRUMBS: HeaderBreadcrumbItemProps[] = [
   {
@@ -54,9 +55,9 @@ const TABLE_COLUMNS: DatatableColumnsProps[] = [
 
 function SuperadminCategoriesPage() {
 
-  const { authReducer } = usePersistedStore();
+  const { token, sessionType } = usePersistedStore().authReducer;
 
-  const { token, sessionType } = authReducer;
+  const { setBreadcrumbs } = useContext(BreadcrumbsContext);
 
   const { selectedValues, setSelectedValues } = useDataFromDatatable();
 
@@ -94,6 +95,10 @@ function SuperadminCategoriesPage() {
   } = useDisclosure();
 
   const { isUpdatingCategoryLoading: isDeletingCategoryLoading, performUpdateCategory: performDeleteCategory } = useUpdateCategory();
+
+  useEffect(() => {
+    setBreadcrumbs(HEADER_BREADCRUMBS);
+  }, []);
 
   useEffect(() => {
     performGetAllCategories({page});
@@ -255,9 +260,8 @@ function SuperadminCategoriesPage() {
           </ModalBody>
         </ModalContent>
       </Modal>
-      <HeaderBreadcrumbsComponent items={HEADER_BREADCRUMBS}/>
-      <div className='flex flex-col mt-10'>
-        <div className="w-full flex justify-between items-center m-auto px-10">
+      <div className='w-full flex flex-col'>
+        <div className="w-full flex justify-between items-center m-auto">
           <span className="text-3xl font-bold font-inter">Categoria de servicios</span>
           <div className='w-auto flex items-center gap-5'>
             <TextComponent
@@ -281,7 +285,7 @@ function SuperadminCategoriesPage() {
             </div>
           </div>
         </div>
-        <div className="px-10 mt-5">
+        <div className="mt-5">
           <DatatableComponent
             columns={TABLE_COLUMNS}
             data={payloadState === 'not loaded' ? [] : (payloadState.payload as PaginatedData<CategoryModel>).data.map( element => ({id: element.id, name: element.name, created_at: DatesHelpers.formatFullDate(element.created_at!)}) ) || []}

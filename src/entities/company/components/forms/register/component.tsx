@@ -26,10 +26,6 @@ function CompanyInfoForm(props: {initialValues: CompanyModel, onSubmit: (values:
   const formik = useFormik({initialValues: props.initialValues, onSubmit, validationSchema: props.validationSchema || CompanyInfoSchema()});
 
   useEffect(() => {
-    console.log("Los errores", formik.errors);
-  }, [formik.errors]);
-
-  useEffect(() => {
     if (place?.town)
       formik.setFieldValue("location_id", place.town.id);
   }, [place?.town]);

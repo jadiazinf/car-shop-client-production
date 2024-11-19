@@ -4,6 +4,7 @@ import AppRoutes from '../routes/app_routes';
 import MainLayout from './layout';
 import { useHref, useNavigate } from 'react-router-dom';
 import { NextUIProvider } from '@nextui-org/react';
+import MenuProvider from '../components/menu/provider';
 
 export const App = ():JSX.Element => {
 
@@ -14,9 +15,11 @@ export const App = ():JSX.Element => {
   return (
     <NextUIProvider navigate={navigate} useHref={useHref}>
       <ToasterProvider>
-        <MainLayout>
-          <AppRoutes />
-        </MainLayout>
+        <MenuProvider>
+          <MainLayout>
+            <AppRoutes />
+          </MainLayout>
+        </MenuProvider>
       </ToasterProvider>
     </NextUIProvider>
   );

@@ -1,5 +1,5 @@
 import { IoMdAdd } from "react-icons/io";
-import HeaderBreadcrumbsComponent, { HeaderBreadcrumbItemProps } from "../../../../components/breadcrumbs/header";
+import { HeaderBreadcrumbItemProps } from "../../../../components/breadcrumbs/header";
 import ButtonComponent from "../../../../components/buttons/component";
 import TextComponent from "../../../../components/inputs/text";
 import { IoSearchOutline } from "react-icons/io5";
@@ -20,6 +20,7 @@ import useUpdateServiceService, { UpdateServiceProps } from "../../../../entitie
 import useGetAllServicesService from "../../../../entities/service/services/get_all/use_get_all";
 import ServiceModel from "../../../../entities/service/model";
 import ServiceInfoForm from "../../../../entities/service/forms/info/component";
+import BreadcrumbsContext from "../../../../components/breadcrumbs/context";
 
 const HEADER_BREADCRUMBS: HeaderBreadcrumbItemProps[] = [
   {
@@ -65,6 +66,8 @@ function AdminServicesPage() {
 
   const { token, sessionType } = authReducer;
 
+  const { setBreadcrumbs } = useContext(BreadcrumbsContext);
+
   const { selectedValues, setSelectedValues } = useDataFromDatatable();
 
   const { datatableAction, setDatatableAction } = useDatatableAction();
@@ -101,6 +104,10 @@ function AdminServicesPage() {
   } = useDisclosure();
 
   const { isUpdatingService: isDeletingServiceLoading, performUpdateService: performDeleteService } = useUpdateServiceService();
+
+  useEffect(() => {
+    setBreadcrumbs(HEADER_BREADCRUMBS);
+  }, []);
 
   useEffect(() => {
     performGetAllServices({page, company_id: sessionType?.company_id!});
@@ -178,7 +185,7 @@ function AdminServicesPage() {
   }
 
   return (
-    <>
+    <div className="w-full">
       <Modal
         isOpen={isCreateNewServiceFormOpen}
         onOpenChange={onCreateNewServiceFormOpenChange}
@@ -269,8 +276,7 @@ function AdminServicesPage() {
           </ModalBody>
         </ModalContent>
       </Modal>
-      <HeaderBreadcrumbsComponent items={HEADER_BREADCRUMBS}/>
-      <div className='flex flex-col mt-10'>
+      <div className='flex flex-col'>
         <div className="w-full flex justify-between items-center m-auto px-10">
           <span className="text-3xl font-bold font-inter">Servicios de la empresa</span>
           <div className='w-auto flex items-center gap-5'>
@@ -295,7 +301,7 @@ function AdminServicesPage() {
             </div>
           </div>
         </div>
-        <div className="px-10 mt-5">
+        <div className="px-10 mt-10">
           <DatatableComponent
             columns={TABLE_COLUMNS}
             data={payloadState === 'not loaded' ? [] : (payloadState.payload as PaginatedData<ServiceModel>).data.map( element => ({id: element.id, name: element.name, description: element.description, category: element.category!.name, price: `${element.price.toFixed(2)} REF`}) ) || []}
@@ -321,7 +327,7 @@ function AdminServicesPage() {
           }
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

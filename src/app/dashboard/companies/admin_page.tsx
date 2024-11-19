@@ -1,22 +1,10 @@
-import { MenuButtonComponentProps } from "../../../components/buttons/menu/types";
-import MenuButtonComponent from "../../../components/buttons/menu/component";
-import { MdAppRegistration } from "react-icons/md";
-import MenuOptionsContainer from "../../../components/buttons/menu/container";
-import BoxIconComponent from "../../../components/icons/component";
-import { IconColors } from "../../../components/icons/consts";
-import HeaderBreadcrumbsComponent, { HeaderBreadcrumbItemProps } from "../../../components/breadcrumbs/header";
-
-const COMPANY_OPTIONS: MenuButtonComponentProps[] = [
-  {
-    title: "Peticiones de registro",
-    description: "Ve el estado de las peticiones de registro",
-    icon: <BoxIconComponent
-            bgColor={IconColors.coolBlack}
-            icon={<MdAppRegistration className='text-white'/>}
-          />,
-    url: "/dashboard/companies/requests"
-  }
-]
+import { HeaderBreadcrumbItemProps } from "../../../components/breadcrumbs/header";
+import { useContext, useEffect } from "react";
+import BreadcrumbsContext from "../../../components/breadcrumbs/context";
+import useGetCompany from "../../../entities/company/services/get/use_get_company";
+import { usePersistedStore } from "../../../store/store";
+import { Spinner } from "@nextui-org/react";
+import CompanyInfo from "../../../entities/company/components/info";
 
 const HEADER_BREADCRUMBS_OPTIONS: HeaderBreadcrumbItemProps[] = [
   {
@@ -35,23 +23,25 @@ const HEADER_BREADCRUMBS_OPTIONS: HeaderBreadcrumbItemProps[] = [
 
 function CompaniesAdminPage() {
 
+  const { sessionType, token } = usePersistedStore().authReducer;
+
+  const { setBreadcrumbs } = useContext(BreadcrumbsContext);
+
+  setBreadcrumbs(HEADER_BREADCRUMBS_OPTIONS);
+
+  const { isGettingCompanyLoading, payloadState, performGetCompany } = useGetCompany();
+
+  useEffect(() => {
+    performGetCompany({company_id: sessionType?.company_id!,token: token!});
+  }, []);
+
   return (
     <>
-      <HeaderBreadcrumbsComponent items={HEADER_BREADCRUMBS_OPTIONS}/>
-      <MenuOptionsContainer>
-        {
-          COMPANY_OPTIONS.map( (element, index) => (
-            <MenuButtonComponent
-              description={element.description}
-              icon={element.icon}
-              title={element.title}
-              url={element.url}
-              key={index.toString()}
-            />
-          ) )
-
-        }
-      </MenuOptionsContainer>
+      {
+        isGettingCompanyLoading ? <Spinner /> :
+        payloadState === "not loaded" ? null :
+        <CompanyInfo company={payloadState.payload}/>
+      }
     </>
   )
 }

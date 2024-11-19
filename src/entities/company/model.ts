@@ -13,6 +13,7 @@ type CompanyModel = {
   address: string;
   company_charter?: Blob | File | string;
   company_images?: Blob[] | File[] | string[];
+  profile_image_url?: string;
   users?: UserModel[];
   location?: LocationModel;
   location_id?: number;

@@ -4,6 +4,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { persistorStore, store } from './store/store';
 import { App } from './app/App';
 import { BrowserRouter } from 'react-router-dom';
+import BreadcrumbsProvider from './components/breadcrumbs/provider';
 import './index.css';
 import './static/fonts/playwriteCU/PlaywriteCU-VariableFont_wght.ttf';
 
@@ -12,7 +13,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <PersistGate persistor={persistorStore}>
       <Provider store={store}>
         <BrowserRouter>
-          <App />
+          <BreadcrumbsProvider>
+            <App />
+          </BreadcrumbsProvider>
         </BrowserRouter>
       </Provider>
     </PersistGate>

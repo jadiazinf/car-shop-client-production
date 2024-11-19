@@ -37,7 +37,7 @@ function LogoutPage(){
   }, []);
 
   return (
-    <WindowLoader />
+    <WindowLoader message="Cerrando sesión"/>
   );
 }
 

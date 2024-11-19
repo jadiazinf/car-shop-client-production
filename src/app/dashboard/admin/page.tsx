@@ -4,8 +4,10 @@ import BoxIconComponent from "../../../components/icons/component";
 import { IconColors } from "../../../components/icons/consts";
 import MenuOptionsContainer from "../../../components/buttons/menu/container";
 import MenuButtonComponent from "../../../components/buttons/menu/component";
-import HeaderBreadcrumbsComponent, { HeaderBreadcrumbItemProps } from "../../../components/breadcrumbs/header";
+import { HeaderBreadcrumbItemProps } from "../../../components/breadcrumbs/header";
 import { GoTools } from "react-icons/go";
+import { useContext } from "react";
+import BreadcrumbsContext from "../../../components/breadcrumbs/context";
 
 const DASHBOARD_OPTIONS: MenuButtonComponentProps[] = [
   {
@@ -32,7 +34,7 @@ const DASHBOARD_OPTIONS: MenuButtonComponentProps[] = [
   }
 ]
 
-const BreadCrumbsItems:HeaderBreadcrumbItemProps[] = [
+const BreadCrumbsItems: HeaderBreadcrumbItemProps[] = [
   {
     text: "Home",
     url: "/"
@@ -45,9 +47,12 @@ const BreadCrumbsItems:HeaderBreadcrumbItemProps[] = [
 
 function AdminDashboardPage() {
 
+  const { setBreadcrumbs } = useContext(BreadcrumbsContext);
+
+  setBreadcrumbs(BreadCrumbsItems);
+
   return (
     <>
-      <HeaderBreadcrumbsComponent items={BreadCrumbsItems}/>
       <MenuOptionsContainer>
         {
           DASHBOARD_OPTIONS.map( (element, index) => (

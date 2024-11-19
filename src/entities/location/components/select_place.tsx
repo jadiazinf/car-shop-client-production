@@ -10,7 +10,7 @@ function SelectPlace() {
 
   const [ placeState, setPlaceState ] = useState<Place>({country: null, city: null, state: null, town: null});
 
-  const { place, setPlace } = useContext(PlaceContext);
+  const { place } = useContext(PlaceContext);
 
   const {
     isGettingLocationsLoading,
@@ -41,7 +41,8 @@ function SelectPlace() {
   }, []);
 
   useEffect(() => {
-    setPlace(placeState);
+    console.log("El place", placeState);
+    // setPlace(placeState);
   }, [placeState]);
 
   useEffect(() => {

@@ -108,15 +108,18 @@ function ChooseUserCompanyPage() {
           )
         )
       }
-      <div className='mt-5 justify-center items-center w-auto'>
-        <ButtonComponent
-          color="primary"
-          text="Cerrar sesión"
-          type="button"
-          variant="light"
-          onClick={() => navigate("/auth/logout")}
-        />
-      </div>
+      {
+        isGettingUserCompaniesLoading || payloadState === "not loaded" || isGettingUserCompanyRolesLoading ? null :
+        <div className='mt-5 justify-center items-center w-auto'>
+          <ButtonComponent
+            color="primary"
+            text="Cerrar sesión"
+            type="button"
+            variant="light"
+            onClick={() => navigate("/auth/logout")}
+          />
+        </div>
+      }
     </div>
   );
 

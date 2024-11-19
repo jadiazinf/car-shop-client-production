@@ -4,8 +4,10 @@ import BoxIconComponent from "../../../components/icons/component";
 import { IconColors } from "../../../components/icons/consts";
 import MenuOptionsContainer from "../../../components/buttons/menu/container";
 import MenuButtonComponent from "../../../components/buttons/menu/component";
-import HeaderBreadcrumbsComponent, { HeaderBreadcrumbItemProps } from "../../../components/breadcrumbs/header";
+import { HeaderBreadcrumbItemProps } from "../../../components/breadcrumbs/header";
 import { MdCategory } from "react-icons/md";
+import { useContext, useEffect } from "react";
+import BreadcrumbsContext from "../../../components/breadcrumbs/context";
 
 const DASHBOARD_OPTIONS: MenuButtonComponentProps[] = [
   {
@@ -45,23 +47,26 @@ const BreadCrumbsItems:HeaderBreadcrumbItemProps[] = [
 
 function SuperadminDashboardPage() {
 
+  const { setBreadcrumbs } = useContext(BreadcrumbsContext);
+
+  useEffect(() => {
+    setBreadcrumbs(BreadCrumbsItems);
+  }, []);
+
   return (
-    <>
-      <HeaderBreadcrumbsComponent items={BreadCrumbsItems}/>
-      <MenuOptionsContainer>
-        {
-          DASHBOARD_OPTIONS.map( (element, index) => (
-            <MenuButtonComponent
-              description={element.description}
-              icon={element.icon}
-              title={element.title}
-              url={element.url}
-              key={index.toString()}
-            />
-          ) )
-        }
-      </MenuOptionsContainer>
-    </>
+    <MenuOptionsContainer>
+      {
+        DASHBOARD_OPTIONS.map( (element, index) => (
+          <MenuButtonComponent
+            description={element.description}
+            icon={element.icon}
+            title={element.title}
+            url={element.url}
+            key={index.toString()}
+          />
+        ) )
+      }
+    </MenuOptionsContainer>
   )
 }
 

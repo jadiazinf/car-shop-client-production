@@ -3,6 +3,7 @@ import LogoComponent from "../logo/component";
 import { useNavigate } from "react-router-dom";
 import { usePersistedStore } from "../../store/store";
 import AuthNavbarSection from "./auth";
+import { MenuComponent } from "../menu";
 
 function NavbarComponent() {
 
@@ -34,6 +35,7 @@ function NavbarComponent() {
     >
       <NavbarContent>
         <NavbarBrand>
+          <MenuComponent />
           <div className='h-full flex justify-center items-center cursor-pointer' onClick={() => navigate("/")}>
             <LogoComponent size="md"/>
           </div>
