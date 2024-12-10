@@ -6,8 +6,8 @@ function SelectComponent(props: IBaseSelectProps) {
     <Select
       radius="sm"
       label={props.label}
-      className='w-full'
-      variant='underlined'
+      className="w-full"
+      variant={props.variant ? props.variant : "underlined"}
       selectedKeys={[props.value]}
       onChange={props.onChange}
       startContent={props.startContent}
@@ -17,14 +17,11 @@ function SelectComponent(props: IBaseSelectProps) {
       isInvalid={props.isError}
       isDisabled={props.isDisabled}
       name={props.name}
+      size={props.size ? props.size : "lg"}
     >
-      {
-        props.data.map( element => (
-          <SelectItem key={element.key}>
-            {element.label}
-          </SelectItem>
-        ) )
-      }
+      {props.data.map((element) => (
+        <SelectItem key={element.key}>{element.label}</SelectItem>
+      ))}
     </Select>
   );
 }

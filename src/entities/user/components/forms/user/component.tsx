@@ -10,29 +10,39 @@ import PlaceContext from "../../../../location/contexts/place";
 
 function Container(props: { children: ReactNode }) {
   return (
-    <div className='w-full flex flex-col md:flex-row gap-5'>
-      { props.children }
+    <div className="w-full flex flex-col md:flex-row gap-5">
+      {props.children}
     </div>
-  )
+  );
 }
 
-function UserInfoForm(props: {initialValues: UserModel, onSubmit: (values: UserModel) => void; children?: ReactNode}) {
-
+function UserInfoForm(props: {
+  initialValues: UserModel;
+  onSubmit: (values: UserModel) => void;
+  children?: ReactNode;
+}) {
   const { place } = useContext(PlaceContext);
 
   function onSubmit(values: UserModel) {
     props.onSubmit(values);
   }
 
-  const formik = useFormik({initialValues: props.initialValues, onSubmit, validationSchema: UserInfoSchema()});
+  const formik = useFormik({
+    initialValues: props.initialValues,
+    onSubmit,
+    validationSchema: UserInfoSchema(),
+  });
 
   useEffect(() => {
-    if (place?.town)
-      formik.setFieldValue("location_id", place.town.id);
+    if (place?.town) formik.setFieldValue("location_id", place.town.id);
   }, [place?.town]);
 
+  useEffect(() => {
+    console.log("errors", formik.errors);
+  }, [formik.errors]);
+
   return (
-    <form onSubmit={formik.handleSubmit} className='flex flex-col gap-5'>
+    <form onSubmit={formik.handleSubmit} className="flex flex-col gap-5">
       <Container>
         <TextComponent
           label="Nombre"
@@ -70,7 +80,10 @@ function UserInfoForm(props: {initialValues: UserModel, onSubmit: (values: UserM
           errorMessage={formik.errors.dni}
         />
         <SelectComponent
-          data={[{ key: Gender.MALE, label: 'Hombre' }, { key: Gender.FEMALE, label: 'Mujer' }]}
+          data={[
+            { key: Gender.MALE, label: "Hombre" },
+            { key: Gender.FEMALE, label: "Mujer" },
+          ]}
           key="gender"
           name="gender"
           label="Género"
@@ -125,16 +138,18 @@ function UserInfoForm(props: {initialValues: UserModel, onSubmit: (values: UserM
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           type="password"
-          isError={formik.errors.password_confirmation && formik.touched.password_confirmation}
+          isError={
+            formik.errors.password_confirmation &&
+            formik.touched.password_confirmation
+          }
           errorMessage={formik.errors.password_confirmation}
         />
       </Container>
-      <div className='flex flex-col gap-2'>
+      <div className="flex flex-col gap-2">
         <SelectPlace />
-        {
-          formik.errors.location_id && formik.touched.location_id &&
-          <span className='text-red-400'>{ formik.errors.location_id }</span>
-        }
+        {formik.errors.location_id && formik.touched.location_id && (
+          <span className="text-red-400">{formik.errors.location_id}</span>
+        )}
       </div>
       <Container>
         <TextComponent
@@ -160,9 +175,7 @@ function UserInfoForm(props: {initialValues: UserModel, onSubmit: (values: UserM
           errorMessage={formik.errors.phone_number}
         />
       </Container>
-      <div className='w-full'>
-        { props.children }
-      </div>
+      <div className="w-full">{props.children}</div>
     </form>
   );
 }

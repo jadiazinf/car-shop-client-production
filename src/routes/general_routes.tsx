@@ -1,11 +1,12 @@
 import { Navigate, Route } from "react-router-dom";
-import IndexPage from '../app/index/page';
 import LogoutPage from "../app/auth/logout/page";
+import SearchWorkshopsPage from "../app/search/workshops";
 
 const generalRoutes = (
   <>
-    <Route path="/" element={<IndexPage />} />
+    <Route path="/" element={<Navigate to="/search/workshops" />} />
     <Route path="/auth/logout" element={<LogoutPage />} />
+    <Route path="/search/workshops" element={<SearchWorkshopsPage />} />
     <Route path="*" element={<Navigate to="/" />} />
   </>
 );

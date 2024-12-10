@@ -3,8 +3,13 @@
 @tailwind utilities;
 
 @keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
 }
 
 /* CSS personalizado para el scrollbar */
@@ -44,6 +49,10 @@
   height: 60vh;
 }
 
+.h-vh-80 {
+  height: 80vh;
+}
+
 .h-full-w-footer {
   min-height: 90vh;
 }
@@ -51,7 +60,8 @@
 @layer base {
   @font-face {
     font-family: "Playwrite";
-    src: url("static/fonts/playwriteCU/PlaywriteCU-VariableFont_wght.ttf") format("truetype");
+    src: url("static/fonts/playwriteCU/PlaywriteCU-VariableFont_wght.ttf")
+      format("truetype");
   }
 
   @font-face {
