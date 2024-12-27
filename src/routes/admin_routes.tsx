@@ -7,6 +7,8 @@ import CompaniesAdminPage from "../app/dashboard/companies/admin_page";
 import AdminDashboardPage from "../app/dashboard/admin/page";
 import AdminServicesPage from "../app/dashboard/services/admin/page";
 import SearchWorkshopsPage from "../app/search/workshops";
+import CompanyMembersPage from "../app/dashboard/companies/members/page";
+import CompanyNewMemberPage from "../app/dashboard/companies/members/new/page";
 
 const adminRoutes = (
   <>
@@ -25,6 +27,14 @@ const adminRoutes = (
       element={<AdminUpdateRequest />}
     />
     <Route path="/dashboard/services" element={<AdminServicesPage />} />
+    <Route
+      path="/dashboard/companies/members"
+      element={<CompanyMembersPage />}
+    />
+    <Route
+      path="/dashboard/companies/members/new"
+      element={<CompanyNewMemberPage />}
+    />
     <Route path="*" element={<Navigate to="/" />} />
   </>
 );

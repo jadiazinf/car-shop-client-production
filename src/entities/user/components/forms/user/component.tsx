@@ -37,10 +37,6 @@ function UserInfoForm(props: {
     if (place?.town) formik.setFieldValue("location_id", place.town.id);
   }, [place?.town]);
 
-  useEffect(() => {
-    console.log("errors", formik.errors);
-  }, [formik.errors]);
-
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col gap-5">
       <Container>

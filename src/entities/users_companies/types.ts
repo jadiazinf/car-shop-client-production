@@ -1,6 +1,6 @@
 export enum UserCompanyRole {
-  ADMIN = 'admin',
-  TECHNICIAN = 'techniciant',
-  GENERAL = 'general',
-  SUPERADMIN = 'superadmin'
-};
+  ADMIN = "admin",
+  TECHNICIAN = "technical",
+  GENERAL = "general",
+  SUPERADMIN = "superadmin",
+}

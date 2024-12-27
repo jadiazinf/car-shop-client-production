@@ -13,14 +13,16 @@ function MainLayout(props: { children: ReactNode }) {
   return (
     <div className="max-w-screen min-h-screen font-inter container m-auto">
       <NavbarComponent />
-      {pathname !== "/" && (
-        <div className="mt-5">
-          <HeaderBreadcrumbsComponent items={breadcrumbs} />
+      <div className="w-full h-full px-5">
+        {pathname !== "/" && (
+          <div className="mt-5">
+            <HeaderBreadcrumbsComponent items={breadcrumbs} />
+          </div>
+        )}
+        <div className="w-full h-full flex mt-5">
+          <SidebarComponent />
+          {props.children}
         </div>
-      )}
-      <div className="w-full h-full flex">
-        <SidebarComponent />
-        {props.children}
       </div>
     </div>
   );

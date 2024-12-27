@@ -6,18 +6,17 @@ export type SidebarOptions = {
   url: string;
   icon: ReactNode;
   urlStartsWithForActive?: boolean;
-}
+};
 
 function SidebarOption(props: SidebarOptions) {
-
   const { pathname } = useLocation();
 
   const navigate = useNavigate();
 
   function isActive() {
-    if (props.urlStartsWithForActive)
-      return pathname.startsWith(props.url);
-    return pathname === props.url
+    if (props.urlStartsWithForActive) return pathname.startsWith(props.url);
+
+    return pathname === props.url;
   }
 
   function handleClick() {
@@ -26,11 +25,13 @@ function SidebarOption(props: SidebarOptions) {
 
   return (
     <div
-      className={`w-full flex gap-3 items-center text-black cursor-pointer py-1 pl-2 rounded-lg hover:bg-slate-500 hover:bg-opacity-20 transition-all duration-200 ease-in-out ${isActive() ? "bg-slate-500 bg-opacity-10" : "text-opacity-50"}`}
+      className={`w-full flex gap-3 items-center text-black cursor-pointer py-1 pl-2 rounded-lg hover:bg-slate-500 hover:bg-opacity-20 transition-all duration-200 ease-in-out ${
+        isActive() ? "bg-slate-500 bg-opacity-10" : "text-opacity-50"
+      }`}
       onClick={handleClick}
     >
-      { props.icon }
-      <p>{ props.name }</p>
+      {props.icon}
+      <p>{props.name}</p>
     </div>
   );
 }

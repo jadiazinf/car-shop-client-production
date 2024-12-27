@@ -1,24 +1,32 @@
 import { useState } from "react";
 import { StatusCodes } from "http-status-codes";
-import CompanyModel from "../../../company/model";
 import GetUserCompanies from "./get_companies";
+import { UserCompanyModel } from "../../../users_companies/model";
 
 export type GetUserCompaniesProps = {
-  payload: CompanyModel[];
+  payload: UserCompanyModel[];
   errorMessage: string | null;
   status: StatusCodes;
   token: string | null;
-}
+};
 
 function useGetUserCompanies() {
+  const [payloadState, setPayloadState] = useState<
+    GetUserCompaniesProps | "not loaded"
+  >("not loaded");
 
-  const [ payloadState, setPayloadState ] = useState<GetUserCompaniesProps | "not loaded">("not loaded");
+  const [isGettingUserCompaniesLoading, setIsGettingUserCompaniesLoading] =
+    useState<boolean>(false);
 
-  const [ isGettingUserCompaniesLoading, setIsGettingUserCompaniesLoading ] = useState<boolean>(false);
-
-  async function performGetUserCompanies(data: {user_id: number; token: string}, callback?: (data: GetUserCompaniesProps) => void) {
+  async function performGetUserCompanies(
+    data: { user_id: number; token: string },
+    callback?: (data: GetUserCompaniesProps) => void
+  ) {
     setIsGettingUserCompaniesLoading(true);
-    const service = new GetUserCompanies({ user_id: data.user_id, token: data.token});
+    const service = new GetUserCompanies({
+      user_id: data.user_id,
+      token: data.token,
+    });
     await service.perform();
     const response = {
       payload: service.payload,
@@ -26,7 +34,7 @@ function useGetUserCompanies() {
       status: service.status,
       token: service.token,
     };
-    setPayloadState(response)
+    setPayloadState(response);
     callback && callback(response);
     setIsGettingUserCompaniesLoading(false);
   }
@@ -34,7 +42,7 @@ function useGetUserCompanies() {
   return {
     isGettingUserCompaniesLoading,
     performGetUserCompanies,
-    payloadState
+    payloadState,
   };
 }
 

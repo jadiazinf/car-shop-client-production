@@ -1,6 +1,6 @@
 import UserModel from "../user/model";
 import { UserCompanyRequestStatus } from "./types";
-import { UserCompanyModel } from '../users_companies/model';
+import { UserCompanyModel } from "../users_companies/model";
 import CompanyModel from "../company/model";
 
 type UserCompanyRequestModel = {
@@ -10,6 +10,7 @@ type UserCompanyRequestModel = {
   user_company_id?: number;
   user_company?: UserCompanyModel;
   user?: UserModel;
+  user_id?: number;
   company?: CompanyModel;
   company_id?: number;
   responder_user_id?: number;

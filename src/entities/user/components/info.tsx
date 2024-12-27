@@ -2,81 +2,137 @@ import { useEffect } from "react";
 import DatesHelpers from "../../../helpers/dates/helper";
 import UserHelper from "../helper";
 import UserModel from "../model";
-import { FaClipboardUser } from "react-icons/fa6";
-import useGetLocationParents from "../../location/services/get_parents/use_get_parents";
-import PlaceComponent from "../../location/components/place";
+import useGetLocationParents, {
+  GetLocationParentsProps,
+} from "../../location/services/get_parents/use_get_parents";
 import { LocationType } from "../../location/types";
+import { Spinner } from "@nextui-org/react";
 
 function UserInfo(props: { user: UserModel }) {
-
-  const { isGettingLocationParentsLoading, payloadState: locations, performGetLocationParents } = useGetLocationParents();
+  const {
+    isGettingLocationParentsLoading,
+    payloadState: locations,
+    performGetLocationParents,
+  } = useGetLocationParents();
 
   useEffect(() => {
     if (props.user.location_id || props.user.location) {
       const location_id = props.user.location_id || props.user.location?.id;
-      performGetLocationParents({location_id: location_id!});
+      performGetLocationParents({ location_id: location_id! });
     }
-
   }, []);
 
   const userHelper = new UserHelper(props.user);
 
   return (
-    <div className='flex flex-col gap-5'>
-      <div className='w-full flex gap-5 items-center'>
-        <FaClipboardUser className='w-5 h-5'/>
-        <span className='font-bold text-2xl font-inter'>Información de usuario</span>
-      </div>
-      <div className='flex flex-col lg:flex-row gap-5'>
-        <div className='w-full flex flex-col gap-3'>
-          <div className='flex flex-col gap-5'>
-            <div className='flex flex-col gap-2'>
-              <span className='font-bold'>Información básica</span>
-              <div className='flex flex-col pl-3'>
-                <div className='flex flex-col md:flex-row md:gap-3'>
-                  <span>Nombre: <strong>{ props.user.first_name }</strong></span>
-                  <span>Apellido: <strong>{ props.user.last_name }</strong></span>
+    <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-5">
+        <div className="w-full flex flex-col gap-3">
+          <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-2 rounded-md p-5 border-1.5 border-black border-opacity-20">
+              <span className="font-bold text-lg mb-3">Información básica</span>
+              <div className="flex flex-col gap-10">
+                <div className="flex flex-col lg:flex-row w-full">
+                  <div className="flex flex-col w-full">
+                    <p className="font-light text-sm">Nombre completo</p>
+                    <p className="font-medium">
+                      {props.user.first_name} {props.user.last_name}
+                    </p>
+                  </div>
+                  <div className="flex flex-col w-full">
+                    <p className="font-light text-sm">Fecha de nacimiento</p>
+                    <p className="font-medium">
+                      {DatesHelpers.formatYYYYMMDDtoDDMMYYYY(
+                        props.user.birthdate as string
+                      )}
+                    </p>
+                  </div>
                 </div>
-                <span>Género: <strong>{ userHelper.translateUserGender() }</strong></span>
-                <span>Fecha de nacimiento: <strong>{ DatesHelpers.formatYYYYMMDDtoDDMMYYYY(props.user.birthdate as string) }</strong></span>
+                <div className="flex flex-col lg:flex-row w-full">
+                  <div className="flex flex-col w-full">
+                    <p className="font-light text-sm">Género</p>
+                    <p className="font-medium">
+                      {userHelper.translateUserGender()}
+                    </p>
+                  </div>
+                  <div className="flex flex-col w-full">
+                    <p className="font-light text-sm">Cédula de indetindad </p>
+                    <p className="font-medium">{props.user.dni}</p>
+                  </div>
+                </div>
+                <div className="flex flex-col lg:flex-row w-full">
+                  <div className="flex flex-col w-full">
+                    <p className="font-light text-sm">Número de teléfono</p>
+                    <p className="font-medium">{props.user.phone_number}</p>
+                  </div>
+                  <div className="flex flex-col w-full">
+                    <p className="font-light text-sm">Correo electrónico</p>
+                    <p className="font-medium">{props.user.email}</p>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className='flex flex-col gap-2'>
-              <span className='font-bold'>Documentación</span>
-              <div className='flex flex-col pl-3'>
-                <div className='flex'>
-                  <span>Cédula de identidad: <strong>{ props.user.dni }</strong></span>
+            <div className="flex flex-col gap-2 rounded-md p-5 border-1.5 border-black border-opacity-20">
+              <span className="font-bold text-lg mb-3">Dirección</span>
+              {locations === "not loaded" &&
+              !isGettingLocationParentsLoading ? null : isGettingLocationParentsLoading ? (
+                <Spinner />
+              ) : (
+                <div className="flex flex-col gap-10">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 w-full">
+                    <div className="flex flex-col w-full">
+                      <p className="font-light text-sm">País</p>
+                      <p className="font-medium">
+                        {
+                          (locations as GetLocationParentsProps).payload.find(
+                            (location) =>
+                              location.location_type === LocationType.COUNTRY
+                          )?.name
+                        }
+                      </p>
+                    </div>
+                    <div className="flex flex-col w-full">
+                      <p className="font-light text-sm">Estado</p>
+                      <p className="font-medium">
+                        {
+                          (locations as GetLocationParentsProps).payload.find(
+                            (location) =>
+                              location.location_type === LocationType.STATE
+                          )?.name
+                        }
+                      </p>
+                    </div>
+                    <div className="flex flex-col w-full">
+                      <p className="font-light text-sm">Ciudad</p>
+                      <p className="font-medium">
+                        {
+                          (locations as GetLocationParentsProps).payload.find(
+                            (location) =>
+                              location.location_type === LocationType.CITY
+                          )?.name
+                        }
+                      </p>
+                    </div>
+                    <div className="flex flex-col w-full">
+                      <p className="font-light text-sm">Municipio</p>
+                      <p className="font-medium">
+                        {
+                          (locations as GetLocationParentsProps).payload.find(
+                            (location) =>
+                              location.location_type === LocationType.TOWN
+                          )?.name
+                        }
+                      </p>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex flex-col w-full">
+                      <p className="font-light text-sm">Dirección exacta</p>
+                      <p className="font-medium">{props.user.address}</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div className='flex flex-col gap-2'>
-              <span className='font-bold'>Contacto</span>
-              <div className='pl-3'>
-                <div className='flex flex-col md:flex-row md:gap-3'>
-                  <span>Correo electrónico: <strong>{ props.user.email }</strong></span>
-                  <span>Número de teléfono: <strong>{ props.user.phone_number }</strong></span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className='w-full flex flex-col lg:items-end gap-2'>
-          <div className='w-full md:w-1/2'>
-            <span className='font-bold'>Ubicación</span>
-            <div className='mt-5 pl-3'>
-              {
-                locations !== 'not loaded' && !isGettingLocationParentsLoading &&
-                <PlaceComponent
-                  direction="vertical"
-                  country={locations.payload.find( location => location.location_type === LocationType.COUNTRY )!}
-                  state={locations.payload.find( location => location.location_type === LocationType.STATE )!}
-                  city={locations.payload.find( location => location.location_type === LocationType.CITY )!}
-                  town={locations.payload.find( location => location.location_type === LocationType.TOWN )!}
-                />
-              }
-              <div className='mt-3'>
-                <span>Dirección exacta: <strong>{ props.user.address }</strong></span>
-              </div>
+              )}
             </div>
           </div>
         </div>

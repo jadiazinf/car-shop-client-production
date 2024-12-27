@@ -135,7 +135,7 @@ function Main() {
 
   return (
     <>
-      <div className="w-full h-full flex flex-col mt-10">
+      <div className="w-full h-full flex flex-col">
         <Breadcrumbs
           underline="active"
           onAction={(key) => setRegisterStage(key as PageStage)}
@@ -174,11 +174,11 @@ function Main() {
           </BreadcrumbItem>
         </Breadcrumbs>
         <div className="mt-10 w-full flex justify-center items-center">
-          <Card radius="sm" className="md:w-4/6 lg:w-1/2 p-10">
+          <Card radius="sm" className="w-full lg:w-2/3 p-2 mb-10">
             <CardBody>
               <div className="w-full h-full flex justify-center items-center flex-col gap-5">
                 {registerStage === PageStage.USER ? (
-                  <div className="w-full flex flex-col gap-3">
+                  <div className="w-full lg:w-2/3 flex flex-col gap-3">
                     <div>
                       <span className="font-inter font-bold text-2xl">
                         Formulario de registro de usuario
@@ -193,8 +193,8 @@ function Main() {
                           setRegisterStage(PageStage.WORKSHOP);
                         }}
                       >
-                        <div className="w-full flex justify-center items-center">
-                          <div className="w-1/2">
+                        <div className="w-full flex justify-end items-center">
+                          <div className="w-auto">
                             <ButtonComponent
                               color="primary"
                               text="Siguiente"
@@ -207,7 +207,7 @@ function Main() {
                     </PlaceProvider>
                   </div>
                 ) : registerStage === PageStage.WORKSHOP ? (
-                  <div className="w-full flex flex-col gap-3">
+                  <div className="w-full lg:w-2/3 flex flex-col gap-3">
                     <div>
                       <span className="font-inter font-bold text-2xl">
                         Formulario de registro de taller
@@ -225,15 +225,9 @@ function Main() {
                         );
                       }}
                     >
-                      <div className="w-full flex justify-center items-center">
-                        <div className="w-1/2 flex flex-col gap-3">
-                          <ButtonComponent
-                            color="primary"
-                            text="Siguiente"
-                            type="submit"
-                            variant="solid"
-                          />
-                          {status === AuthStatus.NOT_AUTHENTICATED && (
+                      <div className="w-full flex justify-end items-center">
+                        {status === AuthStatus.NOT_AUTHENTICATED && (
+                          <div className="w-auto">
                             <ButtonComponent
                               color="primary"
                               text="Regresar"
@@ -241,33 +235,57 @@ function Main() {
                               variant="light"
                               onClick={() => setRegisterStage(PageStage.USER)}
                             />
-                          )}
+                          </div>
+                        )}
+                        <div className="w-auto">
+                          <ButtonComponent
+                            color="primary"
+                            text="Siguiente"
+                            type="submit"
+                            variant="solid"
+                          />
                         </div>
                       </div>
                     </CompanyInfoForm>
                   </div>
                 ) : registerStage === PageStage.CONFIRM_USER_INFO ? (
-                  <div>
+                  <div className="w-full">
                     {user ? (
-                      <div className="flex flex-col gap-5">
+                      <div className="flex flex-col gap-5 w-full">
+                        <div>
+                          <span className="font-inter font-bold text-2xl">
+                            Información de nuevo usuario
+                          </span>
+                          <div className="hidden md:block md:w-1/6 bg-blue-600 h-1"></div>
+                        </div>
                         <UserInfo user={user} />
-                        <div className="w-full flex flex-col gap-3">
-                          <ButtonComponent
-                            color="primary"
-                            text="Siguiente"
-                            type="button"
-                            variant="solid"
-                            onClick={() =>
-                              setRegisterStage(PageStage.CONFIRM_WORKSHOP_INFO)
-                            }
-                          />
-                          <ButtonComponent
-                            color="primary"
-                            text="Regresar"
-                            type="button"
-                            variant="light"
-                            onClick={() => setRegisterStage(PageStage.WORKSHOP)}
-                          />
+                        <div className="flex justify-end items-center">
+                          <div className="w-auto">
+                            <ButtonComponent
+                              color="primary"
+                              text="Regresar"
+                              type="button"
+                              variant="light"
+                              onClick={() =>
+                                setRegisterStage(PageStage.WORKSHOP)
+                              }
+                            />
+                          </div>
+                          <div className="flex justify-center items-center">
+                            <div className="w-auto">
+                              <ButtonComponent
+                                color="primary"
+                                text="Siguiente"
+                                type="button"
+                                variant="solid"
+                                onClick={() =>
+                                  setRegisterStage(
+                                    PageStage.CONFIRM_WORKSHOP_INFO
+                                  )
+                                }
+                              />
+                            </div>
+                          </div>
                         </div>
                       </div>
                     ) : (
@@ -275,48 +293,61 @@ function Main() {
                     )}
                   </div>
                 ) : registerStage === PageStage.CONFIRM_WORKSHOP_INFO ? (
-                  <div>
+                  <div className="w-full">
                     {company ? (
                       <div className="w-full flex flex-col gap-5">
-                        <CompanyInfo company={company} />
-                        <div className="w-full flex flex-col gap-3">
-                          <ButtonComponent
-                            color="primary"
-                            text="Confirmar registro"
-                            type="button"
-                            variant="solid"
-                            onClick={
-                              status === AuthStatus.NOT_AUTHENTICATED
-                                ? handleRegisterUser
-                                : () =>
-                                    performCreateCompany({
-                                      company: company!,
-                                      token: token!,
-                                      user_id: sessionType!.user.id!,
-                                    })
-                            }
-                            isLoading={
-                              isRegisteringUserLoading ||
-                              isCreatingCompanyLoading
-                            }
-                          />
-                          <ButtonComponent
-                            color="primary"
-                            text="Regresar"
-                            type="button"
-                            variant="light"
-                            onClick={() =>
-                              setRegisterStage(
+                        <div>
+                          <span className="font-inter font-bold text-2xl">
+                            Información de nueva companía
+                          </span>
+                          <div className="hidden md:block md:w-1/6 bg-blue-600 h-1"></div>
+                        </div>
+                        <CompanyInfo
+                          company={company}
+                          showChangeAvatar={false}
+                        />
+                        <div className="w-full flex justify-end items-center gap-5">
+                          <div className="w-auto">
+                            <ButtonComponent
+                              color="primary"
+                              text="Regresar"
+                              type="button"
+                              variant="light"
+                              onClick={() =>
+                                setRegisterStage(
+                                  status === AuthStatus.NOT_AUTHENTICATED
+                                    ? PageStage.CONFIRM_USER_INFO
+                                    : PageStage.WORKSHOP
+                                )
+                              }
+                              isDisabled={
+                                isRegisteringUserLoading ||
+                                isCreatingCompanyLoading
+                              }
+                            />
+                          </div>
+                          <div className="w-auto">
+                            <ButtonComponent
+                              color="primary"
+                              text="Confirmar registro"
+                              type="button"
+                              variant="solid"
+                              onClick={
                                 status === AuthStatus.NOT_AUTHENTICATED
-                                  ? PageStage.CONFIRM_USER_INFO
-                                  : PageStage.WORKSHOP
-                              )
-                            }
-                            isDisabled={
-                              isRegisteringUserLoading ||
-                              isCreatingCompanyLoading
-                            }
-                          />
+                                  ? handleRegisterUser
+                                  : () =>
+                                      performCreateCompany({
+                                        company: company!,
+                                        token: token!,
+                                        user_id: sessionType!.user.id!,
+                                      })
+                              }
+                              isLoading={
+                                isRegisteringUserLoading ||
+                                isCreatingCompanyLoading
+                              }
+                            />
+                          </div>
                         </div>
                       </div>
                     ) : (

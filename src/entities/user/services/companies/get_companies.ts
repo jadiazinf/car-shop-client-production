@@ -1,12 +1,12 @@
 import { StatusCodes } from "http-status-codes";
 import axios, { AxiosError } from "axios";
-import CompanyModel from "../../../company/model";
 import EnvironmentVariables from "../../../../helpers/environment/variables";
+import { UserCompanyModel } from "../../../users_companies/model";
 
 class GetUserCompanies {
 
   private _status: StatusCodes | null;
-  private _payload: CompanyModel[] | null;
+  private _payload: UserCompanyModel[] | null;
   private _errorMessage: string | null;
   private _token: string | null;
   private _user_id: number;
@@ -37,7 +37,7 @@ class GetUserCompanies {
 
   public async perform() {
     try {
-      const response = await axios.get<CompanyModel[]>(`${EnvironmentVariables.API_BASE_ROUTE}/api/${EnvironmentVariables.API_VERSION}/users/${this._user_id}/user_companies`,
+      const response = await axios.get<UserCompanyModel[]>(`${EnvironmentVariables.API_BASE_ROUTE}/api/${EnvironmentVariables.API_VERSION}/users/${this._user_id}/user_companies`,
       {
         headers: {
           'Content-Type': 'application/json',
