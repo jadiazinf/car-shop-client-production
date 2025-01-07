@@ -9,10 +9,12 @@ import AdminServicesPage from "../app/dashboard/services/admin/page";
 import SearchWorkshopsPage from "../app/search/workshops";
 import CompanyMembersPage from "../app/dashboard/companies/members/page";
 import CompanyNewMemberPage from "../app/dashboard/companies/members/new/page";
+import UserSessionPage from "../app/user-session";
 
 const adminRoutes = (
   <>
     <Route path="/" element={<Navigate to="/search/workshops" />} />
+    <Route path="/user-session" element={<UserSessionPage />} />
     <Route path="/auth/logout" element={<LogoutPage />} />
     <Route path="/auth/session" element={<ChooseUserCompanyPage />} />
     <Route path="/search/workshops" element={<SearchWorkshopsPage />} />

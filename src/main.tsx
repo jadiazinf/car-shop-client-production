@@ -6,9 +6,9 @@ import { App } from "./app/App";
 import { BrowserRouter } from "react-router-dom";
 import BreadcrumbsProvider from "./components/breadcrumbs/provider";
 import { ErrorBoundary } from "react-error-boundary";
+import ErrorPage from "./components/error-page/component";
 import "./index.css";
 import "./static/fonts/playwriteCU/PlaywriteCU-VariableFont_wght.ttf";
-import ErrorPage from "./components/error-page/component";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>

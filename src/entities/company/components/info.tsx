@@ -57,13 +57,13 @@ function CompanyInfo(props: {
   const { isSettingCompanyProfileImageLoading, performSetCompanyProfileImage } =
     useSetCompanyProfileImage();
 
-  const [images, setImages] = useState<Blob[] | File[] | string[] | undefined>(
-    props.company.company_images
-  );
+  const [images, setImages] = useState<
+    Blob[] | File[] | string[] | undefined | null
+  >(props.company.company_images);
 
-  const [charter, setCharter] = useState<Blob | File | string | undefined>(
-    props.company.company_charter
-  );
+  const [charter, setCharter] = useState<
+    Blob | File | string | undefined | null
+  >(props.company.company_charter);
 
   useEffect(() => {
     if (props.company.location_id || props.company.location) {

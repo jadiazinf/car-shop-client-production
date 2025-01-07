@@ -61,7 +61,7 @@ function AuthenticatedNavbarActions() {
 
   useEffect(() => {
     if (payloadState !== "not loaded")
-      if (payloadState.payload.length > 1) setChangeSessionFlag(true);
+      if (payloadState.payload?.length > 1) setChangeSessionFlag(true);
   }, [payloadState]);
 
   useEffect(() => {

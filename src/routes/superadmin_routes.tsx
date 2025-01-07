@@ -7,11 +7,13 @@ import CompanyRequestPage from "../app/dashboard/companies/requests/id/superadmi
 import SuperadminServicesPage from "../app/dashboard/categories/superadmin/page";
 import SuperadminDashboardPage from "../app/dashboard/superadmin/page";
 import SearchWorkshopsPage from "../app/search/workshops";
+import UserSessionPage from "../app/user-session";
 
 const superadminRoutes = (
   <>
     <Route path="/" element={<Navigate to="/search/workshops" />} />
     <Route path="/search/workshops" element={<SearchWorkshopsPage />} />
+    <Route path="/user-session" element={<UserSessionPage />} />
     <Route path="/auth/logout" element={<LogoutPage />} />
     <Route path="/auth/session" element={<ChooseUserCompanyPage />} />
     <Route path="/dashboard" element={<SuperadminDashboardPage />} />
