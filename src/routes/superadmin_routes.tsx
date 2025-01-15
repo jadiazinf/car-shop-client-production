@@ -8,10 +8,18 @@ import SuperadminServicesPage from "../app/dashboard/categories/superadmin/page"
 import SuperadminDashboardPage from "../app/dashboard/superadmin/page";
 import SearchWorkshopsPage from "../app/search/workshops";
 import UserSessionPage from "../app/user-session";
+import ProfilePage from "../app/profile/page";
+import ProfileVehiclesPage from "../app/profile/vehicles/page";
+import VehicleInfoPage from "../app/profile/vehicles/info/page";
+import CreateVehicle from "../app/profile/vehicles/create/page";
 
 const superadminRoutes = (
   <>
     <Route path="/" element={<Navigate to="/search/workshops" />} />
+    <Route path="/profile" element={<ProfilePage />} />
+    <Route path="/profile/vehicles" element={<ProfileVehiclesPage />} />
+    <Route path="/profile/vehicles/new" element={<CreateVehicle />} />
+    <Route path="/profile/vehicles/info/:id" element={<VehicleInfoPage />} />
     <Route path="/search/workshops" element={<SearchWorkshopsPage />} />
     <Route path="/user-session" element={<UserSessionPage />} />
     <Route path="/auth/logout" element={<LogoutPage />} />

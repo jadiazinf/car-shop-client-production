@@ -15,7 +15,6 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import PdfViewer from "../../../components/pdf/pdf_viewer";
-import CarouselComponent from "../../../components/carousel/component";
 import AvatarComponent from "../../../components/avatar/component";
 import useSetCompanyProfileImage, {
   SetCompanyProfileImageProps,
@@ -23,6 +22,7 @@ import useSetCompanyProfileImage, {
 import { usePersistedStore } from "../../../store/store";
 import { StatusCodes } from "http-status-codes";
 import { ToasterContext } from "../../../components/toaster/context/context";
+import ViewImagesComponent from "../../../components/images/view_images";
 
 function CompanyInfo(props: {
   company: CompanyModel;
@@ -111,27 +111,24 @@ function CompanyInfo(props: {
       <Modal
         isOpen={isCompanyImagesOpen}
         onOpenChange={onOpenCompanyImagesChange}
-        size="5xl"
+        size="2xl"
         radius="sm"
       >
-        <ModalContent>
-          <ModalBody className="p-10">
-            <div className="w-full flex justify-center items-center">
-              {companyImages !== "not loaded" && companyImages.payload && (
-                <CarouselComponent
-                  images={companyImages.payload.map((element) => ({
-                    src: element,
-                  }))}
-                />
-              )}
+        <ModalBody>
+          <ModalContent>
+            <div className="py-10">
+              <ViewImagesComponent
+                images={props.company.company_images as File[]}
+              />
             </div>
-          </ModalBody>
-        </ModalContent>
+          </ModalContent>
+        </ModalBody>
       </Modal>
       <Modal
         isOpen={isCompanyCharterOpen}
         onOpenChange={onOpenCompanyCharterChange}
         size="4xl"
+        className="h-1/2"
         radius="sm"
       >
         <ModalContent>

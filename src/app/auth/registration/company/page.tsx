@@ -1,11 +1,8 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import RegisterCompanyPageLayout from "./layout";
 import { useDispatch } from "react-redux";
 import { ToasterContext } from "../../../../components/toaster/context/context";
 import UserContext from "../../../../entities/user/contexts/user";
-import useRegisterUser, {
-  RegisterUserProps,
-} from "../../../../entities/user/services/registration/use_register";
 import { StatusCodes } from "http-status-codes";
 import { SetAuthentication } from "../../../../store/auth/reducers";
 import { AuthStatus } from "../../../../auth/types";
@@ -18,14 +15,14 @@ import { FaUser, FaUserCheck } from "react-icons/fa";
 import { RiToolsFill } from "react-icons/ri";
 import { BsPatchCheckFill } from "react-icons/bs";
 import { usePersistedStore } from "../../../../store/store";
-import useCreateCompany, {
-  CreateCompanyProps,
-} from "../../../../entities/company/services/create/use_create";
 import CompanyInfoForm from "../../../../entities/company/components/forms/register/component";
 import CompanyContext from "../../../../entities/company/contexts/company";
 import CompanyModel from "../../../../entities/company/model";
 import CompanyInfo from "../../../../entities/company/components/info";
 import PlaceProvider from "../../../../entities/location/providers/place";
+import { useUsersApiServices } from "../../../api/users";
+import { useCompanyApiServices } from "../../../api/companies";
+import { UserCompanyRole } from "../../../../entities/users_companies/types";
 
 enum PageStage {
   USER = "user",
@@ -49,72 +46,26 @@ function Main() {
 
   const appDispatch = useDispatch();
 
-  const { isRegisteringUserLoading, payloadState, performRegisterUser } =
-    useRegisterUser();
+  const { isCreatingUser, perform: createUser } =
+    useUsersApiServices.createGeneralUser();
 
-  const {
-    isCreatingCompanyLoading,
-    payloadState: companyPayload,
-    performCreateCompany,
-  } = useCreateCompany();
+  const { isCreatingCompany, perform: createCompany } =
+    useCompanyApiServices.createCompany();
 
-  async function handleRegisterUser() {
-    await performRegisterUser({ user: user! });
-  }
-
-  async function handleRegisterUserService() {
-    if (
-      (payloadState as RegisterUserProps).status !== StatusCodes.OK &&
-      (payloadState as RegisterUserProps).status !== StatusCodes.CREATED
-    ) {
-      toasterDispatch({
-        payload:
-          (payloadState as RegisterUserProps).errorMessage ||
-          "Error al registrar usuario",
-        type: "ERROR",
-      });
-      return;
-    }
-
-    const user = (payloadState as RegisterUserProps).payload;
-    const token = (payloadState as RegisterUserProps).token;
-
-    performCreateCompany({
-      company: company!,
-      token: token!,
-      user_id: user.id!,
-    });
-  }
-
-  async function handleCompanyService() {
-    if (
-      (companyPayload as CreateCompanyProps).status !== StatusCodes.OK &&
-      (companyPayload as CreateCompanyProps).status !== StatusCodes.CREATED
-    )
-      toasterDispatch({
-        payload:
-          (companyPayload as CreateCompanyProps).errorMessage ||
-          "Error al registrar compañía",
-        type: "ERROR",
-      });
-    else
-      toasterDispatch({
-        payload: "Compañía registrada con éxito",
-        type: "SUCCESS",
-      });
-
-    if (status === AuthStatus.NOT_AUTHENTICATED) authenticateUser();
-  }
-
-  function authenticateUser() {
+  function authenticateUser(
+    user: UserModel,
+    token: string,
+    company_id: number | null,
+    roles: UserCompanyRole[] | null
+  ) {
     appDispatch(
       SetAuthentication({
         status: AuthStatus.AUTHENTICATED,
-        token: (payloadState as RegisterUserProps).token,
+        token,
         sessionType: {
-          company_id: null,
-          roles: null,
-          user: (payloadState as RegisterUserProps).payload,
+          company_id,
+          roles,
+          user,
         },
       })
     );
@@ -125,13 +76,61 @@ function Main() {
     });
   }
 
-  useEffect(() => {
-    if (payloadState !== "not loaded") handleRegisterUserService();
-  }, [payloadState]);
+  async function handleRegisterCompany(
+    company: CompanyModel,
+    user_id: number,
+    token: string
+  ): Promise<[boolean, CompanyModel | null]> {
+    const companyResponse = await createCompany(company, user_id, token);
 
-  useEffect(() => {
-    if (companyPayload !== "not loaded") handleCompanyService();
-  }, [companyPayload]);
+    if (companyResponse.status !== StatusCodes.CREATED) {
+      toasterDispatch({
+        payload: (companyResponse.data as { errors: string[] }).errors
+          ? (companyResponse.data as { errors: string[] }).errors[0]
+          : "Error al registrar compañía",
+        type: "ERROR",
+      });
+      return [false, null];
+    }
+
+    toasterDispatch({
+      payload: "Compañía registrada con éxito",
+      type: "SUCCESS",
+    });
+
+    return [true, companyResponse.data as CompanyModel];
+  }
+
+  async function handleRegisterUser() {
+    const response = await createUser(user!);
+    if (response.status !== StatusCodes.CREATED) {
+      toasterDispatch({
+        payload: response.data.errors
+          ? response.data.errors[0]
+          : "Error al registrar usuario",
+        type: "ERROR",
+      });
+      return;
+    }
+
+    const [registrationCompanyIsValid, newCompany] =
+      await handleRegisterCompany(
+        company!,
+        response.data.user!.id!,
+        response.data.token!
+      );
+
+    if (registrationCompanyIsValid) {
+      authenticateUser(
+        response.data.user!,
+        response.data.token!,
+        newCompany!.id!,
+        [UserCompanyRole.ADMIN]
+      );
+    } else {
+      authenticateUser(response.data.user!, response.data.token!, null, null);
+    }
+  }
 
   return (
     <>
@@ -320,10 +319,7 @@ function Main() {
                                     : PageStage.WORKSHOP
                                 )
                               }
-                              isDisabled={
-                                isRegisteringUserLoading ||
-                                isCreatingCompanyLoading
-                              }
+                              isDisabled={isCreatingUser || isCreatingCompany}
                             />
                           </div>
                           <div className="w-auto">
@@ -336,16 +332,13 @@ function Main() {
                                 status === AuthStatus.NOT_AUTHENTICATED
                                   ? handleRegisterUser
                                   : () =>
-                                      performCreateCompany({
-                                        company: company!,
-                                        token: token!,
-                                        user_id: sessionType!.user.id!,
-                                      })
+                                      handleRegisterCompany(
+                                        company!,
+                                        sessionType!.user.id!,
+                                        token!
+                                      )
                               }
-                              isLoading={
-                                isRegisteringUserLoading ||
-                                isCreatingCompanyLoading
-                              }
+                              isLoading={isCreatingUser || isCreatingCompany}
                             />
                           </div>
                         </div>

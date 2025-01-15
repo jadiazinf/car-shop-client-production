@@ -2,15 +2,13 @@ import { useEffect } from "react";
 
 type Props = {
   charter: File | string | null;
-}
+};
 
 function PdfViewer({ charter }: Props) {
-
   const isFile = charter instanceof File;
   const pdfUrl = isFile ? URL.createObjectURL(charter) : charter;
 
   useEffect(() => {
-    // Limpia el objeto URL al desmontar el componente
     return () => {
       if (isFile) {
         URL.revokeObjectURL(pdfUrl!);
@@ -19,17 +17,14 @@ function PdfViewer({ charter }: Props) {
   }, [pdfUrl, isFile]);
 
   return (
-    <div>
+    <div className="w-full h-full">
       {pdfUrl ? (
-        <iframe
-          src={pdfUrl}
-          className="w-full"
-        />
+        <iframe src={pdfUrl} className="w-full h-full" />
       ) : (
         <p>No hay PDF disponible para mostrar.</p>
       )}
     </div>
   );
-};
+}
 
 export default PdfViewer;

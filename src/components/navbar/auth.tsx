@@ -105,7 +105,11 @@ function AuthenticatedNavbarActions() {
         />
       </DropdownTrigger>
       <DropdownMenu aria-label="Profile Actions" variant="flat">
-        <DropdownItem key="profile" className="h-14 gap-2 text-center">
+        <DropdownItem
+          key="profile"
+          className="h-14 gap-2 text-center"
+          onClick={() => navigate("/profile")}
+        >
           <p className="font-semibold">
             {state.value
               ? `${state.value.firstName} ${state.value.lastName}`

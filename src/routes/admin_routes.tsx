@@ -10,10 +10,18 @@ import SearchWorkshopsPage from "../app/search/workshops";
 import CompanyMembersPage from "../app/dashboard/companies/members/page";
 import CompanyNewMemberPage from "../app/dashboard/companies/members/new/page";
 import UserSessionPage from "../app/user-session";
+import ProfilePage from "../app/profile/page";
+import ProfileVehiclesPage from "../app/profile/vehicles/page";
+import VehicleInfoPage from "../app/profile/vehicles/info/page";
+import CreateVehicle from "../app/profile/vehicles/create/page";
 
 const adminRoutes = (
   <>
     <Route path="/" element={<Navigate to="/search/workshops" />} />
+    <Route path="/profile" element={<ProfilePage />} />
+    <Route path="/profile/vehicles" element={<ProfileVehiclesPage />} />
+    <Route path="/profile/vehicles/new" element={<CreateVehicle />} />
+    <Route path="/profile/vehicles/info/:id" element={<VehicleInfoPage />} />
     <Route path="/user-session" element={<UserSessionPage />} />
     <Route path="/auth/logout" element={<LogoutPage />} />
     <Route path="/auth/session" element={<ChooseUserCompanyPage />} />
