@@ -1,12 +1,14 @@
 import CategoryModel from "../category/model";
 import CompanyModel from "../company/model";
-import { Decimal } from 'decimal.js';
 
 type ServiceModel = {
   id?: number;
   name: string;
   description: string;
-  price: number | Decimal;
+  price_for_motorbike: string | number | null;
+  price_for_car: string | number | null;
+  price_for_van: string | number | null;
+  price_for_truck: string | number | null;
   company_id?: number;
   company?: CompanyModel;
   category_id?: number;
@@ -14,6 +16,6 @@ type ServiceModel = {
   is_active?: boolean;
   created_at?: string;
   updated_at?: string;
-}
+};
 
 export default ServiceModel;

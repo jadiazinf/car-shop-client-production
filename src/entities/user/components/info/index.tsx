@@ -127,7 +127,7 @@ function UserInfo(props: { user: UserModel; isUpdatable?: boolean }) {
                   <div className="flex flex-col lg:flex-row w-full">
                     <div className="flex flex-col w-full">
                       <p className="font-light text-sm">Nombre completo</p>
-                      <div className="flex items-center gap-3">
+                      <div className="w-full flex items-center gap-3">
                         <p className="font-medium">
                           {props.user.first_name} {props.user.last_name}
                         </p>
@@ -155,7 +155,7 @@ function UserInfo(props: { user: UserModel; isUpdatable?: boolean }) {
                     </div>
                     <div className="flex flex-col w-full">
                       <p className="font-light text-sm">Fecha de nacimiento</p>
-                      <div className="flex items-center gap-3">
+                      <div className="w-full flex items-center gap-3">
                         <p className="font-medium">
                           {DatesHelpers.formatYYYYMMDDtoDDMMYYYY(
                             props.user.birthdate as string

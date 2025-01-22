@@ -43,8 +43,8 @@ function OptionBoxComponent() {
   ): Promise<[boolean, UserModel | string]> {
     try {
       const { data, status } = await performRegisterNewUser(newUser);
-      if (status !== StatusCodes.OK) return [true, data.message[0]];
-      else return [false, data.data];
+      if (status !== StatusCodes.CREATED) return [true, data.errors![0]];
+      else return [false, data.user!];
     } catch (error) {
       const message =
         "Error al crear el nuevo usuario, por favor inténtelo más tarde";
@@ -60,6 +60,7 @@ function OptionBoxComponent() {
         password: selectedPerson!.dni,
         password_confirmation: selectedPerson!.dni,
       });
+      console.log("result", result);
       return result;
     } else {
       return [false, selectedPerson!];

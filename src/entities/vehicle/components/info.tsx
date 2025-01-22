@@ -45,6 +45,7 @@ function VehicleInfo(props: {
             <div className="py-10">
               <ViewImagesComponent
                 {...getViewImagesProps(props.vehicle.vehicle_images)}
+                images={props.vehicle.vehicle_images!}
                 isCommingFrom={props.dataCommingFrom}
               />
             </div>

@@ -8,15 +8,20 @@ interface IProps {
 function CompanyCatalogInfoComponent(props: IProps) {
   return (
     <div
-      className={`rounded-md border-1 border-black border-opacity-40 w-52 h-72 shadow-sm ${
+      className={`rounded-md border-1 border-black border-opacity-40 w-full h-72 shadow-sm ${
         props.onClick ? "cursor-pointer" : ""
       }`}
       onClick={
         props.onClick ? () => props.onClick!(props.company.id!) : () => {}
       }
     >
-      <div className="w-full h-3/5">
-        <img className="h-full" src={props.company.profile_image_url} />
+      <div className="w-full h-3/5 mt-1.5">
+        <img
+          className="h-full m-auto"
+          src={`${import.meta.env.VITE_API_BASE_ROUTE + "/"}${
+            props.company.profile_image_url
+          }`}
+        />
       </div>
       <div className="mt-2 flex flex-col gap-2 px-5">
         <p className="text-sm font-bold">{props.company.name}</p>

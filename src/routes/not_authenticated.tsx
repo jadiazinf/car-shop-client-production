@@ -2,12 +2,14 @@ import { Navigate, Route } from "react-router-dom";
 import AuthPage from "../app/auth/page";
 import RegisterGeneralUserPage from "../app/auth/registration/general_user/page";
 import RegisterCompanyPage from "../app/auth/registration/company/page";
-import SearchWorkshopsPage from "../app/search/workshops";
+import SearchWorkshopsPage from "../app/search/workshops/page";
+import CompanyInfoForClient from "../app/search/workshops/id/page";
 
 const notAuthenticatedRoutes = (
   <>
     <Route path="/" element={<Navigate to="/search/workshops" />} />
     <Route path="/search/workshops" element={<SearchWorkshopsPage />} />
+    <Route path="/search/workshops/:id" element={<CompanyInfoForClient />} />
     <Route path="/auth" element={<AuthPage />} />
     <Route
       path="/auth/registration/general-user"

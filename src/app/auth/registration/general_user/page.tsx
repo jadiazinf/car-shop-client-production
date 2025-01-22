@@ -253,9 +253,9 @@ function Main() {
                     </VehicleInfoForm>
                   </div>
                 ) : registerStage === PageStage.CONFIRM_USER_INFO ? (
-                  <div>
+                  <div className="w-full">
                     {user ? (
-                      <div className="flex flex-col gap-5">
+                      <div className="w-full flex flex-col gap-5">
                         <UserInfo user={user} />
                         <div className="w-full flex justify-end gap-2">
                           <div className="w-auto">

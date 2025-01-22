@@ -17,7 +17,6 @@ import PaginationComponent from "../../../../components/datatable/pagination";
 import useDatatableAction from "../../../../components/datatable/use_action";
 import { ToasterContext } from "../../../../components/toaster/context/context";
 import { StatusCodes } from "http-status-codes";
-import { PaginatedData } from "../../../../helpers/application_response/types";
 import { usePersistedStore } from "../../../../store/store";
 import LogoComponent from "../../../../components/logo/component";
 import useCreateServiceService, {
@@ -26,10 +25,11 @@ import useCreateServiceService, {
 import useUpdateServiceService, {
   UpdateServiceProps,
 } from "../../../../entities/service/services/update/use_update_service";
-import useGetAllServicesService from "../../../../entities/service/services/get_all/use_get_all";
 import ServiceModel from "../../../../entities/service/model";
 import ServiceInfoForm from "../../../../entities/service/forms/info/component";
 import BreadcrumbsContext from "../../../../components/breadcrumbs/context";
+import ServicePricesComponent from "../../../../entities/service/components/prices/component";
+import { useCompanyApiServices } from "../../../api/companies";
 
 const HEADER_BREADCRUMBS: HeaderBreadcrumbItemProps[] = [
   {
@@ -60,8 +60,8 @@ const TABLE_COLUMNS: DatatableColumnsProps[] = [
     label: "Categoria",
   },
   {
-    key: "price",
-    label: "Precio (REF)",
+    key: "prices",
+    label: "Precios expresados en REF",
   },
   {
     key: "actions",
@@ -84,8 +84,8 @@ function AdminServicesPage() {
 
   const [page, setPage] = useState<number>(1);
 
-  const { isGettingServices, payloadState, performGetAllServices } =
-    useGetAllServicesService();
+  const { getCompanyServicesResponse, isGettingCompanyServices, perform } =
+    useCompanyApiServices.getCompanyServices();
 
   const {
     isOpen: isCreateNewServiceFormOpen,
@@ -126,7 +126,7 @@ function AdminServicesPage() {
   }, []);
 
   useEffect(() => {
-    performGetAllServices({ page, company_id: sessionType?.company_id! });
+    perform(sessionType!.company_id!, page);
   }, [page]);
 
   useEffect(() => {
@@ -136,7 +136,7 @@ function AdminServicesPage() {
           payload: "Creación de servicio exitoso",
           type: "SUCCESS",
         });
-        setPage(1);
+        perform(sessionType!.company_id!, page);
       } else {
         toasterDispatch({
           payload:
@@ -262,7 +262,8 @@ function AdminServicesPage() {
       >
         <ModalContent>
           <ModalBody>
-            {payloadState === "not loaded" ? null : !datatableAction.id ? (
+            {!getCompanyServicesResponse ||
+            !getCompanyServicesResponse.data ? null : !datatableAction.id ? (
               <span>Seleccione un servicio para modificación</span>
             ) : (
               <div className="flex flex-col gap-5">
@@ -272,9 +273,9 @@ function AdminServicesPage() {
                 <ServiceInfoForm
                   onSubmit={handleUpdateService}
                   initialValues={
-                    (
-                      payloadState.payload as PaginatedData<ServiceModel>
-                    ).data.find((element) => element.id === datatableAction.id)!
+                    getCompanyServicesResponse.data.data.find(
+                      (element) => element.id === datatableAction.id
+                    )!
                   }
                   requiredFields={false}
                 >
@@ -302,7 +303,8 @@ function AdminServicesPage() {
       >
         <ModalContent>
           <ModalBody>
-            {payloadState === "not loaded" ? null : !datatableAction.id ? (
+            {!getCompanyServicesResponse ||
+            !getCompanyServicesResponse.data ? null : !datatableAction.id ? (
               <span>Seleccione una categoria para eliminar</span>
             ) : (
               <div className="flex flex-col justify-center items-center gap-5">
@@ -311,9 +313,7 @@ function AdminServicesPage() {
                   Está seguro de eliminar la categoria{" "}
                   <strong>
                     {
-                      (
-                        payloadState.payload as PaginatedData<ServiceModel>
-                      ).data.find(
+                      getCompanyServicesResponse.data.data.find(
                         (element) => element.id === datatableAction.id
                       )!.name
                     }
@@ -364,16 +364,14 @@ function AdminServicesPage() {
           <DatatableComponent
             columns={TABLE_COLUMNS}
             data={
-              payloadState === "not loaded"
+              !getCompanyServicesResponse || !getCompanyServicesResponse.data
                 ? []
-                : (
-                    payloadState.payload as PaginatedData<ServiceModel>
-                  ).data.map((element) => ({
+                : getCompanyServicesResponse.data.data.map((element) => ({
                     id: element.id,
                     name: element.name,
                     description: element.description,
                     category: element.category!.name,
-                    price: `${element.price.toFixed(2)} REF`,
+                    prices: <ServicePricesComponent service={element} />,
                   })) || []
             }
             selectedData={selectedValues}
@@ -381,19 +379,17 @@ function AdminServicesPage() {
             selectionMode="multiple"
             actionState={datatableAction}
             setActionState={setDatatableAction}
-            isLoading={isGettingServices}
+            isLoading={isGettingCompanyServices}
             noContentMessage="No hay servicios registrados"
             isRowDataEditable
             isRowDataDeletable
           />
-          {payloadState === "not loaded" ? null : (
+          {!getCompanyServicesResponse ||
+          !getCompanyServicesResponse.data ? null : (
             <div className="w-full flex justify-end mt-5">
               <PaginationComponent
                 page={page}
-                pages={
-                  (payloadState.payload as PaginatedData<ServiceModel>)
-                    .total_pages
-                }
+                pages={getCompanyServicesResponse.data.total_pages}
                 setPage={setPage}
               />
             </div>

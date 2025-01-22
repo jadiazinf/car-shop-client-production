@@ -1,20 +1,16 @@
 import { useState } from "react";
 import "./styles.css";
+import { TypesHelpers } from "../../../helpers/types";
 
 type ViewImagesComponentProps = {
-  images_urls?: string[];
-  images?: File[];
+  images: string[] | File[];
   isCommingFrom: "client" | "server";
 };
 
 export default function ViewImagesComponent(props: ViewImagesComponentProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const totalImages = props.images_urls
-    ? props.images_urls.length
-    : props.images
-    ? props.images.length
-    : 0;
+  const totalImages = props.images.length;
 
   function handlePreviousImage() {
     setCurrentImageIndex((prevIndex) =>
@@ -29,19 +25,17 @@ export default function ViewImagesComponent(props: ViewImagesComponentProps) {
   }
 
   function getSelectedImageByIndex() {
-    if (props.images_urls) return props.images_urls[currentImageIndex];
-
-    if (props.images)
-      return URL.createObjectURL(props.images[currentImageIndex]);
-
-    return undefined;
+    if (TypesHelpers.isStringArray(props.images))
+      return props.images[currentImageIndex];
+    return URL.createObjectURL(props.images[currentImageIndex] as File);
   }
 
   function images() {
-    if (props.images_urls) return props.images_urls;
-
-    if (props.images)
-      return props.images.map((image) => URL.createObjectURL(image));
+    if (TypesHelpers.isStringArray(props.images)) return props.images;
+    if (TypesHelpers.isFileArray(props.images))
+      return props.images.map((element) =>
+        URL.createObjectURL(element as File)
+      );
 
     return [];
   }

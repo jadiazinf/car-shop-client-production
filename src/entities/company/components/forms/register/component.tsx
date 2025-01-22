@@ -72,6 +72,7 @@ function CompanyInfoForm(props: {
             <div className="py-10">
               <ViewImagesComponent
                 images={formik.values.company_images as File[]}
+                isCommingFrom="client"
               />
             </div>
           </ModalContent>

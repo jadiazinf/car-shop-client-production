@@ -304,6 +304,7 @@ function Main() {
                         <CompanyInfo
                           company={company}
                           showChangeAvatar={false}
+                          imagesAreCommingFrom="client"
                         />
                         <div className="w-full flex justify-end items-center gap-5">
                           <div className="w-auto">

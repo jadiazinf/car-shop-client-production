@@ -16,11 +16,11 @@ type VehicleModel = {
   body_serial?: string;
   engine_type?: EngineType;
   is_active?: boolean;
-  vehicle_images?: Blob[] | File[];
+  vehicle_images?: string[] | File[];
   model?: ModelModel;
   model_id?: number;
   user?: UserModel;
   user_id?: number;
-}
+};
 
 export default VehicleModel;

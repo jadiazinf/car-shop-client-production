@@ -1,5 +1,4 @@
 import { FormEvent, useContext, useState } from "react";
-import useLoginService, { LoginServiceData } from "../../services/login/use_login";
 import ButtonComponent from "../../../components/buttons/component";
 import TextComponent from "../../../components/inputs/text";
 import { FaUser } from "react-icons/fa";
@@ -9,31 +8,43 @@ import { ToasterContext } from "../../../components/toaster/context/context";
 import { StatusCodes } from "http-status-codes";
 import { SetAuthentication } from "../../../store/auth/reducers";
 import { AuthStatus } from "../../types";
+import { useAuthApiServices } from "../../../app/api/auth";
 
 function LoginForm() {
+  const [formState, setFormState] = useState<{
+    email: string;
+    password: string;
+  }>({ email: "", password: "" });
 
-  const [ formState, setFormState ] = useState<{email: string; password: string;}>({email: '', password: ''});
-
-  const { isLoginLoading, performLogin } = useLoginService();
+  const { isSigningIn, perform } = useAuthApiServices.login();
 
   const appDispatch = useDispatch();
 
   const { dispatch: toasterDispatch } = useContext(ToasterContext);
 
-  async function handleLogin(data: LoginServiceData) {
-    if (data.status !== StatusCodes.OK) {
-      toasterDispatch({payload: data.errorMessage || 'Autenticación de usuario fallida', type: 'ERROR'})
-      return;
-    }
-
-    appDispatch(SetAuthentication({status: AuthStatus.AUTHENTICATED, sessionType: {user: data.payload, company_id: null, roles: []}, token: data.token}))
-  }
-
   async function handleSubmit(e: FormEvent) {
     try {
       e.preventDefault();
-      performLogin({email: formState.email, password: formState.password}, handleLogin);
-    } catch(error) {
+      const response = await perform(formState.email, formState.password);
+      if (response.status === StatusCodes.UNAUTHORIZED)
+        toasterDispatch({
+          payload: response.data.errors || "Autenticación de usuario fallida",
+          type: "ERROR",
+        });
+
+      if (response.status === StatusCodes.OK)
+        appDispatch(
+          SetAuthentication({
+            status: AuthStatus.AUTHENTICATED,
+            sessionType: {
+              user: response.data.user!,
+              company_id: null,
+              roles: [],
+            },
+            token: response.data.token,
+          })
+        );
+    } catch (error) {
       console.log(error);
     }
   }
@@ -41,13 +52,13 @@ function LoginForm() {
   function handleChange(e: React.ChangeEvent) {
     e.preventDefault();
     const { name, value } = e.target as HTMLInputElement;
-    setFormState((prev) => ({...prev, [name]: value}));
+    setFormState((prev) => ({ ...prev, [name]: value }));
   }
 
   return (
-    <form onSubmit={handleSubmit} className='flex flex-col gap-3'>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
       <TextComponent
-        startContent={<FaUser className='text-black text-opacity-20'/>}
+        startContent={<FaUser className="text-black text-opacity-20" />}
         name="email"
         value={formState.email}
         key="email"
@@ -56,7 +67,7 @@ function LoginForm() {
         label="Correo electrónico"
       />
       <TextComponent
-        startContent={<FaLock className='text-black text-opacity-20'/>}
+        startContent={<FaLock className="text-black text-opacity-20" />}
         value={formState.password}
         name="password"
         key="password"
@@ -64,13 +75,13 @@ function LoginForm() {
         type="password"
         label="Contraseña"
       />
-      <div className='mt-5'>
+      <div className="mt-5">
         <ButtonComponent
           color="primary"
           text="Login"
           type="submit"
           variant="solid"
-          isLoading={isLoginLoading}
+          isLoading={isSigningIn}
         />
       </div>
     </form>

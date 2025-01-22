@@ -1,11 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import useGetLocationParents, {
   GetLocationParentsProps,
 } from "../../location/services/get_parents/use_get_parents";
 import CompanyModel from "../model";
 import { LocationType } from "../../location/types";
-import useGetCompanyCharter from "../services/company_charter/use_get";
-import useGetCompanyImages from "../services/company_images/use_get";
 import ButtonComponent from "../../../components/buttons/component";
 import {
   Modal,
@@ -26,7 +24,9 @@ import ViewImagesComponent from "../../../components/images/view_images";
 
 function CompanyInfo(props: {
   company: CompanyModel;
+  imagesAreCommingFrom?: "server" | "client";
   showChangeAvatar?: boolean;
+  showCharter?: boolean;
 }) {
   const { sessionType, token } = usePersistedStore().authReducer;
 
@@ -37,12 +37,6 @@ function CompanyInfo(props: {
     payloadState: locations,
     performGetLocationParents,
   } = useGetLocationParents();
-
-  const { payloadState: companyCharter, performGetCompanyCharter } =
-    useGetCompanyCharter();
-
-  const { payloadState: companyImages, performGetCompanyImages } =
-    useGetCompanyImages();
 
   const {
     isOpen: isCompanyImagesOpen,
@@ -57,37 +51,13 @@ function CompanyInfo(props: {
   const { isSettingCompanyProfileImageLoading, performSetCompanyProfileImage } =
     useSetCompanyProfileImage();
 
-  const [images, setImages] = useState<
-    Blob[] | File[] | string[] | undefined | null
-  >(props.company.company_images);
-
-  const [charter, setCharter] = useState<
-    Blob | File | string | undefined | null
-  >(props.company.company_charter);
-
   useEffect(() => {
     if (props.company.location_id || props.company.location) {
       const location_id =
         props.company.location_id || props.company.location?.id;
       performGetLocationParents({ location_id: location_id! });
     }
-
-    if (!props.company.company_charter)
-      performGetCompanyCharter({ company_id: props.company.id! });
-
-    if (!props.company.company_images)
-      performGetCompanyImages({ company_id: props.company.id! });
   }, []);
-
-  useEffect(() => {
-    if (companyCharter !== "not loaded" && companyCharter.payload)
-      setCharter(companyCharter.payload);
-  }, [companyCharter]);
-
-  useEffect(() => {
-    if (companyImages !== "not loaded" && companyImages.payload)
-      setImages(companyImages.payload);
-  }, [companyImages]);
 
   function changeAvatar(file: File) {
     performSetCompanyProfileImage(
@@ -118,7 +88,8 @@ function CompanyInfo(props: {
           <ModalContent>
             <div className="py-10">
               <ViewImagesComponent
-                images={props.company.company_images as File[]}
+                isCommingFrom={props.imagesAreCommingFrom || "server"}
+                images={props.company.company_images || []}
               />
             </div>
           </ModalContent>
@@ -133,7 +104,15 @@ function CompanyInfo(props: {
       >
         <ModalContent>
           <ModalBody className="p-10">
-            <PdfViewer charter={charter as string} />
+            <PdfViewer
+              charter={
+                !props.imagesAreCommingFrom ||
+                props.imagesAreCommingFrom === "server"
+                  ? import.meta.env.VITE_API_BASE_ROUTE +
+                    props.company.company_charter
+                  : props.company.company_charter!
+              }
+            />
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -141,7 +120,11 @@ function CompanyInfo(props: {
         {props.showChangeAvatar !== false ? (
           <div className="w-full flex items-center gap-5 mb-5">
             <AvatarComponent
-              imgUrl={props.company.profile_image_url}
+              imgUrl={
+                import.meta.env.VITE_API_BASE_ROUTE +
+                "/" +
+                props.company.profile_image_url
+              }
               onChangeAvatar={changeAvatar}
               isLoading={isSettingCompanyProfileImageLoading}
             />
@@ -232,9 +215,9 @@ function CompanyInfo(props: {
         </div>
         <div className="flex flex-col gap-2 rounded-md p-5 border-1.5 border-black border-opacity-20">
           <span className="font-bold text-lg mb-3">Documentación</span>
-
           <div className="w-full flex flex-col justify-center items-center md:flex-row md:justify-start md:gap-5">
-            {!charter ? null : (
+            {!props.company.company_charter ||
+            props.showCharter === false ? null : (
               <div className="w-auto">
                 <ButtonComponent
                   color="primary"
@@ -245,7 +228,7 @@ function CompanyInfo(props: {
                 />
               </div>
             )}
-            {!images ? null : (
+            {!props.company.company_images ? null : (
               <div className="w-auto">
                 <ButtonComponent
                   color="primary"

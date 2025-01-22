@@ -22,7 +22,7 @@ export default function getUsersByFilters() {
           filters.email
             ? `${filters.name ? "&" : ""}email=${filters.email}`
             : ""
-        }`,
+        }${filters.dni ? `${filters.name ? "&" : ""}dni=${filters.dni}` : ""}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

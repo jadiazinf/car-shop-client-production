@@ -1,3 +1,4 @@
 export function handleUnauthorized() {
-  window.location.href = "/user-session";
+  if (!window.location.pathname.match("/auth"))
+    window.location.href = "/user-session";
 }

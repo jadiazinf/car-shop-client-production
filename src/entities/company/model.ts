@@ -11,14 +11,14 @@ type CompanyModel = {
   social_networks?: string[];
   phone_numbers?: string[];
   address: string;
-  company_charter?: Blob | File | string;
-  company_images?: Blob[] | File[] | string[];
+  company_charter?: File | string;
+  company_images?: File[] | string[];
   profile_image_url?: string;
   users?: UserModel[];
   location?: LocationModel;
   location_id?: number;
   created_at?: string;
   updated_at?: string;
-}
+};
 
 export default CompanyModel;

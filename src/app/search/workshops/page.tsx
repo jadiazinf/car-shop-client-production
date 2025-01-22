@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { ServicesFilters } from "../../../entities/company/components/filters/types";
 import BreadcrumbsContext from "../../../components/breadcrumbs/context";
 import { HeaderBreadcrumbItemProps } from "../../../components/breadcrumbs/header";
@@ -39,6 +39,8 @@ function SearchWorkshopsPage() {
 
   const [page, _] = useState(1);
 
+  const navigate = useNavigate();
+
   const {
     isGettingCompaniesWithFiltersLoading,
     payloadState,
@@ -47,9 +49,8 @@ function SearchWorkshopsPage() {
 
   const { setBreadcrumbs } = useContext(BreadcrumbsContext);
 
-  setBreadcrumbs(BreadCrumbsItems);
-
   useEffect(() => {
+    setBreadcrumbs(BreadCrumbsItems);
     const location_id = searchParams.get("location_id");
     setFiltersState({
       category_ids: null,
@@ -81,7 +82,7 @@ function SearchWorkshopsPage() {
           </ModalContent>
         </ModalBody>
       </Modal>
-      <div className="flex flex-col">
+      <div className="flex flex-col w-full">
         <div className="md:hidden w-10">
           <div
             onClick={onOpen}
@@ -90,7 +91,7 @@ function SearchWorkshopsPage() {
             <VscSettings className="w-7 h-7" />
           </div>
         </div>
-        <div className="mt-5 flex">
+        <div className="w-full mt-5 flex">
           <div className="hidden md:block">
             <CompaniesFilterSidebarComponent
               filtersState={filtersState}
@@ -101,8 +102,8 @@ function SearchWorkshopsPage() {
           "not loaded" ? null : isGettingCompaniesWithFiltersLoading ? (
             <Spinner />
           ) : (
-            <div>
-              <div className="md:ml-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+            <div className="w-full">
+              <div className="w-full md:ml-5 grid grid-cols-1 lg:grid-cols-4 gap-10">
                 {(payloadState.payload as PaginatedData<CompanyModel>).data
                   .length === 0 ? (
                   <div className="col-span-full">
@@ -116,8 +117,10 @@ function SearchWorkshopsPage() {
                   ).data.map((company, index) => (
                     <CompanyCatalogInfoComponent
                       company={company}
-                      onClick={() => {}}
                       key={index}
+                      onClick={() =>
+                        navigate(`/search/workshops/${company.id!}`)
+                      }
                     />
                   ))
                 )}
