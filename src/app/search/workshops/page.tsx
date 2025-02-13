@@ -62,7 +62,14 @@ function SearchWorkshopsPage() {
 
   useEffect(() => {
     if (Object.keys(filtersState).length > 0) {
-      performGetCompanyWithFilters({ page, filters: filtersState });
+      const location_id = searchParams.get("location_id");
+      performGetCompanyWithFilters({
+        page,
+        filters: {
+          ...filtersState,
+          location_id: location_id ? parseInt(location_id) : null,
+        },
+      });
     }
   }, [filtersState]);
 

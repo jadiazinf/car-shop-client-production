@@ -19,7 +19,7 @@ function MainLayout(props: { children: ReactNode }) {
             <HeaderBreadcrumbsComponent items={breadcrumbs} />
           </div>
         )}
-        <div className="w-full h-full flex mt-5">
+        <div className="w-full h-full flex my-5">
           <SidebarComponent />
           {props.children}
         </div>

@@ -1,8 +1,9 @@
 import { createGeneralUser } from "./create_general_user";
+import { getAllUserVehicles } from "./get_all_vehicles";
 import getNewToken from "./get_new_token";
 import getUsersByFilters from "./get_users_by_filters";
 import { updateGeneralUser } from "./update";
-import getUserVehicles from "./vehicles";
+import { getUserVehicles } from "./vehicles";
 
 export const useUsersApiServices = {
   getUsersByFilters,
@@ -10,4 +11,5 @@ export const useUsersApiServices = {
   createGeneralUser,
   getUserVehicles,
   updateGeneralUser,
+  getAllUserVehicles,
 };

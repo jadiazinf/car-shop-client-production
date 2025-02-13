@@ -1,6 +1,7 @@
 import { RiBillLine } from "react-icons/ri";
 import { SidebarOptions } from "../components/option";
 import { CiBoxList } from "react-icons/ci";
+import { BiSolidCarMechanic } from "react-icons/bi";
 
 const AdminServicesSidebarOptions: SidebarOptions[] = [
   {
@@ -10,9 +11,15 @@ const AdminServicesSidebarOptions: SidebarOptions[] = [
     urlStartsWithForActive: false,
   },
   {
-    name: "Cotizaciones realizadas",
+    name: "Cotizaciones",
     url: "/dashboard/services/quotes",
     icon: <RiBillLine />,
+    urlStartsWithForActive: true,
+  },
+  {
+    name: "Órdenes de servicios",
+    url: "/dashboard/services/orders",
+    icon: <BiSolidCarMechanic />,
     urlStartsWithForActive: true,
   },
 ];

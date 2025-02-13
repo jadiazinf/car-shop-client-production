@@ -6,6 +6,8 @@ import { AdminSidebarComponent } from "./admin";
 import { SuperadminSidebarComponent } from "./superadmin";
 import { ROUTES_FOR_DASHBOARD_SIDEBAR_RENDERING_CASE } from "./consts";
 import { ProfileSidebarComponent } from "./profile";
+import { TechnicianSidebarComponent } from "./technician";
+import { SupervisorSidebarComponent } from "./supervisor";
 
 function SidebarComponent() {
   const { status, sessionType } = usePersistedStore().authReducer;
@@ -52,6 +54,12 @@ function SidebarComponent() {
 
       if (sessionType?.roles?.includes(UserCompanyRole.SUPERADMIN))
         SidebarComponent = SuperadminSidebarComponent();
+
+      if (sessionType?.roles?.includes(UserCompanyRole.SUPERVISOR))
+        SidebarComponent = SupervisorSidebarComponent();
+
+      if (sessionType?.roles?.includes(UserCompanyRole.TECHNICIAN))
+        SidebarComponent = TechnicianSidebarComponent();
     }
   }
 

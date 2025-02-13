@@ -1,8 +1,11 @@
-import { useState } from 'react';
-import { useDropzone } from 'react-dropzone';
+import { useState } from "react";
+import { useDropzone } from "react-dropzone";
 
-function FileDropzone(props: { text: string, onDrop: (acceptedFiles: File[]) => void }) {
-  const [files, setFiles] = useState<File[]>([]);
+function FileDropzone(props: {
+  text: string;
+  onDrop: (acceptedFiles: File[]) => void;
+}) {
+  const [_, setFiles] = useState<File[]>([]);
 
   const onDrop = (acceptedFiles: File[]) => {
     setFiles(acceptedFiles);
@@ -16,19 +19,17 @@ function FileDropzone(props: { text: string, onDrop: (acceptedFiles: File[]) => 
       <div
         {...getRootProps()}
         className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors
-          ${isDragActive ? 'border-blue-500 bg-blue-100' : 'border-gray-300'}`}
+          ${isDragActive ? "border-blue-500 bg-blue-100" : "border-gray-300"}`}
       >
         <input {...getInputProps()} />
         {isDragActive ? (
           <p className="text-blue-600">Suelta los archivos aquí...</p>
         ) : (
-          <p className="text-gray-600">
-            {props.text}
-          </p>
+          <p className="text-gray-600">{props.text}</p>
         )}
       </div>
 
-      {files.length > 0 && (
+      {/* {files.length > 0 && (
         <div className="mt-4">
           <h3 className="text-lg font-semibold">Archivos seleccionados:</h3>
           <ul className="list-disc list-inside">
@@ -40,7 +41,7 @@ function FileDropzone(props: { text: string, onDrop: (acceptedFiles: File[]) => 
           </ul>
           <p className="text-gray-600">Total de archivos: {files.length}</p>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

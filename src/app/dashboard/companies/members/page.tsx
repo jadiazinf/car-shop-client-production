@@ -21,8 +21,9 @@ import { useNavigate } from "react-router-dom";
 import { UserCompanyHelpers } from "../../../../entities/users_companies/helpers";
 import { HeaderBreadcrumbItemProps } from "../../../../components/breadcrumbs/header";
 import BreadcrumbsContext from "../../../../components/breadcrumbs/context";
+import { UserCompanyRole } from "../../../../entities/users_companies/types";
 
-const TABLE_COLUMNS = [
+const TABLE_COLUMNS_INSTANCE = [
   { key: "first_name", label: "Primer nombre" },
   { key: "last_name", label: "Apellido" },
   { key: "dni", label: "Cédula" },
@@ -82,6 +83,10 @@ export default function CompanyMembersPage() {
     onOpenChange: onDeleteUserModalOpenChange,
     onClose: onDeleteUserModalClose,
   } = useDisclosure();
+
+  const TABLE_COLUMNS = sessionType?.roles?.includes(UserCompanyRole.SUPERVISOR)
+    ? TABLE_COLUMNS_INSTANCE.filter((element) => element.key !== "actions")
+    : TABLE_COLUMNS_INSTANCE;
 
   useEffect(() => {
     setBreadcrumbs(HEADER_BREADCRUMBS_OPTIONS);
@@ -222,16 +227,18 @@ export default function CompanyMembersPage() {
               }
             />
           </div>
-          <div>
-            <ButtonComponent
-              color="primary"
-              text="Agregar miembro"
-              type="button"
-              variant="solid"
-              startContent={<IoAdd className="w-5 h-5" />}
-              onClick={() => navigate("/dashboard/companies/members/new")}
-            />
-          </div>
+          {sessionType?.roles?.includes(UserCompanyRole.ADMIN) && (
+            <div>
+              <ButtonComponent
+                color="primary"
+                text="Agregar miembro"
+                type="button"
+                variant="solid"
+                startContent={<IoAdd className="w-5 h-5" />}
+                onClick={() => navigate("/dashboard/companies/members/new")}
+              />
+            </div>
+          )}
         </div>
         <DatatableComponent
           columns={TABLE_COLUMNS}

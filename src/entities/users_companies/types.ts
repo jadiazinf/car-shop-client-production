@@ -3,4 +3,5 @@ export enum UserCompanyRole {
   TECHNICIAN = "technical",
   GENERAL = "general",
   SUPERADMIN = "superadmin",
+  SUPERVISOR = "supervisor",
 }

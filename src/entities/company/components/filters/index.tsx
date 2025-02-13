@@ -5,6 +5,7 @@ import { useContext, useEffect } from "react";
 import SelectPlace from "../../../location/components/select_place";
 import PlaceContext from "../../../location/contexts/place";
 import CategoryModel from "../../../category/model";
+import { useSearchParams } from "react-router-dom";
 
 function CompaniesFiltersComponent(props: IServicesFilterProps) {
   const { place } = useContext(PlaceContext);
@@ -15,17 +16,22 @@ function CompaniesFiltersComponent(props: IServicesFilterProps) {
     performGetAllCategories,
   } = useGetAllCategories();
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
   useEffect(() => {
     performGetAllCategories();
   }, []);
 
   useEffect(() => {
-    if (place && place.state)
+    if (place && place.state && place.city) {
       props.setFiltersChange({
         ...props.filtersState,
         location_id: place.state.id!,
       });
-  }, [place?.state]);
+      searchParams.set("location_id", place.city.id!.toString());
+      setSearchParams(searchParams);
+    }
+  }, [place?.city]);
 
   function handleChange(e: React.ChangeEvent) {
     const { name, value } = e.target as HTMLInputElement;
@@ -84,21 +90,6 @@ function CompaniesFiltersComponent(props: IServicesFilterProps) {
           />
         </div>
       </div>
-      <div className="flex flex-col">
-        <Divider className="mb-5" />
-        <p className="text-sm font-semibold">Nombre del servicio</p>
-        <div className="mt-5">
-          <Input
-            radius="sm"
-            variant="bordered"
-            size="sm"
-            name="service_name"
-            type="text"
-            value={props.filtersState.service_name || ""}
-            onChange={handleChange}
-          />
-        </div>
-      </div>
       <div className="flex flex-col mb-10">
         <Divider className="mb-5" />
         <p className="text-sm font-semibold">
@@ -114,6 +105,7 @@ function CompaniesFiltersComponent(props: IServicesFilterProps) {
             (categories.payload as CategoryModel[]).map((element) => (
               <Checkbox
                 radius="sm"
+                key={element.id}
                 isSelected={
                   props.filtersState.category_ids?.some(
                     (serviceId) => serviceId === element.id

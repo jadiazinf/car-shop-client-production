@@ -6,7 +6,7 @@ import axios from "axios";
 import { PaginatedData } from "../../../helpers/application_response/types";
 import VehicleModel from "../../../entities/vehicle/model";
 
-export default function getUserVehicles() {
+export function getUserVehicles() {
   const [response, setResponse] = useState<ApiResponse<
     PaginatedData<VehicleModel>
   > | null>(null);

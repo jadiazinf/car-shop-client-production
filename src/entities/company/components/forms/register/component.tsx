@@ -30,6 +30,7 @@ function CompanyInfoForm(props: {
   onSubmit: (values: CompanyModel) => void;
   children?: ReactNode;
   validationSchema?: any;
+  filesAreCommingFrom?: "server" | "client";
 }) {
   const { place } = useContext(PlaceContext);
 
@@ -59,6 +60,22 @@ function CompanyInfoForm(props: {
     if (place?.town) formik.setFieldValue("location_id", place.town.id);
   }, [place?.town]);
 
+  function getCompanyCharter(): string | File | null {
+    if (formik.values.company_charter) {
+      if (props.initialValues.company_charter) {
+        if (props.filesAreCommingFrom === "server") {
+          return `${import.meta.env.VITE_API_BASE_ROUTE}/${
+            formik.values.company_charter as string
+          }`;
+        } else return formik.values.company_charter;
+      }
+
+      return formik.values.company_charter;
+    }
+
+    return null;
+  }
+
   return (
     <>
       <Modal
@@ -72,7 +89,11 @@ function CompanyInfoForm(props: {
             <div className="py-10">
               <ViewImagesComponent
                 images={formik.values.company_images as File[]}
-                isCommingFrom="client"
+                isCommingFrom={
+                  props.filesAreCommingFrom
+                    ? props.filesAreCommingFrom
+                    : "client"
+                }
               />
             </div>
           </ModalContent>
@@ -88,7 +109,7 @@ function CompanyInfoForm(props: {
         <ModalBody>
           <ModalContent>
             <div className="py-10 h-full">
-              <PdfViewer charter={formik.values.company_charter as File} />
+              <PdfViewer charter={getCompanyCharter()} />
             </div>
           </ModalContent>
         </ModalBody>

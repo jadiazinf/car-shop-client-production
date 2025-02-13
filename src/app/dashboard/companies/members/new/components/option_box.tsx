@@ -18,6 +18,7 @@ import LogoComponent from "../../../../../../components/logo/component";
 import { useAuthApiServices } from "../../../../../api/auth";
 import { StatusCodes } from "http-status-codes";
 import { useUsersCompaniesApiServices } from "../../../../../api/users_companies";
+import { UserCompanyHelpers } from "../../../../../../entities/users_companies/helpers";
 
 function OptionBoxComponent() {
   const { sessionType, token } = usePersistedStore().authReducer;
@@ -60,7 +61,6 @@ function OptionBoxComponent() {
         password: selectedPerson!.dni,
         password_confirmation: selectedPerson!.dni,
       });
-      console.log("result", result);
       return result;
     } else {
       return [false, selectedPerson!];
@@ -137,8 +137,17 @@ function OptionBoxComponent() {
                   setSelectedRoles(value as UserCompanyRole[])
                 }
               >
-                <Checkbox value={UserCompanyRole.ADMIN}>Administrador</Checkbox>
-                <Checkbox value={UserCompanyRole.TECHNICIAN}>Técnico</Checkbox>
+                {UserCompanyHelpers.getCompanyRolesKeysValuesForSelect().map(
+                  (element) => (
+                    <Checkbox
+                      key={element.value}
+                      value={element.value}
+                      className="mb-2"
+                    >
+                      {element.label}
+                    </Checkbox>
+                  )
+                )}
               </CheckboxGroup>
               <div className="w-full flex justify-center items-center mt-5">
                 <div>

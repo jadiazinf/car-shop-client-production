@@ -8,8 +8,12 @@ import CompanyInfoForClient from "../app/search/workshops/id/page";
 const notAuthenticatedRoutes = (
   <>
     <Route path="/" element={<Navigate to="/search/workshops" />} />
+
+    {/* sarch */}
     <Route path="/search/workshops" element={<SearchWorkshopsPage />} />
     <Route path="/search/workshops/:id" element={<CompanyInfoForClient />} />
+
+    {/* user session */}
     <Route path="/auth" element={<AuthPage />} />
     <Route
       path="/auth/registration/general-user"
@@ -19,6 +23,8 @@ const notAuthenticatedRoutes = (
       path="/auth/registration/company"
       element={<RegisterCompanyPage />}
     />
+
+    {/*  */}
     <Route path="*" element={<Navigate to="/" />} />
   </>
 );

@@ -22,6 +22,8 @@ import NotAuthenticatedNavbarOptions from "./not_authenticated";
 import useGetUserCompanies from "../../entities/user/services/companies/use_get_companies";
 import { useDispatch } from "react-redux";
 import { SetAuthentication } from "../../store/auth/reducers";
+import { UserCompanyHelpers } from "../../entities/users_companies/helpers";
+import SupervisorNavbarOptions from "./supervisor";
 
 function NotAuthenticatedNavbarActions() {
   const navigate = useNavigate();
@@ -112,7 +114,17 @@ function AuthenticatedNavbarActions() {
         >
           <p className="font-semibold">
             {state.value
-              ? `${state.value.firstName} ${state.value.lastName}`
+              ? `${state.value.firstName} ${state.value.lastName} ${
+                  status !== AuthStatus.AUTHENTICATED
+                    ? ""
+                    : sessionType?.roles !== null
+                    ? `(${UserCompanyHelpers.translateUserCompanyRole(
+                        UserCompanyHelpers.getRoleWithGreaterHierarchy(
+                          sessionType?.roles!
+                        )
+                      )})`
+                    : ""
+                }`
               : ""}
           </p>
         </DropdownItem>
@@ -181,6 +193,11 @@ function AuthNavbarSection(props: {
 
     if (props.roles.includes(UserCompanyRole.GENERAL)) {
       setOptions(GeneralNavbarOptions());
+      return;
+    }
+
+    if (props.roles.includes(UserCompanyRole.SUPERVISOR)) {
+      setOptions(SupervisorNavbarOptions());
       return;
     }
 

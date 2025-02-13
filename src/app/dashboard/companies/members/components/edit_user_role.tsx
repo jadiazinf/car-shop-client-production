@@ -7,6 +7,7 @@ import { ToasterContext } from "../../../../../components/toaster/context/contex
 import { StatusCodes } from "http-status-codes";
 import { UserCompanyRole } from "../../../../../entities/users_companies/types";
 import { Checkbox, CheckboxGroup } from "@nextui-org/react";
+import { UserCompanyHelpers } from "../../../../../entities/users_companies/helpers";
 
 type Props = {
   user_company: UserCompanyModel;
@@ -60,8 +61,13 @@ function CompanyMemberEditUserRole({
         value={roleState}
         onValueChange={(value) => setRoleState(value as UserCompanyRole[])}
       >
-        <Checkbox value={UserCompanyRole.ADMIN}>Administrador</Checkbox>
-        <Checkbox value={UserCompanyRole.TECHNICIAN}>Técnico</Checkbox>
+        {UserCompanyHelpers.getCompanyRolesKeysValuesForSelect().map(
+          (element) => (
+            <Checkbox key={element.value} value={element.value}>
+              {element.label}
+            </Checkbox>
+          )
+        )}
       </CheckboxGroup>
       <div className="w-auto flex justify-center items-center mt-3">
         <div>

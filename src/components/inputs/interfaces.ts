@@ -26,6 +26,7 @@ export type SelectDataProps = {
 };
 
 export interface IBaseSelectProps {
+  disallowEmptySelection?: boolean;
   data: SelectDataProps[];
   name: string;
   value: string;

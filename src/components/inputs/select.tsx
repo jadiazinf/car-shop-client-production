@@ -18,6 +18,7 @@ function SelectComponent(props: IBaseSelectProps) {
       isDisabled={props.isDisabled}
       name={props.name}
       size={props.size ? props.size : "lg"}
+      disallowEmptySelection={props.disallowEmptySelection}
     >
       {props.data.map((element) => (
         <SelectItem key={element.key}>{element.label}</SelectItem>

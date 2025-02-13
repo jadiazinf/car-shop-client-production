@@ -3,7 +3,9 @@ import { DatatableColumnsProps } from "./types";
 export interface IDatatableComponentProps<T> {
   data: T[];
   selectedData?: number[] | "all";
-  setSelectedData?: React.Dispatch<number[] | "all">;
+  setSelectedData?:
+    | React.Dispatch<number[] | "all">
+    | ((id: number[] | "all") => void);
   disabledRows?: number[];
   columns: DatatableColumnsProps[];
   selectionMode?: "single" | "multiple" | "none";

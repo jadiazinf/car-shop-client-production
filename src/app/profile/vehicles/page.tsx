@@ -97,7 +97,7 @@ export default function ProfileVehiclesPage() {
 
   useEffect(() => {
     if (datatableAction.action === "view")
-      navigate(`/profile/vehicles/info/${datatableAction.id!}`);
+      navigate(`/profile/vehicles/${datatableAction.id!}`);
     if (datatableAction.action === "delete")
       handleDeleteVehicleModal(datatableAction.id!);
   }, [datatableAction.action]);

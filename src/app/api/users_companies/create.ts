@@ -12,7 +12,7 @@ export function createUserCompany() {
     try {
       setIsCreatingUserCompany(true);
       const response = await api.post<UserCompanyModel>(
-        `${API_BASE_ROUTE_EXTENSION}/users_companies`,
+        `${API_BASE_ROUTE_EXTENSION}/users_companies?company_id=${newUserCompany.company_id}`,
         {
           user_company: newUserCompany,
         },

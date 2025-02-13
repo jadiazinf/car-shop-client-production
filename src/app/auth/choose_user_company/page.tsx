@@ -43,7 +43,10 @@ function ChooseUserCompanyPage() {
 
   const { dispatch: toasterDispatch } = useContext(ToasterContext);
 
-  const [selectedCompany, setSelectedCompany] = useState<null | number>(null);
+  const [selectedCompany, setSelectedCompany] = useState<null | {
+    company_id: number;
+    user_company_id: number;
+  }>(null);
 
   function setUserCompanyRoles() {
     const { payload, status } =
@@ -63,15 +66,16 @@ function ChooseUserCompanyPage() {
       appDispatch(
         SetAuthentication({
           sessionType: {
-            company_id: selectedCompany as number,
+            company_id: selectedCompany!.company_id,
             roles: payload,
             user: sessionType!.user!,
+            user_company_id: selectedCompany!.user_company_id,
           },
           status: AuthStatus.AUTHENTICATED,
           token: token!,
         })
       );
-      navigate("/");
+      navigate("/dashboard");
       return;
     }
 
@@ -83,9 +87,12 @@ function ChooseUserCompanyPage() {
     return;
   }
 
-  async function getUserCompanyRoles(company_id: number) {
+  async function getUserCompanyRoles(
+    company_id: number,
+    user_company_id: number
+  ) {
     await performGetRole({ company_id, token: token! });
-    setSelectedCompany(company_id);
+    setSelectedCompany({ company_id, user_company_id });
   }
 
   function handler(data: GetUserCompaniesProps) {
@@ -96,6 +103,7 @@ function ChooseUserCompanyPage() {
             user: sessionType!.user,
             company_id: null,
             roles: null,
+            user_company_id: null,
           },
           status: AuthStatus.AUTHENTICATED,
           token: token!,
@@ -105,7 +113,7 @@ function ChooseUserCompanyPage() {
     }
 
     if (data.payload.length === 1)
-      getUserCompanyRoles(data.payload[0].company_id!);
+      getUserCompanyRoles(data.payload[0].company_id!, data.payload[0].id!);
   }
 
   useEffect(() => {
@@ -143,7 +151,9 @@ function ChooseUserCompanyPage() {
           payloadState.payload.map((user_company, index) => (
             <div
               key={index}
-              onClick={() => getUserCompanyRoles(user_company.company_id!)}
+              onClick={() =>
+                getUserCompanyRoles(user_company.company_id!, user_company.id!)
+              }
               className="w-full"
             >
               <CompanyCardBasicInfo company={user_company.company!} />

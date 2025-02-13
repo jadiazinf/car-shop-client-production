@@ -1,14 +1,13 @@
 import { StatusCodes } from "http-status-codes";
 import ButtonComponent from "../../../../../components/buttons/component";
-import { QuoteModel, QuoteStatus } from "../../../../../entities/quote/model";
 import ServiceModel from "../../../../../entities/service/model";
 import VehicleModel from "../../../../../entities/vehicle/model";
-import { VehicleType } from "../../../../../entities/vehicle/types";
 import { usePersistedStore } from "../../../../../store/store";
-import { useQuoteApiServices } from "../../../../api/quotes";
 import { useContext } from "react";
 import { ToasterContext } from "../../../../../components/toaster/context/context";
 import { useNavigate } from "react-router-dom";
+import { useOrderApiServices } from "../../../../api/orders";
+import { OrderStatus } from "../../../../../entities/order/model";
 
 type Props = {
   vehicle: VehicleModel;
@@ -18,46 +17,26 @@ type Props = {
 export function ConfirmQuoteComponent(props: Props) {
   const { token } = usePersistedStore().authReducer;
 
-  const { isCreatingQuotes, perform } = useQuoteApiServices.createQuotes();
+  const { isCreatingOrder, perform } = useOrderApiServices.createOrder();
 
   const { dispatch: toasterDispatch } = useContext(ToasterContext);
 
   const navigate = useNavigate();
 
-  function getQuoteTotalCost() {
-    return props.services.reduce((acc, service) => {
-      switch (props.vehicle.vehicle_type) {
-        case VehicleType.CAR:
-          return acc + ((service.price_for_car as number) || 0);
-        case VehicleType.MOTORBIKE:
-          return acc + ((service.price_for_motorbike as number) || 0);
-        case VehicleType.TRUCK:
-          return acc + ((service.price_for_truck as number) || 0);
-        case VehicleType.VAN:
-          return acc + ((service.price_for_van as number) || 0);
-        default:
-          return acc;
-      }
-    }, 0);
-  }
-
-  function buildQuote() {
-    return props.services.map(
-      (service) =>
-        ({
-          date: new Date(),
-          status_by_client: QuoteStatus.APPROVED,
-          status_by_company: QuoteStatus.PENDING,
-          total_cost: getQuoteTotalCost(),
-          note: "",
-          vehicle_id: props.vehicle.id,
-          service_id: service.id,
-        } as QuoteModel)
-    );
-  }
-
   async function handleCreateQuote() {
-    const response = await perform(buildQuote(), token!);
+    const response = await perform(
+      {
+        is_checked: false,
+        status: OrderStatus.QUOTE,
+        vehicle_mileage: 0,
+        company_id: props.services[0].company_id,
+        is_active: true,
+        service_orders: [],
+        vehicle_id: props.vehicle.id!,
+      },
+      token!
+    );
+
     if (response.status === StatusCodes.CREATED) {
       toasterDispatch({
         payload: "Cotización creada exitosamente",
@@ -66,7 +45,9 @@ export function ConfirmQuoteComponent(props: Props) {
       navigate("/");
     } else {
       toasterDispatch({
-        payload: response.data.message || "Error al crear la cotización",
+        payload:
+          (response.data as { errors: string[] }).errors[0] ||
+          "Error al crear la cotización",
         type: "ERROR",
       });
     }
@@ -108,7 +89,7 @@ export function ConfirmQuoteComponent(props: Props) {
             type="button"
             variant="solid"
             onClick={handleCreateQuote}
-            isLoading={isCreatingQuotes}
+            isLoading={isCreatingOrder}
           />
         </div>
       </div>

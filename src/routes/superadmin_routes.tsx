@@ -15,23 +15,39 @@ import CreateVehicle from "../app/profile/vehicles/create/page";
 import CompanyInfoForClient from "../app/search/workshops/id/page";
 import UserQuotesPage from "../app/profile/quotes/page";
 import UserQuoteInfoPage from "../app/profile/quotes/id/page";
+import NewQuotePage from "../app/search/workshops/id/new_quote/page";
 
 const superadminRoutes = (
   <>
     <Route path="/" element={<Navigate to="/search/workshops" />} />
-    <Route path="/profile" element={<ProfilePage />} />
-    <Route path="/profile/quotes" element={<UserQuotesPage />} />
-    <Route path="/profile/quotes/:id" element={<UserQuoteInfoPage />} />
-    <Route path="/profile/vehicles" element={<ProfileVehiclesPage />} />
-    <Route path="/profile/vehicles/new" element={<CreateVehicle />} />
-    <Route path="/profile/vehicles/info/:id" element={<VehicleInfoPage />} />
-    <Route path="/search/workshops" element={<SearchWorkshopsPage />} />
-    <Route path="/search/workshops/:id" element={<CompanyInfoForClient />} />
+
+    {/* user session */}
+    <Route path="/search/workshops/:id/new_quote" element={<NewQuotePage />} />
     <Route path="/user-session" element={<UserSessionPage />} />
     <Route path="/auth/logout" element={<LogoutPage />} />
     <Route path="/auth/session" element={<ChooseUserCompanyPage />} />
+
+    {/* sarch */}
+    <Route path="/search/workshops" element={<SearchWorkshopsPage />} />
+    <Route path="/search/workshops/:id" element={<CompanyInfoForClient />} />
+
+    {/* profile */}
+    <Route path="/profile" element={<ProfilePage />} />
+    <Route path="/profile/quotes" element={<UserQuotesPage />} />
+    <Route path="/profile/quotes/:id" element={<UserQuoteInfoPage />} />
+
+    {/* profile vehicles */}
+    <Route path="/profile/vehicles" element={<ProfileVehiclesPage />} />
+    <Route path="/profile/vehicles/new" element={<CreateVehicle />} />
+    <Route path="/profile/vehicles/:id" element={<VehicleInfoPage />} />
+
+    {/* dashboard */}
     <Route path="/dashboard" element={<SuperadminDashboardPage />} />
+
+    {/* dashboard companies */}
     <Route path="/dashboard/companies" element={<CompaniesSuperadminPage />} />
+
+    {/* dashboard companies requests */}
     <Route
       path="/dashboard/companies/requests"
       element={<CompaniesRequestsSuperadminPage />}
@@ -40,7 +56,11 @@ const superadminRoutes = (
       path="/dashboard/companies/requests/:id"
       element={<CompanyRequestPage />}
     />
+
+    {/* dashboard categories */}
     <Route path="/dashboard/categories" element={<SuperadminServicesPage />} />
+
+    {/*  */}
     <Route path="*" element={<Navigate to="/" />} />
   </>
 );
