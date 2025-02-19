@@ -28,6 +28,7 @@ import { ServiceOrderAdvance } from "../app/dashboard/services/orders/advance/se
 import { UserOrdersPage } from "../app/profile/orders/page";
 import UserOrderInfoPage from "../app/profile/orders/id/page";
 import { UserServiceOrderAdvance } from "../app/profile/orders/advances/service_order_id/page";
+import { ClaimsPage } from "../app/dashboard/services/claims/page";
 
 const adminRoutes = (
   <>
@@ -122,6 +123,9 @@ const adminRoutes = (
       path="/dashboard/services/orders/:order_id/advances/:service_order_id/:company_id"
       element={<ServiceOrderAdvance />}
     />
+
+    {/* dashboard services claims */}
+    <Route path="/dashboard/services/claims" element={<ClaimsPage />} />
 
     {/*  */}
     <Route path="*" element={<Navigate to="/" />} />

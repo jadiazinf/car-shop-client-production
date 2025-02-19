@@ -8,6 +8,9 @@ import {
   Modal,
   ModalBody,
   ModalContent,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   Spinner,
   Tab,
   Tabs,
@@ -43,6 +46,9 @@ import ServicePricesComponent from "../../service/components/prices/component";
 import PaginationComponent from "../../../components/datatable/pagination";
 import { VehicleType } from "../../vehicle/types";
 import { UserCompanyRole } from "../../users_companies/types";
+import { useUserOrderReviewsApiServices } from "../../../app/api/user_order_reviews";
+import RatingComponent from "../../../components/rating";
+import { LuMessageCircle } from "react-icons/lu";
 
 type Props = {
   order: OrderModel;
@@ -130,11 +136,17 @@ export function CompanyOrderInfoComponent(props: Props) {
 
   const [page, setPage] = useState<number>(1);
 
+  const {
+    getReviewResponse,
+    isGettingReview,
+    perform: getReview,
+  } = useUserOrderReviewsApiServices.getReview();
+
   useEffect(() => {
     getCompany(props.order.company_id!);
     getVehicle(props.order.vehicle_id!, token!);
 
-    if (!props.order.is_checked)
+    if (!props.order.is_checked) {
       updateOrder(
         {
           id: props.order.id,
@@ -143,6 +155,14 @@ export function CompanyOrderInfoComponent(props: Props) {
         sessionType!.company_id!,
         token!
       );
+    }
+
+    if (
+      props.order.status === OrderStatus.FINISHED ||
+      props.order.status === OrderStatus.CANCELED
+    ) {
+      getReview(props.order.id!, token!, sessionType!.company_id!);
+    }
   }, []);
 
   useEffect(() => {
@@ -503,7 +523,33 @@ export function CompanyOrderInfoComponent(props: Props) {
                     </Dropdown>
                   </ButtonGroup>
                 )}
-              <div className="w-full mt-5"></div>
+              <div className="w-full flex justify-end mt-5">
+                {(props.order.status === OrderStatus.FINISHED ||
+                  props.order.status === OrderStatus.CANCELED) &&
+                  (isGettingReview ? (
+                    <Spinner />
+                  ) : !getReviewResponse ? null : !getReviewResponse.data ? null : (
+                    <div className="w-full flex flex-col gap-5 md:flex-row justify-end items-center">
+                      <p>Calificación del servicio: </p>
+                      <RatingComponent
+                        isDisabled
+                        rating={getReviewResponse.data.rating}
+                      />
+                      {getReviewResponse.data.message && (
+                        <Popover placement="bottom">
+                          <PopoverTrigger>
+                            <Button isIconOnly variant="bordered" radius="sm">
+                              <LuMessageCircle />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="p-5">
+                            <p>{`Reseña: ${getReviewResponse.data.message}`}</p>
+                          </PopoverContent>
+                        </Popover>
+                      )}
+                    </div>
+                  ))}
+              </div>
             </Tab>
             <Tab key="company_info" title="Información de la empresa">
               <CompanyInfo

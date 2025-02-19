@@ -11,6 +11,9 @@ import CompanyModel from "../../../../entities/company/model";
 import ServicePricesComponent from "../../../../entities/service/components/prices/component";
 import { AuthStatus } from "../../../../auth/types";
 import { ToasterContext } from "../../../../components/toaster/context/context";
+import { useUserOrderReviewsApiServices } from "../../../api/user_order_reviews";
+import { CompanyRatingsComponent } from "../../../../components/rating/company_ratings";
+import PaginationComponent from "../../../../components/datatable/pagination";
 
 const BreadCrumbsItems: HeaderBreadcrumbItemProps[] = [
   {
@@ -36,7 +39,7 @@ export default function CompanyInfoForClient() {
 
   const { setBreadcrumbs } = useContext(BreadcrumbsContext);
 
-  const [page, _] = useState<number>(1);
+  const [page, setPage] = useState<number>(1);
 
   const {
     perform: getCompany,
@@ -52,9 +55,16 @@ export default function CompanyInfoForClient() {
 
   const params = useParams();
 
+  const {
+    perform: getCompanyRatings,
+    getCompanyRatingsResponse,
+    isGettingRatings,
+  } = useUserOrderReviewsApiServices.getCompanyRatings();
+
   useEffect(() => {
     setBreadcrumbs(BreadCrumbsItems);
     getCompany(parseInt(params.id!));
+    getCompanyRatings(parseInt(params.id!));
   }, []);
 
   useEffect(() => {
@@ -154,9 +164,28 @@ export default function CompanyInfoForClient() {
                     )
                   )}
                 </div>
-                <div className="w-full flex justify-end">
-                  {/* pagination component */}
+                <div className="w-full flex justify-end mt-5">
+                  <PaginationComponent
+                    page={page}
+                    setPage={setPage}
+                    pages={getCompanyServicesResponse.data?.total_pages ?? 0}
+                  />
                 </div>
+              </div>
+            )}
+          </div>
+          <div className="w-full mt-2">
+            <p className="text-2xl font-semibold font-inter mb-5">
+              Calificaciones
+            </p>
+            {isGettingRatings ? (
+              <Spinner />
+            ) : !getCompanyRatingsResponse ||
+              !getCompanyRatingsResponse.data ? null : (
+              <div className="">
+                <CompanyRatingsComponent
+                  ratings={getCompanyRatingsResponse.data}
+                />
               </div>
             )}
           </div>

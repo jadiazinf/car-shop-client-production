@@ -25,6 +25,7 @@ import ServicesNewQuotePage from "../app/dashboard/services/quotes/new/page";
 import QuoteInfoPage from "../app/dashboard/services/quotes/id/page";
 import CompanyMembersPage from "../app/dashboard/companies/members/page";
 import { NewCompanyOrder } from "../app/dashboard/services/orders/new/page";
+import { ClaimsPage } from "../app/dashboard/services/claims/page";
 
 const supervisorRoutes = (
   <>
@@ -105,6 +106,9 @@ const supervisorRoutes = (
       path="/dashboard/services/orders/:order_id/advances/:service_order_id/:company_id"
       element={<ServiceOrderAdvance />}
     />
+
+    {/* dashboard services claims */}
+    <Route path="/dashboard/services/claims" element={<ClaimsPage />} />
 
     {/*  */}
     <Route path="*" element={<Navigate to="/" />} />
