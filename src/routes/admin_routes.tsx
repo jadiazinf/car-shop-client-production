@@ -29,6 +29,7 @@ import { UserOrdersPage } from "../app/profile/orders/page";
 import UserOrderInfoPage from "../app/profile/orders/id/page";
 import { UserServiceOrderAdvance } from "../app/profile/orders/advances/service_order_id/page";
 import { ClaimsPage } from "../app/dashboard/services/claims/page";
+import ReportsPage from "../app/dashboard/reports/page";
 
 const adminRoutes = (
   <>
@@ -126,6 +127,9 @@ const adminRoutes = (
 
     {/* dashboard services claims */}
     <Route path="/dashboard/services/claims" element={<ClaimsPage />} />
+
+    {/* dashboard reports */}
+    <Route path="/dashboard/reports" element={<ReportsPage />} />
 
     {/*  */}
     <Route path="*" element={<Navigate to="/" />} />

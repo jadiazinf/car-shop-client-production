@@ -10,6 +10,7 @@ import { useContext, useEffect } from "react";
 import BreadcrumbsContext from "../../../components/breadcrumbs/context";
 import { UserCompanyHelpers } from "../../../entities/users_companies/helpers";
 import { usePersistedStore } from "../../../store/store";
+import { IoBarChartSharp } from "react-icons/io5";
 
 const DASHBOARD_OPTIONS: MenuButtonComponentProps[] = [
   {
@@ -33,6 +34,17 @@ const DASHBOARD_OPTIONS: MenuButtonComponentProps[] = [
       />
     ),
     url: "/dashboard/services",
+  },
+  {
+    title: "Reportes",
+    description: "Ve los reportes de tu empresa",
+    icon: (
+      <BoxIconComponent
+        bgColor={IconColors.palidGold}
+        icon={<IoBarChartSharp className="text-white" />}
+      />
+    ),
+    url: "/dashboard/reports",
   },
 ];
 
