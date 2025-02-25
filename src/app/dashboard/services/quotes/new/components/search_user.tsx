@@ -5,7 +5,7 @@ import {
   Radio,
   RadioGroup,
   Spinner,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import UserModel from "../../../../../../entities/user/model";
 import { useEffect, useState } from "react";
 import { useUsersApiServices } from "../../../../../api/users";

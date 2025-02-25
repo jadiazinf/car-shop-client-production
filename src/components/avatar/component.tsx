@@ -1,4 +1,4 @@
-import { Avatar, Button } from "@nextui-org/react";
+import { Avatar, Button } from "@heroui/react";
 import { FaCamera } from "react-icons/fa";
 import { useContext, useEffect, useRef, useState } from "react";
 import { ToasterContext } from "../toaster/context/context";

@@ -11,7 +11,7 @@ import {
   Tabs,
   Textarea,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useContext, useEffect, useState } from "react";
 import { OrderModel, OrderStatus } from "../../../../../entities/order/model";
 import { usePersistedStore } from "../../../../../store/store";

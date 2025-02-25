@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { Spinner } from "@nextui-org/react";
+import { Spinner } from "@heroui/react";
 import { StatusCodes } from "http-status-codes";
 import { HeaderBreadcrumbItemProps } from "../../../../../components/breadcrumbs/header";
 import { usePersistedStore } from "../../../../../store/store";

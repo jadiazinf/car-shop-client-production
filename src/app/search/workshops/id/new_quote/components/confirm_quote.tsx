@@ -1,4 +1,4 @@
-import { Divider } from "@nextui-org/react";
+import { Divider } from "@heroui/react";
 import ButtonComponent from "../../../../../../components/buttons/component";
 import CompanyModel from "../../../../../../entities/company/model";
 import {

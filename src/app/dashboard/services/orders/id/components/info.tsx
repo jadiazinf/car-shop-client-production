@@ -1,4 +1,4 @@
-import { Spinner, Tab, Tabs } from "@nextui-org/react";
+import { Spinner, Tab, Tabs } from "@heroui/react";
 import { useEffect, useState } from "react";
 import { OrderModel } from "../../../../../../entities/order/model";
 import { usePersistedStore } from "../../../../../../store/store";

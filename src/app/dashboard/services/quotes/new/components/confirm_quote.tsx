@@ -9,7 +9,7 @@ import { DatatableColumnsProps } from "../../../../../../components/datatable/ty
 import { FaCar } from "react-icons/fa";
 import { FaTruckField, FaTruckFront } from "react-icons/fa6";
 import { useContext, useEffect } from "react";
-import { Divider } from "@nextui-org/react";
+import { Divider } from "@heroui/react";
 import ButtonComponent from "../../../../../../components/buttons/component";
 import { useNavigate } from "react-router-dom";
 import { ToasterContext } from "../../../../../../components/toaster/context/context";

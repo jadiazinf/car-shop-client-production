@@ -8,7 +8,7 @@ import {
   ModalBody,
   ModalContent,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import DatatableComponent from "../../../components/datatable/component";
 import { DatatableColumnsProps } from "../../../components/datatable/types";
 import { useContext, useEffect, useState } from "react";

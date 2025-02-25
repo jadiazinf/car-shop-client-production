@@ -1,4 +1,4 @@
-import { Pagination, Spinner, Tab, Tabs } from "@nextui-org/react";
+import { Pagination, Spinner, Tab, Tabs } from "@heroui/react";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserCompanyRequestStatus } from "../../../../entities/user_company_request/types";
@@ -26,7 +26,7 @@ const HEADER_BREADCRUMBS_OPTIONS: HeaderBreadcrumbItemProps[] = [
     url: "/dashboard/companies",
   },
   {
-    text: "Peticiones",
+    text: "Solicitudes",
     url: "/dashboard/companies/requests",
   },
 ];
@@ -75,12 +75,20 @@ function CompaniesRequestsAdminPage() {
 
   return (
     <div className="flex flex-col justify-center w-full h-full">
-      <div className="w-full flex justify-center items-center">
+      <div className="w-full flex items-center">
         <Tabs
           color="primary"
           key="status"
           variant="underlined"
           aria-label="requests status"
+          classNames={{
+            tabList:
+              "gap-6 w-full relative rounded-none p-0 border-b border-divider",
+            cursor: "w-full bg-primary",
+            tab: "max-w-fit px-0 h-12",
+            tabContent: "group-data-[selected=true]:text-primary",
+          }}
+          className="mb-5"
           onSelectionChange={(value) =>
             setRequestStatus(value as UserCompanyRequestStatus)
           }
@@ -103,13 +111,13 @@ function CompaniesRequestsAdminPage() {
               variant="solid"
               startContent={<IoMdAdd className="w-5 h-5" />}
               onClick={() =>
-                navigate(`/dashboard/companies/requests/request/update`)
+                navigate(`/dashboard/companies/requests/admin/create`)
               }
             />
           </div>
         )}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {isGettingUserCompanyRequestsByCompanyLoading ? (
           <div className="col-span-full my-10">
             <Spinner />

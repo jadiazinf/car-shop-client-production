@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import MenuContext from "./context";
 import LogoComponent from "../logo/component";
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 import { TfiClose } from "react-icons/tfi";
 import { usePersistedStore } from "../../store/store";
 import { AuthStatus } from "../../auth/types";

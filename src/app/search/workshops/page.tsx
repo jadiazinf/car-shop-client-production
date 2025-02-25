@@ -11,7 +11,7 @@ import {
   ModalContent,
   Spinner,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import CompanyModel from "../../../entities/company/model";
 import { PaginatedData } from "../../../helpers/application_response/types";
 import CompanyCatalogInfoComponent from "../../../entities/company/components/catalog_info";

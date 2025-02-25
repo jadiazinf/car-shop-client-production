@@ -3,7 +3,7 @@ import { HeaderBreadcrumbItemProps } from "../../../../components/breadcrumbs/he
 import ButtonComponent from "../../../../components/buttons/component";
 import TextComponent from "../../../../components/inputs/text";
 import { IoSearchOutline } from "react-icons/io5";
-import { Modal, ModalBody, ModalContent, useDisclosure } from "@nextui-org/react";
+import { Modal, ModalBody, ModalContent, useDisclosure } from "@heroui/react";
 import DatatableComponent from "../../../../components/datatable/component";
 import { DatatableColumnsProps } from "../../../../components/datatable/types";
 import { useContext, useEffect, useState } from "react";

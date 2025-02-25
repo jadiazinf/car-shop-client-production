@@ -10,7 +10,7 @@ import {
   useDisclosure,
   Checkbox,
   CheckboxGroup,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { UserCompanyRole } from "../../../../../../entities/users_companies/types";
 import { ToasterContext } from "../../../../../../components/toaster/context/context";
 import { usePersistedStore } from "../../../../../../store/store";

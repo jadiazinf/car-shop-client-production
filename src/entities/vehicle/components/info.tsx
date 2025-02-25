@@ -3,7 +3,7 @@ import {
   ModalBody,
   ModalContent,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import ViewImagesComponent from "../../../components/images/view_images";
 import VehicleModel from "../model";
 import ButtonComponent from "../../../components/buttons/component";

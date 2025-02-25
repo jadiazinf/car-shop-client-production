@@ -1,4 +1,4 @@
-import { Pagination } from "@nextui-org/react";
+import { Pagination } from "@heroui/react";
 
 function PaginationComponent(props: {page: number, pages: number, setPage: (page: number) => void}) {
   return (

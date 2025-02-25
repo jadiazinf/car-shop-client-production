@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Card, CardBody } from "@nextui-org/react";
+import { Card, CardBody } from "@heroui/react";
 import { MenuButtonComponentProps } from "./types";
 
 function MenuButtonComponent(props: MenuButtonComponentProps) {

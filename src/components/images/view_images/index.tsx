@@ -1,10 +1,9 @@
 import { useState } from "react";
 import "./styles.css";
-import { TypesHelpers } from "../../../helpers/types";
 
 type ViewImagesComponentProps = {
   images: string[] | File[];
-  isCommingFrom: "client" | "server";
+  isCommingFrom?: "client" | "server";
 };
 
 export default function ViewImagesComponent(props: ViewImagesComponentProps) {
@@ -24,31 +23,52 @@ export default function ViewImagesComponent(props: ViewImagesComponentProps) {
     );
   }
 
-  function getSelectedImageByIndex() {
-    if (TypesHelpers.isStringArray(props.images))
-      return props.images[currentImageIndex];
-    return URL.createObjectURL(props.images[currentImageIndex] as File);
+  function isFile(value: any): value is File {
+    return value instanceof File;
   }
 
-  function images() {
-    if (TypesHelpers.isStringArray(props.images)) return props.images;
-    if (TypesHelpers.isFileArray(props.images))
-      return props.images.map((element) =>
-        URL.createObjectURL(element as File)
-      );
+  function isString(value: any): value is string {
+    return typeof value === "string";
+  }
 
-    return [];
+  // Función para obtener la URL de la imagen actual
+  function getSelectedImageByIndex() {
+    const currentImage = props.images[currentImageIndex];
+
+    if (isFile(currentImage)) {
+      return URL.createObjectURL(currentImage);
+    } else if (isString(currentImage)) {
+      return `${
+        props.isCommingFrom === "server"
+          ? import.meta.env.VITE_API_BASE_ROUTE + "/"
+          : ""
+      }${currentImage}`;
+    }
+
+    return ""; // En caso de que no sea ni File ni string
+  }
+
+  // Función para obtener las URLs de todas las imágenes
+  function getImageUrls() {
+    return props.images.map((image) => {
+      if (isFile(image)) {
+        return URL.createObjectURL(image);
+      } else if (isString(image)) {
+        return `${
+          props.isCommingFrom === "server"
+            ? import.meta.env.VITE_API_BASE_ROUTE + "/"
+            : ""
+        }${image}`;
+      }
+      return ""; // En caso de que no sea ni File ni string
+    });
   }
 
   return (
     <div className="slider-container">
       <div className="main-image-container">
         <img
-          src={`${
-            props.isCommingFrom === "server"
-              ? import.meta.env.VITE_API_BASE_ROUTE + "/"
-              : ""
-          }${getSelectedImageByIndex()}`}
+          src={getSelectedImageByIndex()}
           alt={`Imagen ${currentImageIndex + 1}`}
           className="main-image"
         />
@@ -63,7 +83,7 @@ export default function ViewImagesComponent(props: ViewImagesComponentProps) {
         </button>
       </div>
       <div className="image-slots">
-        {images().map((image, index) => (
+        {getImageUrls().map((image, index) => (
           <div
             key={index}
             className={`slot ${
@@ -71,14 +91,7 @@ export default function ViewImagesComponent(props: ViewImagesComponentProps) {
             }`}
             onClick={() => setCurrentImageIndex(index)}
           >
-            <img
-              src={`${
-                props.isCommingFrom === "server"
-                  ? import.meta.env.VITE_API_BASE_ROUTE + "/"
-                  : ""
-              }${image}`}
-              alt={`Imagen ${index + 1}`}
-            />
+            <img src={image} alt={`Imagen ${index + 1}`} />
           </div>
         ))}
       </div>

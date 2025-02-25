@@ -1,6 +1,6 @@
 import { Suspense, useContext, useEffect, useState } from "react";
 import UserModel from "../../../../../../entities/user/model";
-import { Divider, Input, Spinner } from "@nextui-org/react";
+import { Divider, Input, Spinner } from "@heroui/react";
 import { usePersistedStore } from "../../../../../../store/store";
 import { useUsersCompaniesApiServices } from "../../../../../api/users_companies";
 import { ToasterContext } from "../../../../../../components/toaster/context/context";

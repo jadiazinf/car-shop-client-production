@@ -4,7 +4,7 @@ import BreadcrumbsContext from "../../../../../components/breadcrumbs/context";
 import { HeaderBreadcrumbItemProps } from "../../../../../components/breadcrumbs/header";
 import { usePersistedStore } from "../../../../../store/store";
 import { useOrderApiServices } from "../../../../api/orders";
-import { Spinner } from "@nextui-org/react";
+import { Spinner } from "@heroui/react";
 import { CompanyOrderInfoComponent } from "../../../../../entities/order/components/company_info";
 
 const HEADER_BREADCRUMBS: HeaderBreadcrumbItemProps[] = [

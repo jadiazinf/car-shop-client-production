@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useCompanyApiServices } from "../../../../api/companies";
 import { useContext, useEffect, useState } from "react";
 import CompanyInfo from "../../../../../entities/company/components/info";
-import { BreadcrumbItem, Breadcrumbs, Spinner } from "@nextui-org/react";
+import { BreadcrumbItem, Breadcrumbs, Spinner } from "@heroui/react";
 import CompanyModel from "../../../../../entities/company/model";
 import { ChooseCarForQuoteComponent } from "./components/choose_car";
 import VehicleModel from "../../../../../entities/vehicle/model";

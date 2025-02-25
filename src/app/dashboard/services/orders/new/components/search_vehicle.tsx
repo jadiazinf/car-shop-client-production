@@ -8,7 +8,7 @@ import {
   ModalBody,
   ModalContent,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import LogoComponent from "../../../../../../components/logo/component";
 import TextComponent from "../../../../../../components/inputs/text";
 import DatatableComponent from "../../../../../../components/datatable/component";

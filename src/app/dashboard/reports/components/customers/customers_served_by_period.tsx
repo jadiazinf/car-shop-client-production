@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useReportsApiServices } from "../../../../api/reports";
 import { ReportsProps } from "../type";
-import { Spinner, Tooltip } from "@nextui-org/react";
+import { Spinner, Tooltip } from "@heroui/react";
 import {
   Bar,
   BarChart,

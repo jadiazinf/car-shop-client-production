@@ -1,4 +1,4 @@
-import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/react";
+import { BreadcrumbItem, Breadcrumbs } from "@heroui/react";
 import { useNavigate } from "react-router-dom";
 
 export type HeaderBreadcrumbItemProps = {

@@ -7,7 +7,7 @@ import {
   ModalContent,
   Spinner,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import DatatableComponent from "../../../components/datatable/component";
 import { DatatableColumnsProps } from "../../../components/datatable/types";
 import ButtonComponent from "../../../components/buttons/component";

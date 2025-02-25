@@ -8,7 +8,7 @@ import {
   ModalContent,
   Spinner,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import ButtonComponent from "../../../../../../components/buttons/component";
 import TextComponent from "../../../../../../components/inputs/text";
 import { NumberInputHelper } from "../../../../../../components/inputs/helpers";

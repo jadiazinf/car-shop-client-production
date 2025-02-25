@@ -11,7 +11,7 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { IDatatableComponentProps } from "./interfaces";
 import { useCallback, useMemo } from "react";
 import { BsThreeDots } from "react-icons/bs";

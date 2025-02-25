@@ -4,7 +4,7 @@ import {
   ModalBody,
   ModalContent,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import RatingComponent from ".";
 import LogoComponent from "../logo/component";
 

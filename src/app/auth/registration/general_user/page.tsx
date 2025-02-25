@@ -7,7 +7,7 @@ import UserContext from "../../../../entities/user/contexts/user";
 import VehicleContext from "../../../../entities/vehicle/contexts/vehicle";
 import UserModel from "../../../../entities/user/model";
 import VehicleModel from "../../../../entities/vehicle/model";
-import { BreadcrumbItem, Breadcrumbs, Card, CardBody } from "@nextui-org/react";
+import { BreadcrumbItem, Breadcrumbs, Card, CardBody } from "@heroui/react";
 import ButtonComponent from "../../../../components/buttons/component";
 import { FaUser, FaUserCheck } from "react-icons/fa";
 import { MdCarCrash, MdDirectionsCar } from "react-icons/md";

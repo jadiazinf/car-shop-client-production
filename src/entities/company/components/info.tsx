@@ -11,7 +11,7 @@ import {
   ModalContent,
   Spinner,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import PdfViewer from "../../../components/pdf/pdf_viewer";
 import AvatarComponent from "../../../components/avatar/component";
 import useSetCompanyProfileImage, {

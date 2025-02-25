@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Spinner } from "@nextui-org/react";
+import { Spinner } from "@heroui/react";
 import { HeaderBreadcrumbItemProps } from "../../../../components/breadcrumbs/header";
 import BreadcrumbsContext from "../../../../components/breadcrumbs/context";
 import { usePersistedStore } from "../../../../store/store";

@@ -3,7 +3,7 @@ import { RootState } from "../../../store/store";
 import { PersistedStore } from "../../../store/types";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Spinner } from "@nextui-org/react";
+import { Spinner } from "@heroui/react";
 import { StatusCodes } from "http-status-codes";
 import useGetUserCompanies, {
   GetUserCompaniesProps,

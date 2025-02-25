@@ -3,7 +3,7 @@ import {
   ModalBody,
   ModalContent,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import ButtonComponent from "../../../components/buttons/component";
 import DatesHelpers from "../../../helpers/dates/helper";
 import { usePersistedStore } from "../../../store/store";

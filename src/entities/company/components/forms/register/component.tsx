@@ -14,7 +14,7 @@ import {
   ModalBody,
   ModalContent,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import ViewImagesComponent from "../../../../../components/images/view_images";
 
 function Container(props: { children: ReactNode }) {
@@ -60,17 +60,23 @@ function CompanyInfoForm(props: {
     if (place?.town) formik.setFieldValue("location_id", place.town.id);
   }, [place?.town]);
 
-  function getCompanyCharter(): string | File | null {
-    if (formik.values.company_charter) {
-      if (props.initialValues.company_charter) {
-        if (props.filesAreCommingFrom === "server") {
-          return `${import.meta.env.VITE_API_BASE_ROUTE}/${
-            formik.values.company_charter as string
-          }`;
-        } else return formik.values.company_charter;
-      }
+  function isFile(value: any): value is File {
+    return value instanceof File;
+  }
 
-      return formik.values.company_charter;
+  function isString(value: any): value is string {
+    return typeof value === "string";
+  }
+
+  function getCompanyCharter(): string | File | null {
+    const companyCharter = formik.values.company_charter;
+
+    if (companyCharter) {
+      if (isFile(companyCharter)) {
+        return companyCharter;
+      } else if (isString(companyCharter)) {
+        return `${import.meta.env.VITE_API_BASE_ROUTE}/${companyCharter}`;
+      }
     }
 
     return null;

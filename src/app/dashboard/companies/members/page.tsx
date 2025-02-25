@@ -13,7 +13,7 @@ import {
   ModalBody,
   ModalContent,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import CompanyMemberEditUserRole from "./components/edit_user_role";
 import { UserCompanyModel } from "../../../../entities/users_companies/model";
 import CompanyMemberDeleteUser from "./components/delete_user";

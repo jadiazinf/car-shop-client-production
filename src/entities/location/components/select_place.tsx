@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import PlaceContext from "../contexts/place";
 import { LocationType, Place } from "../types";
 import useGetLocationsByType from "../services/by_type/use_service";
-import { Spinner } from "@nextui-org/react";
+import { Spinner } from "@heroui/react";
 import SelectComponent from "../../../components/inputs/select";
 import useGetLocationChildrens, {
   GetLocationChildrensProps,

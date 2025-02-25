@@ -16,7 +16,7 @@ import {
   Tab,
   Tabs,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useContext, useEffect, useState } from "react";
 import CompanyInfo from "../../../../../entities/company/components/info";
 import UserInfo from "../../../../../entities/user/components/info";

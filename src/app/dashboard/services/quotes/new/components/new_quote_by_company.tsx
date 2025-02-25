@@ -10,7 +10,7 @@ import { FaCar } from "react-icons/fa";
 import { FaTruckField, FaTruckFront } from "react-icons/fa6";
 import TextComponent from "../../../../../../components/inputs/text";
 import { useContext, useEffect, useState } from "react";
-import { Checkbox, Divider } from "@nextui-org/react";
+import { Checkbox, Divider } from "@heroui/react";
 import ButtonComponent from "../../../../../../components/buttons/component";
 import { NumberInputHelper } from "../../../../../../components/inputs/helpers";
 import { useNavigate } from "react-router-dom";

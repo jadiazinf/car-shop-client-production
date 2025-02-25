@@ -1,4 +1,4 @@
-import { Checkbox } from "@nextui-org/react";
+import { Checkbox } from "@heroui/react";
 import ServiceModel from "../../service/model";
 import { ServiceOrderModel, ServiceOrderStatus } from "../model";
 import { VehicleType } from "../../vehicle/types";

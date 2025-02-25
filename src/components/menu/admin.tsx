@@ -1,7 +1,7 @@
 import { GoTools } from "react-icons/go";
 import MenuOptionContainer from "./components/option_container";
 import { LiaToolsSolid } from "react-icons/lia";
-import { Accordion, AccordionItem } from "@nextui-org/react";
+import { Accordion, AccordionItem } from "@heroui/react";
 import { IoBarChartSharp, IoDocumentTextOutline } from "react-icons/io5";
 import { MdAppRegistration } from "react-icons/md";
 

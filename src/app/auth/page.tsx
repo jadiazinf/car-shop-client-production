@@ -2,7 +2,7 @@ import { useState } from "react";
 import ChooseRegistrationOptionComponent from "./components/choose_registration_option";
 import LoginCardComponent from "./components/login_card";
 import AuthLayout from "./layout";
-import { Card, CardBody } from "@nextui-org/react";
+import { Card, CardBody } from "@heroui/react";
 
 function AuthPage() {
 

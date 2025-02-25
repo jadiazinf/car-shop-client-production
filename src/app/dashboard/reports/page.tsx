@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { HeaderBreadcrumbItemProps } from "../../../components/breadcrumbs/header";
 import BreadcrumbsContext from "../../../components/breadcrumbs/context";
-import { Tab, Tabs } from "@nextui-org/react";
+import { Tab, Tabs } from "@heroui/react";
 import { KpiReportsComponent } from "./components/kpi";
 import { usePersistedStore } from "../../../store/store";
 import { ClaimsReportsComponent } from "./components/claims";

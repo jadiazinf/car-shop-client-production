@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useCompanyApiServices } from "../../../../app/api/companies";
 import { VehicleType } from "../../../vehicle/types";
-import { Spinner } from "@nextui-org/react";
+import { Spinner } from "@heroui/react";
 import PaginationComponent from "../../../../components/datatable/pagination";
 import { NewServiceOrderComponent } from "../../new";
 import { ServiceOrderModel, ServiceOrderStatus } from "../../model";

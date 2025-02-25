@@ -1,4 +1,4 @@
-import { Checkbox, Spinner } from "@nextui-org/react";
+import { Checkbox, Spinner } from "@heroui/react";
 import {
   ServiceOrderModel,
   ServiceOrderStatus,

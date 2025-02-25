@@ -6,7 +6,7 @@ import UserContext from "../../../../entities/user/contexts/user";
 import { StatusCodes } from "http-status-codes";
 import { SetAuthentication } from "../../../../store/auth/reducers";
 import { AuthStatus } from "../../../../auth/types";
-import { BreadcrumbItem, Breadcrumbs, Card, CardBody } from "@nextui-org/react";
+import { BreadcrumbItem, Breadcrumbs, Card, CardBody } from "@heroui/react";
 import UserInfoForm from "../../../../entities/user/components/forms/user/component";
 import UserModel from "../../../../entities/user/model";
 import ButtonComponent from "../../../../components/buttons/component";
@@ -66,6 +66,7 @@ function Main() {
           company_id,
           roles,
           user,
+          user_company_id: null,
         },
       })
     );

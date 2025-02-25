@@ -8,7 +8,7 @@ import { ToasterContext } from "../../../../components/toaster/context/context";
 import ButtonComponent from "../../../../components/buttons/component";
 import BreadcrumbsContext from "../../../../components/breadcrumbs/context";
 import { HeaderBreadcrumbItemProps } from "../../../../components/breadcrumbs/header";
-import { Card, CardBody } from "@nextui-org/react";
+import { Card, CardBody } from "@heroui/react";
 import BrandAndModelProvider from "../../../../entities/model/providers/brand_and_model";
 import VehicleProvider from "../../../../entities/vehicle/providers/vehicle";
 import BrandAndModelContext from "../../../../entities/model/contexts/brand_and_model";

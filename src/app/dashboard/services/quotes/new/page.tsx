@@ -8,7 +8,7 @@ import UserModel from "../../../../../entities/user/model";
 import VehicleModel from "../../../../../entities/vehicle/model";
 import ServiceModel from "../../../../../entities/service/model";
 import { SelectServiceOrdersComponent } from "./components/select_service_orders";
-import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/react";
+import { BreadcrumbItem, Breadcrumbs } from "@heroui/react";
 import { VehicleHelpers } from "../../../../../entities/vehicle/helpers";
 
 const HEADER_BREADCRUMBS: HeaderBreadcrumbItemProps[] = [

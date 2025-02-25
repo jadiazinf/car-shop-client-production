@@ -20,7 +20,7 @@ import {
   ModalBody,
   ModalContent,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import ButtonComponent from "../../../../../components/buttons/component";
 
 function Container(props: { children: ReactNode }) {

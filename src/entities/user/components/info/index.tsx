@@ -5,7 +5,7 @@ import {
   ModalContent,
   Spinner,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import UserModel from "../../model";
 import useGetLocationParents, {
   GetLocationParentsProps,

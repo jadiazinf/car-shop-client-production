@@ -1,4 +1,4 @@
-import { Checkbox, Divider, Input, Spinner } from "@nextui-org/react";
+import { Checkbox, Divider, Input, Spinner } from "@heroui/react";
 import { IServicesFilterProps } from "./interfaces";
 import useGetAllCategories from "../../../category/services/get_all/use_get_all_categories";
 import { useContext, useEffect } from "react";

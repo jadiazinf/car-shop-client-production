@@ -3,7 +3,7 @@ import BreadcrumbsContext from "../../../components/breadcrumbs/context";
 import { HeaderBreadcrumbItemProps } from "../../../components/breadcrumbs/header";
 import useGetCompany from "../../../entities/company/services/get/use_get_company";
 import { usePersistedStore } from "../../../store/store";
-import { Spinner } from '@nextui-org/react';
+import { Spinner } from "@heroui/react";
 import CompanyInfo from "../../../entities/company/components/info";
 
 const HEADER_BREADCRUMBS_OPTIONS: HeaderBreadcrumbItemProps[] = [

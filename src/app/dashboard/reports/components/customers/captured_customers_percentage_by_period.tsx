@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
 import { motion } from "framer-motion";
 import { useReportsApiServices } from "../../../../api/reports/index";
-import { Spinner } from "@nextui-org/react";
+import { Spinner } from "@heroui/react";
 import { ReportsProps } from "../type";
 
 const COLORS = ["#4F46E5", "#FACC15"];

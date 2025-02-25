@@ -5,7 +5,7 @@ import { ToasterProvider } from "../components/toaster/provider";
 import AppRoutes from "../routes/app_routes";
 import MainLayout from "./layout";
 import { useHref, useNavigate } from "react-router-dom";
-import { NextUIProvider } from "@nextui-org/react";
+import { HeroUIProvider } from "@heroui/react";
 import MenuProvider from "../components/menu/provider";
 
 export const App = (): JSX.Element => {
@@ -14,7 +14,7 @@ export const App = (): JSX.Element => {
   const navigate = useNavigate();
 
   return (
-    <NextUIProvider navigate={navigate} useHref={useHref}>
+    <HeroUIProvider navigate={navigate} useHref={useHref}>
       <ToasterProvider>
         <MenuProvider>
           <MainLayout>
@@ -22,6 +22,6 @@ export const App = (): JSX.Element => {
           </MainLayout>
         </MenuProvider>
       </ToasterProvider>
-    </NextUIProvider>
+    </HeroUIProvider>
   );
 };

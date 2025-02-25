@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Divider, Spinner } from "@nextui-org/react";
+import { Divider, Spinner } from "@heroui/react";
 import { VehicleType } from "../../../../../../../entities/vehicle/types";
 import { ServiceOrderModel } from "../../../../../../../entities/service_order/model";
 import { usePersistedStore } from "../../../../../../../store/store";

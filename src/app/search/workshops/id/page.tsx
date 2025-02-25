@@ -5,7 +5,7 @@ import CompanyInfo from "../../../../entities/company/components/info";
 import { useCompanyApiServices } from "../../../api/companies";
 import { useNavigate, useParams } from "react-router-dom";
 import { usePersistedStore } from "../../../../store/store";
-import { Button, Spinner } from "@nextui-org/react";
+import { Button, Spinner } from "@heroui/react";
 import { StatusCodes } from "http-status-codes";
 import CompanyModel from "../../../../entities/company/model";
 import ServicePricesComponent from "../../../../entities/service/components/prices/component";

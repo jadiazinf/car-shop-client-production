@@ -1,6 +1,8 @@
-import { Pagination, Spinner, Tab, Tabs } from "@nextui-org/react";
+import { Pagination, Spinner, Tab, Tabs } from "@heroui/react";
 import { useContext, useEffect, useState } from "react";
-import useGetAllUserCompaniesRequests, { GetAllUserCompaniesRequestsProps } from "../../../../entities/user_company_request/services/get_all/use_get_all_requests";
+import useGetAllUserCompaniesRequests, {
+  GetAllUserCompaniesRequestsProps,
+} from "../../../../entities/user_company_request/services/get_all/use_get_all_requests";
 import { UserCompanyRequestStatus } from "../../../../entities/user_company_request/types";
 import CardRequestComponent from "../../../../entities/user_company_request/components/requests/card_request";
 import { useNavigate } from "react-router-dom";
@@ -10,31 +12,36 @@ import BreadcrumbsContext from "../../../../components/breadcrumbs/context";
 const HEADER_BREADCRUMBS_OPTIONS: HeaderBreadcrumbItemProps[] = [
   {
     text: "Home",
-    url: "/"
+    url: "/",
   },
   {
     text: "Dashboard",
-    url: "/dashboard"
+    url: "/dashboard",
   },
   {
     text: "Compañía",
-    url: "/dashboard/companies"
+    url: "/dashboard/companies",
   },
   {
     text: "Peticiones",
-    url: "/dashboard/companies/requests"
-  }
-]
+    url: "/dashboard/companies/requests",
+  },
+];
 
 function CompaniesRequestsSuperadminPage() {
-
   const { setBreadcrumbs } = useContext(BreadcrumbsContext);
 
-  const [ page, setPage ] = useState<number>(1);
+  const [page, setPage] = useState<number>(1);
 
-  const [ requestStatus, setRequestStatus ] = useState<UserCompanyRequestStatus>(UserCompanyRequestStatus.PENDING);
+  const [requestStatus, setRequestStatus] = useState<UserCompanyRequestStatus>(
+    UserCompanyRequestStatus.PENDING
+  );
 
-  const { isGettingAllUsersCompaniesRequestsLoading, payloadState, performGetAllUsersCompaniesRequests } = useGetAllUserCompaniesRequests();
+  const {
+    isGettingAllUsersCompaniesRequestsLoading,
+    payloadState,
+    performGetAllUsersCompaniesRequests,
+  } = useGetAllUserCompaniesRequests();
 
   const navigate = useNavigate();
 
@@ -43,7 +50,10 @@ function CompaniesRequestsSuperadminPage() {
   }, []);
 
   useEffect(() => {
-    performGetAllUsersCompaniesRequests({page_number: page, status: requestStatus});
+    performGetAllUsersCompaniesRequests({
+      page_number: page,
+      status: requestStatus,
+    });
   }, [requestStatus]);
 
   function getDataMessageWhenNone() {
@@ -53,52 +63,75 @@ function CompaniesRequestsSuperadminPage() {
       case UserCompanyRequestStatus.PENDING:
         return "No hay solicitudes por responder";
       case UserCompanyRequestStatus.REJECTED:
-        return "No hay solicitudes rechazadas"
+        return "No hay solicitudes rechazadas";
     }
   }
 
   return (
     <div className="w-full flex flex-col justify-center">
-      <div className='w-full flex justify-center items-center'>
-        <Tabs color="primary" key="status" variant="underlined" aria-label="requests status" onSelectionChange={(value) => setRequestStatus(value as UserCompanyRequestStatus)}>
-          <Tab key={UserCompanyRequestStatus.PENDING} title="Pendientes por aprobación"/>
-          <Tab key={UserCompanyRequestStatus.APPROVED} title="Aprobadas"/>
-          <Tab key={UserCompanyRequestStatus.REJECTED} title="Rechazadas"/>
+      <div className="w-full flex items-center">
+        <Tabs
+          color="primary"
+          key="status"
+          variant="underlined"
+          aria-label="requests status"
+          classNames={{
+            tabList:
+              "gap-6 w-full relative rounded-none p-0 border-b border-divider",
+            cursor: "w-full bg-primary",
+            tab: "max-w-fit px-0 h-12",
+            tabContent: "group-data-[selected=true]:text-primary",
+          }}
+          onSelectionChange={(value) =>
+            setRequestStatus(value as UserCompanyRequestStatus)
+          }
+        >
+          <Tab
+            key={UserCompanyRequestStatus.PENDING}
+            title="Pendientes por aprobación"
+          />
+          <Tab key={UserCompanyRequestStatus.APPROVED} title="Aprobadas" />
+          <Tab key={UserCompanyRequestStatus.REJECTED} title="Rechazadas" />
         </Tabs>
       </div>
-      <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-10'>
-        {
-          isGettingAllUsersCompaniesRequestsLoading ?
-          <div className='col-span-full my-10'>
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-10">
+        {isGettingAllUsersCompaniesRequestsLoading ? (
+          <div className="col-span-full my-10">
             <Spinner />
           </div>
-          :
-          payloadState === 'not loaded' || !payloadState.payload ? <span>No hay data</span> :
-          payloadState.payload.data.length === 0 ?
-          <div className='col-span-full text-center flex justify-center items-center my-10'>
+        ) : payloadState === "not loaded" || !payloadState.payload ? (
+          <span>No hay data</span>
+        ) : payloadState.payload.data.length === 0 ? (
+          <div className="col-span-full text-center flex justify-center items-center my-10">
             <span>{getDataMessageWhenNone()}</span>
-          </div> :
-          payloadState.payload.data.map( request => (
+          </div>
+        ) : (
+          payloadState.payload.data.map((request) => (
             <CardRequestComponent
               user_company_request={request}
-              onClick={() => navigate(`/dashboard/companies/requests/${request.id!}`)}
+              onClick={() =>
+                navigate(`/dashboard/companies/requests/${request.id!}`)
+              }
             />
           ))
-        }
+        )}
       </div>
-      {
-        isGettingAllUsersCompaniesRequestsLoading || payloadState === 'not loaded' ? null :
-        <div className='w-full flex justify-center items-center mt-10'>
+      {isGettingAllUsersCompaniesRequestsLoading ||
+      payloadState === "not loaded" ? null : (
+        <div className="w-full flex justify-center items-center mt-10">
           <Pagination
             showControls
-            total={(payloadState as GetAllUserCompaniesRequestsProps).payload.total_pages}
+            total={
+              (payloadState as GetAllUserCompaniesRequestsProps).payload
+                .total_pages
+            }
             color="primary"
             page={page}
             onChange={setPage}
             variant="light"
           />
         </div>
-      }
+      )}
     </div>
   );
 }

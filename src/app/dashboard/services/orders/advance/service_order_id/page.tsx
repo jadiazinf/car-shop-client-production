@@ -9,7 +9,7 @@ import {
   ModalContent,
   Spinner,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { AdvanceModel } from "../../../../../../entities/advances/model";
 import { usePersistedStore } from "../../../../../../store/store";
 import ButtonComponent from "../../../../../../components/buttons/component";

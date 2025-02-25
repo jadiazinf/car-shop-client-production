@@ -6,7 +6,7 @@ import { usePersistedStore } from "../../../../../store/store";
 import { ToasterContext } from "../../../../../components/toaster/context/context";
 import { StatusCodes } from "http-status-codes";
 import { UserCompanyRole } from "../../../../../entities/users_companies/types";
-import { Checkbox, CheckboxGroup } from "@nextui-org/react";
+import { Checkbox, CheckboxGroup } from "@heroui/react";
 import { UserCompanyHelpers } from "../../../../../entities/users_companies/helpers";
 
 type Props = {

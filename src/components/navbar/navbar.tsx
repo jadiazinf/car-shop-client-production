@@ -1,4 +1,4 @@
-import { Navbar, NavbarBrand, NavbarContent } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent } from "@heroui/react";
 import LogoComponent from "../logo/component";
 import { useNavigate } from "react-router-dom";
 import { usePersistedStore } from "../../store/store";
@@ -6,7 +6,6 @@ import AuthNavbarSection from "./auth";
 import { MenuComponent } from "../menu";
 
 function NavbarComponent() {
-
   const navigate = useNavigate();
 
   const { authReducer } = usePersistedStore();
@@ -36,12 +35,18 @@ function NavbarComponent() {
       <NavbarContent>
         <NavbarBrand>
           <MenuComponent />
-          <div className='h-full flex justify-center items-center cursor-pointer' onClick={() => navigate("/")}>
-            <LogoComponent size="md"/>
+          <div
+            className="h-full flex justify-center items-center cursor-pointer"
+            onClick={() => navigate("/")}
+          >
+            <LogoComponent size="md" />
           </div>
         </NavbarBrand>
       </NavbarContent>
-      <AuthNavbarSection authStatus={authReducer.status} roles={authReducer.sessionType?.roles || null}/>
+      <AuthNavbarSection
+        authStatus={authReducer.status}
+        roles={authReducer.sessionType?.roles || null}
+      />
     </Navbar>
   );
 }

@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useVehicleApiServices } from "../../../api/vehicles";
 import { usePersistedStore } from "../../../../store/store";
-import { Spinner } from "@nextui-org/react";
+import { Spinner } from "@heroui/react";
 import VehicleInfo from "../../../../entities/vehicle/components/info";
 import VehicleModel from "../../../../entities/vehicle/model";
 import BreadcrumbsContext from "../../../../components/breadcrumbs/context";

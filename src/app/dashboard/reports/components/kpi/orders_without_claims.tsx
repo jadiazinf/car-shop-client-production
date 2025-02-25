@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useReportsApiServices } from "../../../../api/reports";
-import { Card, CardBody, Spinner } from "@nextui-org/react";
+import { Card, CardBody, Spinner } from "@heroui/react";
 import { KpiContainer } from "./kpi_container";
 import { ReportsProps } from "../type";
 

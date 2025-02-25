@@ -7,7 +7,7 @@ import { ReactNode, useEffect, useState } from "react";
 import useGetAllCategories from "../../../category/services/get_all/use_get_all_categories";
 import CategoryModel from "../../../category/model";
 import { NumberInputHelper } from "../../../../components/inputs/helpers";
-import { Checkbox } from "@nextui-org/react";
+import { Checkbox } from "@heroui/react";
 import { RiEBikeLine } from "react-icons/ri";
 import { FaCar } from "react-icons/fa";
 import { FaTruckField, FaTruckFront } from "react-icons/fa6";

@@ -2,7 +2,6 @@ import { Navigate, Route } from "react-router-dom";
 import LogoutPage from "../app/auth/logout/page";
 import ChooseUserCompanyPage from "../app/auth/choose_user_company/page";
 import CompaniesRequestsAdminPage from "../app/dashboard/companies/requests/admin_page";
-import AdminUpdateRequest from "../app/dashboard/companies/requests/id/update_request/admin/page";
 import CompaniesAdminPage from "../app/dashboard/companies/admin_page";
 import AdminDashboardPage from "../app/dashboard/admin/page";
 import AdminServicesPage from "../app/dashboard/services/page";
@@ -30,6 +29,8 @@ import UserOrderInfoPage from "../app/profile/orders/id/page";
 import { UserServiceOrderAdvance } from "../app/profile/orders/advances/service_order_id/page";
 import { ClaimsPage } from "../app/dashboard/services/claims/page";
 import ReportsPage from "../app/dashboard/reports/page";
+import { CompanyAdminCreateRequest } from "../app/dashboard/companies/requests/admin/create/page";
+import AdminCompanyRequestPage from "../app/dashboard/companies/requests/id/admin_page";
 
 const adminRoutes = (
   <>
@@ -85,7 +86,11 @@ const adminRoutes = (
     />
     <Route
       path="/dashboard/companies/requests/:id"
-      element={<AdminUpdateRequest />}
+      element={<AdminCompanyRequestPage />}
+    />
+    <Route
+      path="/dashboard/companies/requests/admin/create"
+      element={<CompanyAdminCreateRequest />}
     />
     <Route
       path="/dashboard/companies/members"

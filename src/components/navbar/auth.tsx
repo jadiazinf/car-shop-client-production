@@ -10,7 +10,7 @@ import {
   Link,
   NavbarContent,
   NavbarItem,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useEffect, useState } from "react";
 import { UserCompanyRole } from "../../entities/users_companies/types";
 import AdminNavbarOptions from "./admin";
@@ -24,6 +24,7 @@ import { useDispatch } from "react-redux";
 import { SetAuthentication } from "../../store/auth/reducers";
 import { UserCompanyHelpers } from "../../entities/users_companies/helpers";
 import SupervisorNavbarOptions from "./supervisor";
+import { NotificationComponent } from "./notifications/component";
 
 function NotAuthenticatedNavbarActions() {
   const navigate = useNavigate();
@@ -87,71 +88,78 @@ function AuthenticatedNavbarActions() {
     appDispatch(
       SetAuthentication({
         status: AuthStatus.AUTHENTICATED,
-        sessionType: { user: sessionType!.user, company_id: null, roles: [] },
+        sessionType: {
+          user: sessionType!.user,
+          company_id: null,
+          roles: [],
+          user_company_id: null,
+        },
         token,
       })
     );
   }
 
   return (
-    <Dropdown placement="bottom-end">
-      <DropdownTrigger>
-        <Avatar
-          isBordered
-          as="button"
-          className="transition-transform"
-          color="secondary"
-          name="Jason Hughes"
-          size="sm"
-          src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-        />
-      </DropdownTrigger>
-      <DropdownMenu aria-label="Profile Actions" variant="flat">
-        <DropdownItem
-          key="profile"
-          className="h-14 gap-2 text-center"
-          onClick={() => navigate("/profile")}
-        >
-          <p className="font-semibold">
-            {state.value
-              ? `${state.value.firstName} ${state.value.lastName} ${
-                  status !== AuthStatus.AUTHENTICATED
-                    ? ""
-                    : sessionType?.roles !== null
-                    ? `(${UserCompanyHelpers.translateUserCompanyRole(
-                        UserCompanyHelpers.getRoleWithGreaterHierarchy(
-                          sessionType?.roles!
-                        )
-                      )})`
-                    : ""
-                }`
-              : ""}
-          </p>
-        </DropdownItem>
-        {changeSessionFlag ? (
-          <DropdownItem key="change-session" color="primary">
+    <>
+      <Dropdown placement="bottom-end">
+        <DropdownTrigger>
+          <Avatar
+            isBordered
+            as="button"
+            className="transition-transform"
+            color="secondary"
+            name="Jason Hughes"
+            size="sm"
+            src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+          />
+        </DropdownTrigger>
+        <DropdownMenu aria-label="Profile Actions" variant="flat">
+          <DropdownItem
+            key="profile"
+            className="h-14 gap-2 text-center"
+            onClick={() => navigate("/profile")}
+          >
+            <p className="font-semibold">
+              {state.value
+                ? `${state.value.firstName} ${state.value.lastName} ${
+                    status !== AuthStatus.AUTHENTICATED
+                      ? ""
+                      : sessionType?.roles !== null
+                      ? `(${UserCompanyHelpers.translateUserCompanyRole(
+                          UserCompanyHelpers.getRoleWithGreaterHierarchy(
+                            sessionType?.roles!
+                          )
+                        )})`
+                      : ""
+                  }`
+                : ""}
+            </p>
+          </DropdownItem>
+          {changeSessionFlag ? (
+            <DropdownItem key="change-session" color="primary">
+              <ButtonComponent
+                color="primary"
+                text="Cambiar de empresa"
+                type="button"
+                variant="light"
+                onClick={changeSession}
+              />
+            </DropdownItem>
+          ) : (
+            <></>
+          )}
+          <DropdownItem key="logout" color="danger">
             <ButtonComponent
               color="primary"
-              text="Cambiar de empresa"
+              text="Cerrar sesión"
               type="button"
               variant="light"
-              onClick={changeSession}
+              onClick={() => navigate("/auth/logout")}
             />
           </DropdownItem>
-        ) : (
-          <></>
-        )}
-        <DropdownItem key="logout" color="danger">
-          <ButtonComponent
-            color="primary"
-            text="Cerrar sesión"
-            type="button"
-            variant="light"
-            onClick={() => navigate("/auth/logout")}
-          />
-        </DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
+        </DropdownMenu>
+      </Dropdown>
+    </>
   );
 }
 
@@ -226,7 +234,16 @@ function AuthNavbarSection(props: {
           </NavbarItem>
         ))}
       </NavbarContent>
-      <NavbarContent justify="end">{Actions}</NavbarContent>
+      <NavbarContent as="div" justify="end">
+        <div className="flex items-center gap-8">
+          {props.authStatus === AuthStatus.AUTHENTICATED && (
+            <NavbarContent>
+              <NotificationComponent />
+            </NavbarContent>
+          )}
+          {Actions}
+        </div>
+      </NavbarContent>
     </>
   );
 }
