@@ -7,7 +7,16 @@ import UserContext from "../../../../entities/user/contexts/user";
 import VehicleContext from "../../../../entities/vehicle/contexts/vehicle";
 import UserModel from "../../../../entities/user/model";
 import VehicleModel from "../../../../entities/vehicle/model";
-import { BreadcrumbItem, Breadcrumbs, Card, CardBody } from "@heroui/react";
+import {
+  BreadcrumbItem,
+  Breadcrumbs,
+  Card,
+  CardBody,
+  Modal,
+  ModalBody,
+  ModalContent,
+  useDisclosure,
+} from "@heroui/react";
 import ButtonComponent from "../../../../components/buttons/component";
 import { FaUser, FaUserCheck } from "react-icons/fa";
 import { MdCarCrash, MdDirectionsCar } from "react-icons/md";
@@ -20,6 +29,11 @@ import { SetAuthentication } from "../../../../store/auth/reducers";
 import { AuthStatus } from "../../../../auth/types";
 import { useVehicleApiServices } from "../../../api/vehicles";
 import { useUsersApiServices } from "../../../api/users";
+import { useUserReferralsApiServices } from "../../../api/user_referrals";
+import LogoComponent from "../../../../components/logo/component";
+import SelectComponent from "../../../../components/inputs/select";
+import { UserReferralsHelpers } from "../../../../entities/user_referrals/helpers";
+import { UserReferralBy } from "../../../../entities/user_referrals/types";
 
 enum PageStage {
   USER = "user",
@@ -39,6 +53,13 @@ function Main() {
 
   const { dispatch: toasterDispatch } = useContext(ToasterContext);
 
+  const { isCreatingUserReferral, perform } =
+    useUserReferralsApiServices.createUserReferral();
+
+  const [referralByState, setReferralByState] = useState<UserReferralBy>(
+    UserReferralBy.FRIEND
+  );
+
   const appDispatch = useDispatch();
 
   const { isCreatingUser, perform: performCreateUser } =
@@ -52,6 +73,8 @@ function Main() {
   const { isAttachingImages, perform: performAttachVehicleImages } =
     attachVehicleImages();
 
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
   function authenticateUser(user: UserModel, token: string) {
     appDispatch(
       SetAuthentication({
@@ -61,6 +84,7 @@ function Main() {
           company_id: null,
           roles: null,
           user,
+          user_company_id: null,
         },
       })
     );
@@ -114,6 +138,11 @@ function Main() {
       });
       return;
     } else {
+      if (typeof newUser !== "string") {
+        if (newUser && newUser.id !== undefined) {
+          perform(newUser.id, referralByState);
+        }
+      }
       toasterDispatch({
         payload: "Usuario registrado correctamente",
         type: "SUCCESS",
@@ -151,6 +180,52 @@ function Main() {
 
   return (
     <>
+      <Modal
+        className="p-5"
+        radius="sm"
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      >
+        <ModalBody>
+          <ModalContent>
+            <div className="w-full h-full flex justify-center items-center flex-col gap-5">
+              <LogoComponent />
+              <p>¿Cómo conoció la plataforma?</p>
+              <div className="w-full">
+                <SelectComponent
+                  data={UserReferralsHelpers.referralValues.map((option) => ({
+                    key: option,
+                    label: UserReferralsHelpers.translateUserReferralsHelpers(
+                      option as UserReferralBy
+                    ),
+                  }))}
+                  name="referral"
+                  onChange={(value) =>
+                    setReferralByState(value.target.value as UserReferralBy)
+                  }
+                  value={referralByState}
+                  label="Seleccione una opción"
+                />
+              </div>
+              <div className="w-auto">
+                <ButtonComponent
+                  color="primary"
+                  text="Confirmar registro"
+                  type="button"
+                  variant="solid"
+                  onClick={handleRegistration}
+                  isLoading={
+                    isCreatingUser ||
+                    isCreatingVehicle ||
+                    isAttachingImages ||
+                    isCreatingUserReferral
+                  }
+                />
+              </div>
+            </div>
+          </ModalContent>
+        </ModalBody>
+      </Modal>
       <div className="w-full h-full flex flex-col">
         <Breadcrumbs
           underline="active"
@@ -320,15 +395,10 @@ function Main() {
                           <div className="w-auto">
                             <ButtonComponent
                               color="primary"
-                              text="Confirmar registro"
+                              text="Continuar"
                               type="button"
                               variant="solid"
-                              onClick={handleRegistration}
-                              isLoading={
-                                isCreatingUser ||
-                                isCreatingVehicle ||
-                                isAttachingImages
-                              }
+                              onClick={onOpen}
                             />
                           </div>
                         </div>

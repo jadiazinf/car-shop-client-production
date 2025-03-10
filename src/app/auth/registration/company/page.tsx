@@ -6,7 +6,16 @@ import UserContext from "../../../../entities/user/contexts/user";
 import { StatusCodes } from "http-status-codes";
 import { SetAuthentication } from "../../../../store/auth/reducers";
 import { AuthStatus } from "../../../../auth/types";
-import { BreadcrumbItem, Breadcrumbs, Card, CardBody } from "@heroui/react";
+import {
+  BreadcrumbItem,
+  Breadcrumbs,
+  Card,
+  CardBody,
+  Modal,
+  ModalBody,
+  ModalContent,
+  useDisclosure,
+} from "@heroui/react";
 import UserInfoForm from "../../../../entities/user/components/forms/user/component";
 import UserModel from "../../../../entities/user/model";
 import ButtonComponent from "../../../../components/buttons/component";
@@ -23,6 +32,11 @@ import PlaceProvider from "../../../../entities/location/providers/place";
 import { useUsersApiServices } from "../../../api/users";
 import { useCompanyApiServices } from "../../../api/companies";
 import { UserCompanyRole } from "../../../../entities/users_companies/types";
+import { useUserReferralsApiServices } from "../../../api/user_referrals";
+import { UserReferralBy } from "../../../../entities/user_referrals/types";
+import LogoComponent from "../../../../components/logo/component";
+import SelectComponent from "../../../../components/inputs/select";
+import { UserReferralsHelpers } from "../../../../entities/user_referrals/helpers";
 
 enum PageStage {
   USER = "user",
@@ -49,8 +63,17 @@ function Main() {
   const { isCreatingUser, perform: createUser } =
     useUsersApiServices.createGeneralUser();
 
+  const { isCreatingUserReferral, perform } =
+    useUserReferralsApiServices.createUserReferral();
+
+  const [referralByState, setReferralByState] = useState<UserReferralBy>(
+    UserReferralBy.FRIEND
+  );
+
   const { isCreatingCompany, perform: createCompany } =
     useCompanyApiServices.createCompany();
+
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   function authenticateUser(
     user: UserModel,
@@ -114,6 +137,10 @@ function Main() {
       return;
     }
 
+    if (response.data.user?.id !== undefined) {
+      perform(response.data.user.id, referralByState);
+    }
+
     const [registrationCompanyIsValid, newCompany] =
       await handleRegisterCompany(
         company!,
@@ -135,6 +162,61 @@ function Main() {
 
   return (
     <>
+      <Modal
+        className="p-5"
+        radius="sm"
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      >
+        <ModalBody>
+          <ModalContent>
+            <div className="w-full h-full flex justify-center items-center flex-col gap-5">
+              <LogoComponent />
+              <p>¿Cómo conoció la plataforma?</p>
+              <div className="w-full">
+                <SelectComponent
+                  data={UserReferralsHelpers.referralValues.map((option) => ({
+                    key: option,
+                    label:
+                      UserReferralsHelpers.translateUserReferralsHelpers(
+                        option
+                      ),
+                  }))}
+                  name="referral"
+                  onChange={(value) =>
+                    setReferralByState(value.target.value as UserReferralBy)
+                  }
+                  value={referralByState}
+                  label="Seleccione una opción"
+                />
+              </div>
+              <div className="w-auto">
+                <ButtonComponent
+                  color="primary"
+                  text="Confirmar registro"
+                  type="button"
+                  variant="solid"
+                  onClick={
+                    status === AuthStatus.NOT_AUTHENTICATED
+                      ? handleRegisterUser
+                      : () =>
+                          handleRegisterCompany(
+                            company!,
+                            sessionType!.user.id!,
+                            token!
+                          )
+                  }
+                  isLoading={
+                    isCreatingUser ||
+                    isCreatingCompany ||
+                    isCreatingUserReferral
+                  }
+                />
+              </div>
+            </div>
+          </ModalContent>
+        </ModalBody>
+      </Modal>
       <div className="w-full h-full flex flex-col">
         <Breadcrumbs
           underline="active"
@@ -327,20 +409,10 @@ function Main() {
                           <div className="w-auto">
                             <ButtonComponent
                               color="primary"
-                              text="Confirmar registro"
+                              text="Continuar"
                               type="button"
                               variant="solid"
-                              onClick={
-                                status === AuthStatus.NOT_AUTHENTICATED
-                                  ? handleRegisterUser
-                                  : () =>
-                                      handleRegisterCompany(
-                                        company!,
-                                        sessionType!.user.id!,
-                                        token!
-                                      )
-                              }
-                              isLoading={isCreatingUser || isCreatingCompany}
+                              onClick={onOpen}
                             />
                           </div>
                         </div>
