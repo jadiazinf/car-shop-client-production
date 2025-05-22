@@ -1,17 +1,18 @@
 import { useContext, useEffect, useState } from "react";
-import useGetUsersFromCompanyService from "../../../../entities/users_companies/services/get_users_from_company/use_service";
 import { usePersistedStore } from "../../../../store/store";
 import DatatableComponent from "../../../../components/datatable/component";
 import useDatatableAction from "../../../../components/datatable/use_action";
-import ButtonComponent from "../../../../components/buttons/component";
 import { IoAdd } from "react-icons/io5";
 import PaginationComponent from "../../../../components/datatable/pagination";
-import TextComponent from "../../../../components/inputs/text";
 import { LiaSearchSolid } from "react-icons/lia";
 import {
+  Button,
+  Input,
   Modal,
   ModalBody,
   ModalContent,
+  Select,
+  SelectItem,
   useDisclosure,
 } from "@heroui/react";
 import CompanyMemberEditUserRole from "./components/edit_user_role";
@@ -22,6 +23,10 @@ import { UserCompanyHelpers } from "../../../../entities/users_companies/helpers
 import { HeaderBreadcrumbItemProps } from "../../../../components/breadcrumbs/header";
 import BreadcrumbsContext from "../../../../components/breadcrumbs/context";
 import { UserCompanyRole } from "../../../../entities/users_companies/types";
+import { useUsersCompaniesApiServices } from "../../../api/users_companies";
+import { FaIdCard } from "react-icons/fa";
+import { GoShieldCheck } from "react-icons/go";
+import { MdOutlineAdminPanelSettings } from "react-icons/md";
 
 const TABLE_COLUMNS_INSTANCE = [
   { key: "first_name", label: "Primer nombre" },
@@ -56,15 +61,21 @@ export default function CompanyMembersPage() {
 
   const { setBreadcrumbs } = useContext(BreadcrumbsContext);
 
-  const [searchMemberName, setSearcgMemberName] = useState("");
-
   const [page, setPage] = useState(1);
 
   const {
-    isGettingUsersFromCompanyLoading,
-    payloadState,
-    performGetUsersFromCompany,
-  } = useGetUsersFromCompanyService();
+    companyUsersResponse,
+    isGettingCompanyUsers,
+    perform
+  } = useUsersCompaniesApiServices.getCompanyUsers();
+
+  const [filters, setFilters] = useState<{name: string, dni: string, status: boolean, roles: UserCompanyRole[], page: number}>({
+    name: "",
+    dni: "",
+    status: true,
+    roles: [],
+    page: 1,
+  });
 
   const { datatableAction, setDatatableAction } = useDatatableAction();
 
@@ -93,13 +104,11 @@ export default function CompanyMembersPage() {
   }, []);
 
   useEffect(() => {
-    performGetUsersFromCompany({
+    perform(token!, {
+      ...filters,
       company_id: sessionType!.company_id!,
-      page_number: page,
-      token: token!,
-      name: searchMemberName,
     });
-  }, [page, searchMemberName]);
+  }, [page, filters]);
 
   useEffect(() => {
     if (datatableAction.action === "update") onUpdateUserModalOpen();
@@ -114,52 +123,50 @@ export default function CompanyMembersPage() {
   }, [isUpdateUserModalOpen, isDeleteUserModalOpen]);
 
   function getParsedData() {
-    if (payloadState === "not loaded") return [];
+    if (!companyUsersResponse || !companyUsersResponse.data) return [];
 
-    return payloadState.payload.data.map((element, index) => ({
+    return companyUsersResponse.data.data.map((element) => ({
       ...element,
       first_name: element.user!.first_name,
       last_name: element.user!.last_name,
       dni: element.user!.dni,
       phone_number: element.user!.phone_number,
-      roles: payloadState.payload.data[index].roles
+      roles: element.roles
         .map((element) => UserCompanyHelpers.translateUserCompanyRole(element))
         .join(", "),
     }));
   }
 
-  function handleSearchMemberNameChange(
-    event: React.ChangeEvent<HTMLInputElement>
-  ) {
-    setSearcgMemberName(event.target.value);
-  }
-
   function getSelectedUser() {
-    if (payloadState === "not loaded") return null;
+    if (!companyUsersResponse || !companyUsersResponse.data) return null;
 
-    return payloadState.payload.data.find(
+    return companyUsersResponse.data?.data.find(
       (element) => element.id === datatableAction.id
     );
   }
 
   function getLoggedUserCompanyId() {
-    if (payloadState === "not loaded") return null;
+    if (!companyUsersResponse || !companyUsersResponse.data) return null;
 
-    const userCompany = payloadState.payload.data.find(
+    const userCompany = companyUsersResponse.data.data.find(
       (element) => element.user_id === sessionType!.user.id!
     );
 
-    return userCompany!.id;
+    return userCompany?.id;
   }
 
   function refreshData() {
-    setPage(1);
-    performGetUsersFromCompany({
+    setFilters(prev => ({...prev, page: 1}));
+    perform(token!, {
+      ...filters,
       company_id: sessionType!.company_id!,
-      page_number: 1,
-      token: token!,
-      name: searchMemberName,
+      page: 1
     });
+  }
+
+  function handleSelectRoles(e: React.ChangeEvent<HTMLSelectElement>) {
+    const values = e.target.value.split(",");
+    setFilters((prev) => ({...prev, roles: values as UserCompanyRole[] }));
   }
 
   return (
@@ -212,38 +219,92 @@ export default function CompanyMembersPage() {
           </ModalBody>
         </Modal>
       )}
-      <div className="w-full h-full flex flex-col gap-2">
-        <div className="w-full flex justify-between">
-          <div>
-            <TextComponent
-              name="search"
-              type="text"
-              value={searchMemberName}
-              placeholder="Buscar miembro por nombre"
-              variant="bordered"
-              onChange={handleSearchMemberNameChange}
-              startContent={
-                <LiaSearchSolid className="size-5 text-black text-opacity-50" />
-              }
-            />
-          </div>
+      <div className="w-full h-full flex flex-col gap-5">
+        <p className="font-inter text-2xl font-bold">Miembros de la compañía</p>
+        <div className="w-full flex flex-col lg:flex-row justify-between gap-5 items-center">
+          <Input
+            name="name"
+            type="text"
+            radius="sm"
+            size="lg"
+            value={filters.name}
+            placeholder="Nombre"
+            variant="bordered"
+            onChange={(e) =>
+              setFilters((prev) => ({
+                ...prev,
+                name: e.target.value,
+              }))
+            }
+            startContent={
+              <LiaSearchSolid className="size-5 text-black text-opacity-50" />
+            }
+          />
+          <Input
+            name="dni"
+            type="text"
+            radius="sm"
+            size="lg"
+            value={filters.dni}
+            placeholder="Cédula"
+            variant="bordered"
+            onChange={(e) =>
+              setFilters((prev) => ({
+                ...prev,
+                dni: e.target.value,
+              }))
+            }
+            startContent={
+              <FaIdCard className="size-5 text-black text-opacity-50" />
+            }
+          />
+          <Select
+            name="roles"
+            radius="sm"
+            size="lg"
+            variant="bordered"
+            placeholder="Roles"
+            onChange={(e) => handleSelectRoles(e)}
+            selectionMode="multiple"
+            value={filters.roles}
+            startContent={<MdOutlineAdminPanelSettings className="size-5 text-black text-opacity-50" />}
+          >
+            <SelectItem key="admin">Administrador</SelectItem>
+            <SelectItem key="supervisor">Supervisor</SelectItem>
+            <SelectItem key="technical">Técnico</SelectItem>
+          </Select>
+          <Select
+            name="status"
+            radius="sm"
+            size="lg"
+            variant="bordered"
+            placeholder="Estatus"
+            onChange={(e) => setFilters({ ...filters, status: e.target.value === "active" })}
+            startContent={<GoShieldCheck className="size-5 text-black text-opacity-50" />}
+            value={filters.status ? "Activo" : "Inactivo"}
+          >
+            <SelectItem key="active">Activo</SelectItem>
+            <SelectItem key="inactive">Inactivo</SelectItem>
+          </Select>
           {sessionType?.roles?.includes(UserCompanyRole.ADMIN) && (
-            <div>
-              <ButtonComponent
-                color="primary"
-                text="Agregar miembro"
-                type="button"
-                variant="solid"
-                startContent={<IoAdd className="w-5 h-5" />}
-                onClick={() => navigate("/dashboard/companies/members/new")}
-              />
-            </div>
+            <Button
+              className="w-full"
+              color="primary"
+              type="button"
+              radius="sm"
+              size="lg"
+              variant="solid"
+              startContent={<IoAdd className="w-5 h-5" />}
+              onPress={() => navigate("/dashboard/companies/members/new")}
+            >
+              Agregar miembro
+            </Button>
           )}
         </div>
         <DatatableComponent
           columns={TABLE_COLUMNS}
           data={getParsedData()}
-          isLoading={isGettingUsersFromCompanyLoading}
+          isLoading={isGettingCompanyUsers}
           actionState={datatableAction}
           setActionState={setDatatableAction}
           isRowDataEditable
@@ -255,10 +316,10 @@ export default function CompanyMembersPage() {
         <div className="w-full flex justify-between">
           <div>
             <p className="text-black text-opacity-50 text-sm">
-              {payloadState === "not loaded"
+              {!companyUsersResponse || !companyUsersResponse.data
                 ? ""
-                : `${payloadState.payload.total_count} ${
-                    payloadState.payload.total_count === 1
+                : `${companyUsersResponse.data.total_count} ${
+                    companyUsersResponse.data.total_count === 1
                       ? "miembro"
                       : "miembros"
                   }`}
@@ -267,9 +328,9 @@ export default function CompanyMembersPage() {
           <PaginationComponent
             page={page}
             pages={
-              payloadState === "not loaded"
+              !companyUsersResponse || !companyUsersResponse.data
                 ? 0
-                : payloadState.payload.total_pages
+                : companyUsersResponse.data.total_pages
             }
             setPage={setPage}
           />
