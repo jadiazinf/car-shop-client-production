@@ -14,7 +14,7 @@ function NavbarComponent() {
     <Navbar
       isBordered
       maxWidth="full"
-      shouldHideOnScroll
+      // shouldHideOnScroll
       classNames={{
         item: [
           "flex",

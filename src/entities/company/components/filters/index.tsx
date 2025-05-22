@@ -69,7 +69,6 @@ function CompaniesFiltersComponent(props: IServicesFilterProps) {
           <Input
             radius="sm"
             variant="bordered"
-            size="sm"
             name="company_name"
             type="text"
             value={props.filtersState.company_name || ""}
@@ -93,7 +92,7 @@ function CompaniesFiltersComponent(props: IServicesFilterProps) {
       <div className="flex flex-col mb-10">
         <Divider className="mb-5" />
         <p className="text-sm font-semibold">
-          Buscar pot categorias de servicio
+          Buscar por categorias de servicio
         </p>
         <div className="mt-5 flex flex-col gap-2">
           {categories ===

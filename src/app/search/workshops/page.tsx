@@ -18,6 +18,7 @@ import CompanyCatalogInfoComponent from "../../../entities/company/components/ca
 import { VscSettings } from "react-icons/vsc";
 import CompaniesFiltersComponent from "../../../entities/company/components/filters";
 import CompaniesFilterSidebarComponent from "../../../entities/company/components/filters/sidebar";
+import PaginationComponent from "../../../components/datatable/pagination";
 
 const BreadCrumbsItems: HeaderBreadcrumbItemProps[] = [
   {
@@ -32,13 +33,9 @@ const BreadCrumbsItems: HeaderBreadcrumbItemProps[] = [
 
 function SearchWorkshopsPage() {
   const [searchParams] = useSearchParams();
-
   const [filtersState, setFiltersState] = useState<ServicesFilters>({});
-
   const { isOpen, onOpenChange, onOpen } = useDisclosure();
-
-  const [page, _] = useState(1);
-
+  const [page, setPage] = useState(1);
   const navigate = useNavigate();
 
   const {
@@ -71,7 +68,7 @@ function SearchWorkshopsPage() {
         },
       });
     }
-  }, [filtersState]);
+  }, [filtersState, page]);
 
   return (
     <PlaceProvider>
@@ -89,51 +86,61 @@ function SearchWorkshopsPage() {
           </ModalContent>
         </ModalBody>
       </Modal>
+
       <div className="flex flex-col w-full">
-        <div className="md:hidden w-10">
+        <div className="md:hidden w-10 mb-4">
           <div
             onClick={onOpen}
-            className="border-1.5 border-black border-opacity-30 p-2 rounded-md flex justify-center items-center w-auto"
+            className="border-1.5 border-black border-opacity-30 p-2 rounded-md flex justify-center items-center w-auto hover:bg-gray-100 transition-colors"
           >
             <VscSettings className="w-7 h-7" />
           </div>
         </div>
-        <div className="w-full mt-5 flex">
-          <div className="hidden md:block">
+
+        <div className="w-full flex flex-col md:flex-row">
+          <div className="hidden md:block sticky top-20 h-[calc(100vh-5rem)] w-72 pr-5 overflow-y-auto">
             <CompaniesFilterSidebarComponent
               filtersState={filtersState}
               setFiltersChange={setFiltersState}
             />
           </div>
-          {payloadState ===
-          "not loaded" ? null : isGettingCompaniesWithFiltersLoading ? (
-            <Spinner />
-          ) : (
-            <div className="w-full">
-              <div className="w-full md:ml-5 grid grid-cols-1 lg:grid-cols-4 gap-10">
-                {(payloadState.payload as PaginatedData<CompanyModel>).data
-                  .length === 0 ? (
-                  <div className="col-span-full">
-                    <div className="w-full flex justify-center items-center">
-                      <p>No se encontraron talleres</p>
-                    </div>
-                  </div>
-                ) : (
-                  (
-                    payloadState.payload as PaginatedData<CompanyModel>
-                  ).data.map((company, index) => (
-                    <CompanyCatalogInfoComponent
-                      company={company}
-                      key={index}
-                      onClick={() =>
-                        navigate(`/search/workshops/${company.id!}`)
-                      }
-                    />
-                  ))
-                )}
+
+          <div className="flex-1">
+            {payloadState === "not loaded" ? null : isGettingCompaniesWithFiltersLoading ? (
+              <div className="flex justify-center items-center h-64">
+                <Spinner size="lg" />
               </div>
-            </div>
-          )}
+            ) : (
+              <>
+                <div className="grid grid-cols-1 gap-6">
+                  {(payloadState.payload as PaginatedData<CompanyModel>).data.length === 0 ? (
+                    <div className="col-span-full py-10">
+                      <div className="w-full flex flex-col items-center justify-center text-center">
+                        <p className="text-lg font-medium text-gray-600">No se encontraron talleres</p>
+                        <p className="text-sm text-gray-500 mt-2">Intenta ajustar tus filtros de búsqueda</p>
+                      </div>
+                    </div>
+                  ) : (
+                    (payloadState.payload as PaginatedData<CompanyModel>).data.map((company, index) => (
+                      <CompanyCatalogInfoComponent
+                        company={company}
+                        key={`${company.id}-${index}`}
+                        onClick={() => navigate(`/search/workshops/${company.id!}`)}
+                      />
+                    ))
+                  )}
+                </div>
+
+                <div className="w-full flex justify-center items-center mt-8 pb-8">
+                  <PaginationComponent
+                    page={page}
+                    pages={(payloadState.payload as PaginatedData<CompanyModel>).total_pages}
+                    setPage={setPage}
+                  />
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </PlaceProvider>
