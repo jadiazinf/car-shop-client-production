@@ -16,6 +16,8 @@ import CompanyInfoForClient from "../app/search/workshops/id/page";
 import UserQuotesPage from "../app/profile/quotes/page";
 import UserQuoteInfoPage from "../app/profile/quotes/id/page";
 import NewQuotePage from "../app/search/workshops/id/new_quote/page";
+import { UserWorkshopsPage } from "../app/profile/workshops/page";
+import ProfileNewWorkshopPage from "../app/profile/workshops/new/page";
 
 const superadminRoutes = (
   <>
@@ -40,6 +42,10 @@ const superadminRoutes = (
     <Route path="/profile/vehicles" element={<ProfileVehiclesPage />} />
     <Route path="/profile/vehicles/new" element={<CreateVehicle />} />
     <Route path="/profile/vehicles/:id" element={<VehicleInfoPage />} />
+
+    {/* profile workshops */}
+    <Route path="/profile/workshops" element={<UserWorkshopsPage />} />
+    <Route path="/profile/workshops/new" element={<ProfileNewWorkshopPage />} />
 
     {/* dashboard */}
     <Route path="/dashboard" element={<SuperadminDashboardPage />} />

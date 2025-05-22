@@ -20,6 +20,8 @@ import { UserServiceOrderAdvance } from "../app/profile/orders/advances/service_
 import AdminDashboardPage from "../app/dashboard/admin/page";
 import CompaniesTechnicianPage from "../app/dashboard/companies/technician_page";
 import { TehnicianOrdersPage } from "../app/dashboard/services/orders/technician/page";
+import { UserWorkshopsPage } from "../app/profile/workshops/page";
+import ProfileNewWorkshopPage from "../app/profile/workshops/new/page";
 
 const technicianRoutes = (
   <>
@@ -54,6 +56,10 @@ const technicianRoutes = (
       path="/profile/orders/advances/:service_order_id/:order_id/:company_id"
       element={<UserServiceOrderAdvance />}
     />
+
+    {/* profile workshops */}
+    <Route path="/profile/workshops" element={<UserWorkshopsPage />} />
+    <Route path="/profile/workshops/new" element={<ProfileNewWorkshopPage />} />
 
     {/* profile vehicles */}
     <Route path="/profile/vehicles" element={<ProfileVehiclesPage />} />

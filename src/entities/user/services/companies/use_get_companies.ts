@@ -19,12 +19,11 @@ function useGetUserCompanies() {
     useState<boolean>(false);
 
   async function performGetUserCompanies(
-    data: { user_id: number; token: string },
+    data: { token: string },
     callback?: (data: GetUserCompaniesProps) => void
   ) {
     setIsGettingUserCompaniesLoading(true);
     const service = new GetUserCompanies({
-      user_id: data.user_id,
       token: data.token,
     });
     await service.perform();

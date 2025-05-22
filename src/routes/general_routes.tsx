@@ -13,6 +13,8 @@ import NewQuotePage from "../app/search/workshops/id/new_quote/page";
 import { UserOrdersPage } from "../app/profile/orders/page";
 import UserOrderInfoPage from "../app/profile/orders/id/page";
 import { UserServiceOrderAdvance } from "../app/profile/orders/advances/service_order_id/page";
+import { UserWorkshopsPage } from "../app/profile/workshops/page";
+import ProfileNewWorkshopPage from "../app/profile/workshops/new/page";
 
 const generalRoutes = (
   <>
@@ -54,6 +56,10 @@ const generalRoutes = (
     <Route path="/profile/vehicles" element={<ProfileVehiclesPage />} />
     <Route path="/profile/vehicles/new" element={<CreateVehicle />} />
     <Route path="/profile/vehicles/:id" element={<VehicleInfoPage />} />
+
+    {/* profile workshops */}
+    <Route path="/profile/workshops" element={<UserWorkshopsPage />} />
+    <Route path="/profile/workshops/new" element={<ProfileNewWorkshopPage />} />
 
     {/* search */}
     <Route path="*" element={<Navigate to="/" />} />

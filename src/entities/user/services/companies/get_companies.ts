@@ -9,10 +9,8 @@ class GetUserCompanies {
   private _payload: UserCompanyModel[] | null;
   private _errorMessage: string | null;
   private _token: string | null;
-  private _user_id: number;
 
-  constructor(data: { user_id: number, token: string; }) {
-    this._user_id = data.user_id;
+  constructor(data: { token: string; }) {
     this._token = data.token;
     this._status = null;
     this._errorMessage = null;
@@ -37,7 +35,7 @@ class GetUserCompanies {
 
   public async perform() {
     try {
-      const response = await axios.get<UserCompanyModel[]>(`${EnvironmentVariables.API_BASE_ROUTE}/api/${EnvironmentVariables.API_VERSION}/users/${this._user_id}/user_companies`,
+      const response = await axios.get<UserCompanyModel[]>(`${EnvironmentVariables.API_BASE_ROUTE}/api/${EnvironmentVariables.API_VERSION}/users/user_companies`,
       {
         headers: {
           'Content-Type': 'application/json',

@@ -2,6 +2,7 @@ import { RiBillLine } from "react-icons/ri";
 import SidebarOption, { SidebarOptions } from "../components/option";
 import { FaClipboardUser, FaCarRear } from "react-icons/fa6";
 import { BiSolidCarMechanic } from "react-icons/bi";
+import { FaTools } from "react-icons/fa";
 
 function ProfileSidebarComponent() {
   const options: SidebarOptions[] = [
@@ -29,6 +30,12 @@ function ProfileSidebarComponent() {
       url: "/profile/orders",
       urlStartsWithForActive: true,
     },
+    {
+      name: "Mis talleres",
+      icon: <FaTools />,
+      url: "/profile/workshops",
+      urlStartsWithForActive: true,
+    }
   ];
 
   return (

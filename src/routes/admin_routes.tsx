@@ -31,6 +31,8 @@ import { ClaimsPage } from "../app/dashboard/services/claims/page";
 import ReportsPage from "../app/dashboard/reports/page";
 import { CompanyAdminCreateRequest } from "../app/dashboard/companies/requests/admin/create/page";
 import AdminCompanyRequestPage from "../app/dashboard/companies/requests/id/admin_page";
+import { UserWorkshopsPage } from "../app/profile/workshops/page";
+import ProfileNewWorkshopPage from "../app/profile/workshops/new/page";
 
 const adminRoutes = (
   <>
@@ -69,6 +71,10 @@ const adminRoutes = (
       path="/profile/orders/advances/:service_order_id/:order_id/:company_id"
       element={<UserServiceOrderAdvance />}
     />
+
+    {/* profile workshops */}
+    <Route path="/profile/workshops" element={<UserWorkshopsPage />} />
+    <Route path="/profile/workshops/new" element={<ProfileNewWorkshopPage />} />
 
     {/* profile vehicles */}
     <Route path="/profile/vehicles" element={<ProfileVehiclesPage />} />

@@ -26,6 +26,8 @@ import QuoteInfoPage from "../app/dashboard/services/quotes/id/page";
 import CompanyMembersPage from "../app/dashboard/companies/members/page";
 import { NewCompanyOrder } from "../app/dashboard/services/orders/new/page";
 import { ClaimsPage } from "../app/dashboard/services/claims/page";
+import { UserWorkshopsPage } from "../app/profile/workshops/page";
+import ProfileNewWorkshopPage from "../app/profile/workshops/new/page";
 
 const supervisorRoutes = (
   <>
@@ -65,6 +67,10 @@ const supervisorRoutes = (
     <Route path="/profile/vehicles" element={<ProfileVehiclesPage />} />
     <Route path="/profile/vehicles/new" element={<CreateVehicle />} />
     <Route path="/profile/vehicles/:id" element={<VehicleInfoPage />} />
+
+    {/* profile workshops */}
+    <Route path="/profile/workshops" element={<UserWorkshopsPage />} />
+    <Route path="/profile/workshops/new" element={<ProfileNewWorkshopPage />} />
 
     {/* dashboard */}
     <Route path="/dashboard" element={<AdminDashboardPage />} />
