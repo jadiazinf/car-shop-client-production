@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import RegisterCompanyPageLayout from "./layout";
 import { useDispatch } from "react-redux";
 import { ToasterContext } from "../../../../components/toaster/context/context";
@@ -37,6 +37,24 @@ import { UserReferralBy } from "../../../../entities/user_referrals/types";
 import LogoComponent from "../../../../components/logo/component";
 import SelectComponent from "../../../../components/inputs/select";
 import { UserReferralsHelpers } from "../../../../entities/user_referrals/helpers";
+import { HeaderBreadcrumbItemProps } from "../../../../components/breadcrumbs/header";
+import BreadcrumbsContext from "../../../../components/breadcrumbs/context";
+
+const BreadCrumbsItems: HeaderBreadcrumbItemProps[] = [
+  {
+    text: "Home",
+    url: "/",
+  },
+  {
+    text: "Autenticación de usuario",
+    url: "/auth",
+  },
+  {
+    text: "Registro de compañía",
+    url: "/auth/registration/company",
+  },
+];
+
 
 enum PageStage {
   USER = "user",
@@ -74,6 +92,12 @@ function Main() {
     useCompanyApiServices.createCompany();
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const { setBreadcrumbs } = useContext(BreadcrumbsContext);
+
+  useEffect(( )=> {
+    setBreadcrumbs(BreadCrumbsItems);
+  }, []);
 
   function authenticateUser(
     user: UserModel,

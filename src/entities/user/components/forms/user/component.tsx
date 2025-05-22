@@ -142,6 +142,7 @@ function UserInfoForm(props: {
         />
       </Container>
       <div className="flex flex-col gap-2">
+        <label className="text-black text-opacity-50 relative top-3">Dirección de residencia</label>
         <SelectPlace />
         {formik.errors.location_id && formik.touched.location_id && (
           <span className="text-red-400">{formik.errors.location_id}</span>

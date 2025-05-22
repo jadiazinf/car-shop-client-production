@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import RegisterGeneralUserPageLayout from "./layout";
 import UserInfoForm from "../../../../entities/user/components/forms/user/component";
 import VehicleInfoForm from "../../../../entities/vehicle/components/forms/vehicle/component";
@@ -34,6 +34,23 @@ import LogoComponent from "../../../../components/logo/component";
 import SelectComponent from "../../../../components/inputs/select";
 import { UserReferralsHelpers } from "../../../../entities/user_referrals/helpers";
 import { UserReferralBy } from "../../../../entities/user_referrals/types";
+import BreadcrumbsContext from "../../../../components/breadcrumbs/context";
+import { HeaderBreadcrumbItemProps } from "../../../../components/breadcrumbs/header";
+
+const BreadCrumbsItems: HeaderBreadcrumbItemProps[] = [
+  {
+    text: "Home",
+    url: "/",
+  },
+  {
+    text: "Autenticación de usuario",
+    url: "/auth",
+  },
+  {
+    text: "Registro de usuario",
+    url: "/auth/registration/general-user",
+  },
+];
 
 enum PageStage {
   USER = "user",
@@ -52,6 +69,8 @@ function Main() {
   const { brandAndModel } = useContext(BrandAndModelContext);
 
   const { dispatch: toasterDispatch } = useContext(ToasterContext);
+
+  const { setBreadcrumbs } = useContext(BreadcrumbsContext);
 
   const { isCreatingUserReferral, perform } =
     useUserReferralsApiServices.createUserReferral();
@@ -74,6 +93,10 @@ function Main() {
     attachVehicleImages();
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  useEffect(( )=> {
+    setBreadcrumbs(BreadCrumbsItems);
+  }, []);
 
   function authenticateUser(user: UserModel, token: string) {
     appDispatch(
