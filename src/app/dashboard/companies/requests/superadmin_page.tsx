@@ -1,13 +1,17 @@
-import { Pagination, Spinner, Tab, Tabs } from "@heroui/react";
+import { Input, Pagination, Select, SelectItem, Spinner } from "@heroui/react";
 import { useContext, useEffect, useState } from "react";
-import useGetAllUserCompaniesRequests, {
-  GetAllUserCompaniesRequestsProps,
-} from "../../../../entities/user_company_request/services/get_all/use_get_all_requests";
 import { UserCompanyRequestStatus } from "../../../../entities/user_company_request/types";
 import CardRequestComponent from "../../../../entities/user_company_request/components/requests/card_request";
 import { useNavigate } from "react-router-dom";
 import { HeaderBreadcrumbItemProps } from "../../../../components/breadcrumbs/header";
 import BreadcrumbsContext from "../../../../components/breadcrumbs/context";
+import { MdOutlineSearch } from "react-icons/md";
+import { BsCardList } from "react-icons/bs";
+import { GoShieldCheck } from "react-icons/go";
+import { useUsersCompaniesRequestsApiServices } from '../../../api/users_companies_requests/index';
+import { usePersistedStore } from "../../../../store/store";
+import UserCompanyRequestModel from "../../../../entities/user_company_request/model";
+import { PaginatedData } from '../../../../helpers/application_response/types';
 
 const HEADER_BREADCRUMBS_OPTIONS: HeaderBreadcrumbItemProps[] = [
   {
@@ -31,17 +35,16 @@ const HEADER_BREADCRUMBS_OPTIONS: HeaderBreadcrumbItemProps[] = [
 function CompaniesRequestsSuperadminPage() {
   const { setBreadcrumbs } = useContext(BreadcrumbsContext);
 
-  const [page, setPage] = useState<number>(1);
+  const { token, sessionType } = usePersistedStore().authReducer;
 
-  const [requestStatus, setRequestStatus] = useState<UserCompanyRequestStatus>(
-    UserCompanyRequestStatus.PENDING
-  );
+  const [filters, setFilters] = useState<{name: string, rif: string, status: UserCompanyRequestStatus, page: number}>({
+    name: "",
+    rif: "",
+    status: UserCompanyRequestStatus.PENDING,
+    page: 1
+  });
 
-  const {
-    isGettingAllUsersCompaniesRequestsLoading,
-    payloadState,
-    performGetAllUsersCompaniesRequests,
-  } = useGetAllUserCompaniesRequests();
+  const { getAllUserCompanyRequestResponse, isGettingRequests, perform } = useUsersCompaniesRequestsApiServices.getAllUserCompanyRequest();
 
   const navigate = useNavigate();
 
@@ -50,14 +53,11 @@ function CompaniesRequestsSuperadminPage() {
   }, []);
 
   useEffect(() => {
-    performGetAllUsersCompaniesRequests({
-      page_number: page,
-      status: requestStatus,
-    });
-  }, [requestStatus]);
+    perform(sessionType!.company_id!, token!, filters);
+  }, [filters]);
 
   function getDataMessageWhenNone() {
-    switch (requestStatus) {
+    switch (filters.status) {
       case UserCompanyRequestStatus.APPROVED:
         return "No hay solicitudes aprobadas";
       case UserCompanyRequestStatus.PENDING:
@@ -69,44 +69,56 @@ function CompaniesRequestsSuperadminPage() {
 
   return (
     <div className="w-full flex flex-col justify-center">
-      <div className="w-full flex items-center">
-        <Tabs
-          color="primary"
-          key="status"
-          variant="underlined"
-          aria-label="requests status"
-          classNames={{
-            tabList:
-              "gap-6 w-full relative rounded-none p-0 border-b border-divider",
-            cursor: "w-full bg-primary",
-            tab: "max-w-fit px-0 h-12",
-            tabContent: "group-data-[selected=true]:text-primary",
-          }}
-          onSelectionChange={(value) =>
-            setRequestStatus(value as UserCompanyRequestStatus)
-          }
-        >
-          <Tab
-            key={UserCompanyRequestStatus.PENDING}
-            title="Pendientes por aprobación"
-          />
-          <Tab key={UserCompanyRequestStatus.APPROVED} title="Aprobadas" />
-          <Tab key={UserCompanyRequestStatus.REJECTED} title="Rechazadas" />
-        </Tabs>
+      <p className="font-bold font-inter text-2xl">Solicitudes de registro en la plataforma de compañias</p>
+      <div className="w-full flex flex-col gap-5 lg:flex-row items-center lg:gap-10 my-5">
+        <Input
+          size="lg"
+          name="name"
+          variant="bordered"
+          radius="sm"
+          placeholder="Nombre"
+          startContent={<MdOutlineSearch />}
+          onChange={(e) => setFilters(prev => ({...prev, name: e.target.value}))}
+          value={filters.name}
+        />
+        <Input
+          size="lg"
+          name="rif"
+          variant="bordered"
+          radius="sm"
+          placeholder="RIF"
+          startContent={<BsCardList />}
+          onChange={(e) => setFilters(prev => ({...prev, rif: e.target.value}))}
+          value={filters.rif}
+        />
+        <Select
+            name="status"
+            radius="sm"
+            size="lg"
+            variant="bordered"
+            placeholder="Estatus"
+            onChange={(e) => setFilters({ ...filters, status: e.target.value as UserCompanyRequestStatus })}
+            startContent={<GoShieldCheck className="size-5 text-black text-opacity-50" />}
+            value={filters.status}
+          >
+            <SelectItem key={UserCompanyRequestStatus.PENDING}>Pendientes</SelectItem>
+            <SelectItem key={UserCompanyRequestStatus.APPROVED}>Aprobadas</SelectItem>
+            <SelectItem key={UserCompanyRequestStatus.REJECTED}>Rechazadas</SelectItem>
+          </Select>
       </div>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-10">
-        {isGettingAllUsersCompaniesRequestsLoading ? (
-          <div className="col-span-full my-10">
-            <Spinner />
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 mt-10">
+        {isGettingRequests ? (
+          <div className="col-span-full flex justify-center items-center h-[50vh]">
+            <Spinner size="lg" />
           </div>
-        ) : payloadState === "not loaded" || !payloadState.payload ? (
+        ) : !getAllUserCompanyRequestResponse || !getAllUserCompanyRequestResponse.data ? (
           <span>No hay data</span>
-        ) : payloadState.payload.data.length === 0 ? (
+        ) : (getAllUserCompanyRequestResponse.data as PaginatedData<UserCompanyRequestModel>).data.length === 0 ? (
           <div className="col-span-full text-center flex justify-center items-center my-10">
             <span>{getDataMessageWhenNone()}</span>
           </div>
         ) : (
-          payloadState.payload.data.map((request) => (
+          (getAllUserCompanyRequestResponse.data as PaginatedData<UserCompanyRequestModel>).data.map((request) => (
             <CardRequestComponent
               user_company_request={request}
               onClick={() =>
@@ -116,18 +128,19 @@ function CompaniesRequestsSuperadminPage() {
           ))
         )}
       </div>
-      {isGettingAllUsersCompaniesRequestsLoading ||
-      payloadState === "not loaded" ? null : (
+      {isGettingRequests ||
+      !getAllUserCompanyRequestResponse || !getAllUserCompanyRequestResponse.data ? null : (
         <div className="w-full flex justify-center items-center mt-10">
           <Pagination
             showControls
             total={
-              (payloadState as GetAllUserCompaniesRequestsProps).payload
-                .total_pages
+              'total_pages' in getAllUserCompanyRequestResponse.data
+                ? getAllUserCompanyRequestResponse.data.total_pages
+                : 0
             }
             color="primary"
-            page={page}
-            onChange={setPage}
+            page={filters.page}
+            onChange={(page) => setFilters(prev => ({...prev, page}))}
             variant="light"
           />
         </div>

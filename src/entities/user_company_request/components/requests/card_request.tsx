@@ -14,44 +14,55 @@ function CardRequestComponent(props: ICardRequestComponentProps) {
   const helper = new UserCompanyRequestHelper(props.user_company_request);
 
   return (
-    <Card radius="sm" className="w-96 p-5">
-      <CardBody className="flex flex-col">
-        <span>
-          Taller: <strong>{props.user_company_request.company!.name}</strong>
-        </span>
-        <span>
-          Usuario:{" "}
-          <strong>{`${props.user_company_request.user!.first_name} ${
-            props.user_company_request.user!.last_name
-          }`}</strong>
-        </span>
-        <span>
-          Fecha de actualización:{" "}
-          <strong>
-            {DatesHelpers.formatFullDate(
-              props.user_company_request.updated_at as string
-            )}
-          </strong>
-        </span>
-        <span>
-          Estado de la petición:{" "}
-          <span
-            className={
-              props.user_company_request.status ===
-              UserCompanyRequestStatus.APPROVED
-                ? "text-green-500"
-                : props.user_company_request.status ===
-                  UserCompanyRequestStatus.REJECTED
-                ? "text-red-400"
-                : "text-yellow-400"
-            }
-          >
-            {helper.translateStatus()}
+    <Card radius="sm" className="w-full p-5">
+      <CardBody className="flex flex-col gap-3 h-full">
+        <div className="space-y-1">
+          <span className="block">
+            Taller: <strong>{props.user_company_request.company!.name}</strong>
           </span>
-        </span>
+          <span className="block">
+            RIF: <strong>{props.user_company_request.company!.dni}</strong>
+          </span>
+          <span className="block">
+            Usuario:{" "}
+            <strong>{`${props.user_company_request.user!.first_name} ${
+              props.user_company_request.user!.last_name
+            }`}</strong>
+          </span>
+          <span className="block">
+            Fecha de actualización:{" "}
+            <strong>
+              {DatesHelpers.formatFullDate(
+                props.user_company_request.updated_at as string
+              )}
+            </strong>
+          </span>
+          <span className="block">
+            Estado de la petición:{" "}
+            <span
+              className={
+                props.user_company_request.status ===
+                UserCompanyRequestStatus.APPROVED
+                  ? "text-green-500"
+                  : props.user_company_request.status ===
+                    UserCompanyRequestStatus.REJECTED
+                  ? "text-red-400"
+                  : "text-yellow-400"
+              }
+            >
+              {helper.translateStatus()}
+            </span>
+          </span>
+        </div>
+
         {props.user_company_request.message && (
-          <span>{props.user_company_request.message}</span>
+          <div className="flex-1">
+            <span>{props.user_company_request.message}</span>
+          </div>
         )}
+
+        {!props.user_company_request.message && <div className="flex-1"></div>}
+
         <div className="w-full flex justify-end">
           <div className="w-28">
             <ButtonComponent

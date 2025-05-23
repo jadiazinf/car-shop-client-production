@@ -1,7 +1,4 @@
 import { useNavigate, useParams } from "react-router-dom";
-import useGetUserCompanyRequest, {
-  GetUserCompanyRequestProps,
-} from "../../../../../entities/user_company_request/services/get/use_get_request";
 import {
   Button,
   ButtonGroup,
@@ -32,6 +29,8 @@ import { ToasterContext } from "../../../../../components/toaster/context/contex
 import { StatusCodes } from "http-status-codes";
 import { HeaderBreadcrumbItemProps } from "../../../../../components/breadcrumbs/header";
 import BreadcrumbsContext from "../../../../../components/breadcrumbs/context";
+import { useUsersCompaniesRequestsApiServices } from "../../../../api/users_companies_requests";
+import UserCompanyRequestModel from "../../../../../entities/user_company_request/model";
 
 const HEADER_BREADCRUMBS_OPTIONS: HeaderBreadcrumbItemProps[] = [
   {
@@ -61,19 +60,18 @@ function CompanyRequestPage() {
 
   const params = useParams();
 
-  const { authReducer } = usePersistedStore();
+  const { sessionType, token } = usePersistedStore().authReducer;
 
-  const { sessionType } = authReducer;
 
   const { dispatch: toasterDispatch } = useContext(ToasterContext);
 
   const navigate = useNavigate();
 
   const {
-    isGettingUserCompanyRequestLoading,
-    payloadState: request,
-    performGetUserCompanyRequest,
-  } = useGetUserCompanyRequest();
+    getUserCompanyRequestResponse,
+    isGettingUserCompanyRequest,
+    perform
+  } = useUsersCompaniesRequestsApiServices.getUserCompanyRequest();
 
   const [selectedOption, setSelectedOption] = useState<
     Set<UserCompanyRequestStatus>
@@ -108,8 +106,7 @@ function CompanyRequestPage() {
 
   useEffect(() => {
     setBreadcrumbs(HEADER_BREADCRUMBS_OPTIONS);
-    if (request === "not loaded")
-      performGetUserCompanyRequest({ request_id: parseInt(params.id!) });
+    perform(parseInt(params.id!), token!);
   }, []);
 
   useEffect(() => {
@@ -148,7 +145,7 @@ function CompanyRequestPage() {
             : "",
       },
       user_company_request_id: parseInt(params.id!),
-      company_id: (request as GetUserCompanyRequestProps).payload.company!.id!,
+      company_id: (getUserCompanyRequestResponse!.data as UserCompanyRequestModel).company!.id!,
     });
   }
 
@@ -245,16 +242,17 @@ function CompanyRequestPage() {
             <Tab key="user" title="Ver información de usuario" />
             <Tab key="company" title="Ver información de taller" />
           </Tabs>
-          {request !== "not loaded" &&
-            request.payload.status === UserCompanyRequestStatus.PENDING && (
+          {(getUserCompanyRequestResponse && getUserCompanyRequestResponse.data)
+            && (getUserCompanyRequestResponse.data as UserCompanyRequestModel).status === UserCompanyRequestStatus.PENDING && (
               <ButtonGroup variant="flat">
                 <Button
+                  radius="sm"
                   className={
                     selectedStatus === UserCompanyRequestStatus.APPROVED
                       ? "text-white bg-primary"
                       : "text-red-800 border-1.5 border-red-800"
                   }
-                  onClick={
+                  onPress={
                     selectedStatus === UserCompanyRequestStatus.REJECTED
                       ? onOpenRejectionChange
                       : onOpenApprovedChange
@@ -265,9 +263,10 @@ function CompanyRequestPage() {
                     Array.from(selectedOption)[0]
                   )} solicitud`}
                 </Button>
-                <Dropdown placement="bottom-end">
+                <Dropdown placement="bottom-end" radius="sm">
                   <DropdownTrigger>
                     <Button
+                      radius="sm"
                       isIconOnly
                       className={
                         selectedStatus === UserCompanyRequestStatus.APPROVED
@@ -305,15 +304,15 @@ function CompanyRequestPage() {
         </div>
         <div className="flex flex-col">
           <div className="w-full h-full flex justify-center items-center my-10">
-            {isGettingUserCompanyRequestLoading || request === "not loaded" ? (
+            {isGettingUserCompanyRequest ? (
               <Spinner />
-            ) : (
+            ) : !getUserCompanyRequestResponse || !getUserCompanyRequestResponse.data ? <p>Ha ocurrido un error</p> : (
               <div className="w-full">
                 {showOption === "user" ? (
-                  <UserInfo user={request.payload.user!} />
+                  <UserInfo user={(getUserCompanyRequestResponse!.data as UserCompanyRequestModel).user!} />
                 ) : (
                   <CompanyInfo
-                    company={request.payload.company!}
+                    company={(getUserCompanyRequestResponse!.data as UserCompanyRequestModel).company!}
                     showChangeAvatar={false}
                     imagesAreCommingFrom="server"
                   />

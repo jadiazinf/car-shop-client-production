@@ -13,7 +13,7 @@ export function getUserCompanies() {
 
   const [isGettingCompanies, setIsGettingCompanies] = useState(false);
 
-  async function perform(token: string, filters?: {name?: string, rif?: string, status?: boolean, page?: number}) {
+  async function perform(token: string, filters?: {name?: string, rif?: string, status?: boolean | "", page?: number}) {
     try {
       setIsGettingCompanies(true);
 

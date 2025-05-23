@@ -38,10 +38,10 @@ export default function ChooseUserCompanyPage() {
 
   const { perform: getUserCompany } = useUsersCompaniesApiServices.getUserCompanyByUserAndCompany();
 
-  const [workshopsFilters, setWorkshopsFilters] = useState<{name: string, rif: string, status: boolean, page: number}>({
+  const [workshopsFilters, setWorkshopsFilters] = useState<{name: string, rif: string, status: boolean | "", page: number}>({
     name: "",
     rif: "",
-    status: true,
+    status: "",
     page: 1,
   });
 
@@ -55,12 +55,13 @@ export default function ChooseUserCompanyPage() {
 
   useEffect(() => {
     if (userCompaniesResponse && !componentMounted) {
-      handleNoCompanyRegistered();
+      handleComponentMounted();
       setComponentMounted(true);
     }
   }, [userCompaniesResponse, componentMounted]);
 
-  async function handleNoCompanyRegistered() {
+  async function handleComponentMounted() {
+    console.log("userCompaniesResponse", userCompaniesResponse);
     if (userCompaniesResponse?.data?.data.length === 0) {
       dispatch(SetAuthentication({
         status: AuthStatus.AUTHENTICATED,
@@ -74,6 +75,21 @@ export default function ChooseUserCompanyPage() {
       }));
       navigate("/");
     }
+    if (userCompaniesResponse?.data?.data.length === 1) {
+      const response = await getUserCompany(sessionType!.user.id!, userCompaniesResponse?.data?.data[0].id!, token!);
+      dispatch(SetAuthentication({
+        status: AuthStatus.AUTHENTICATED,
+        token: token!,
+        sessionType: {
+          roles: response.data?.user_company?.roles || null,
+          user: sessionType!.user,
+          user_company_id: response.data?.user_company?.id || null,
+          company_id: response.data?.user_company?.company_id || null,
+        }
+      }));
+      navigate("/");
+    }
+
     setIsSettingSession(false);
   }
 
@@ -134,6 +150,7 @@ export default function ChooseUserCompanyPage() {
           onChange={(e) => setWorkshopsFilters({ ...workshopsFilters, status: e.target.value === "active" })}
           value={workshopsFilters.status ? "Activo" : "Inactivo"}
         >
+          <SelectItem key="">Todos</SelectItem>
           <SelectItem key="active">Activo</SelectItem>
           <SelectItem key="inactive">Inactivo</SelectItem>
         </Select>

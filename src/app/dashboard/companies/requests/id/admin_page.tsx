@@ -1,11 +1,13 @@
 import { useParams } from "react-router-dom";
-import useGetUserCompanyRequest from "../../../../../entities/user_company_request/services/get/use_get_request";
+import { useUsersCompaniesRequestsApiServices } from "../../../../api/users_companies_requests/index";
 import { Spinner, Tab, Tabs } from "@heroui/react";
 import { useContext, useEffect, useState } from "react";
 import CompanyInfo from "../../../../../entities/company/components/info";
 import UserInfo from "../../../../../entities/user/components/info";
 import { HeaderBreadcrumbItemProps } from "../../../../../components/breadcrumbs/header";
 import BreadcrumbsContext from "../../../../../components/breadcrumbs/context";
+import { usePersistedStore } from "../../../../../store/store";
+import UserCompanyRequestModel from "../../../../../entities/user_company_request/model";
 
 const HEADER_BREADCRUMBS_OPTIONS: HeaderBreadcrumbItemProps[] = [
   {
@@ -33,20 +35,21 @@ const HEADER_BREADCRUMBS_OPTIONS: HeaderBreadcrumbItemProps[] = [
 function AdminCompanyRequestPage() {
   const { setBreadcrumbs } = useContext(BreadcrumbsContext);
 
+  const { token } = usePersistedStore().authReducer;
+
   const params = useParams();
 
   const {
-    isGettingUserCompanyRequestLoading,
-    payloadState: request,
-    performGetUserCompanyRequest,
-  } = useGetUserCompanyRequest();
+    getUserCompanyRequestResponse,
+    isGettingUserCompanyRequest,
+    perform
+  } = useUsersCompaniesRequestsApiServices.getUserCompanyRequest();
 
   const [showOption, setShowOption] = useState<"user" | "company">("user");
 
   useEffect(() => {
     setBreadcrumbs(HEADER_BREADCRUMBS_OPTIONS);
-    if (request === "not loaded")
-      performGetUserCompanyRequest({ request_id: parseInt(params.id!) });
+    perform(parseInt(params.id!), token!);
   }, []);
 
   return (
@@ -67,15 +70,16 @@ function AdminCompanyRequestPage() {
         </div>
         <div className="flex flex-col">
           <div className="w-full h-full flex justify-center items-center my-10">
-            {isGettingUserCompanyRequestLoading || request === "not loaded" ? (
+            {isGettingUserCompanyRequest  ? (
               <Spinner />
             ) : (
+              !getUserCompanyRequestResponse || !getUserCompanyRequestResponse.data ? <p>Hubo un error</p> :
               <div className="w-full">
                 {showOption === "user" ? (
-                  <UserInfo user={request.payload.user!} />
+                  <UserInfo user={(getUserCompanyRequestResponse.data as UserCompanyRequestModel).user!} />
                 ) : (
                   <CompanyInfo
-                    company={request.payload.company!}
+                    company={(getUserCompanyRequestResponse.data as UserCompanyRequestModel).company!}
                     showChangeAvatar={false}
                     imagesAreCommingFrom="server"
                   />

@@ -1,16 +1,16 @@
-import { Pagination, Spinner, Tab, Tabs } from "@heroui/react";
+import { Input, Pagination, Select, SelectItem, Spinner } from "@heroui/react";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserCompanyRequestStatus } from "../../../../entities/user_company_request/types";
-import { GetAllUserCompaniesRequestsProps } from "../../../../entities/user_company_request/services/get_all/use_get_all_requests";
 import CardRequestComponent from "../../../../entities/user_company_request/components/requests/card_request";
-import useGetUserCompanyRequestsByCompany from "../../../../entities/user_company_request/services/get_all/by_company/use_get_by_company";
 import { usePersistedStore } from "../../../../store/store";
 import useCanUserMakeRequest from "../../../../entities/user_company_request/services/can_make_request/use_user_can_make_request";
-import ButtonComponent from "../../../../components/buttons/component";
-import { IoMdAdd } from "react-icons/io";
 import { HeaderBreadcrumbItemProps } from "../../../../components/breadcrumbs/header";
 import BreadcrumbsContext from "../../../../components/breadcrumbs/context";
+import { useUsersCompaniesRequestsApiServices } from "../../../api/users_companies_requests";
+import { PaginatedData } from "../../../../helpers/application_response/types";
+import UserCompanyRequestModel from "../../../../entities/user_company_request/model";
+import { GoShieldCheck } from "react-icons/go";
 
 const HEADER_BREADCRUMBS_OPTIONS: HeaderBreadcrumbItemProps[] = [
   {
@@ -38,20 +38,19 @@ function CompaniesRequestsAdminPage() {
 
   const { setBreadcrumbs } = useContext(BreadcrumbsContext);
 
-  const [page, setPage] = useState<number>(1);
-
-  const [requestStatus, setRequestStatus] = useState<UserCompanyRequestStatus>(
-    UserCompanyRequestStatus.PENDING
-  );
-
   const {
-    isGettingUserCompanyRequestsByCompanyLoading,
-    payloadState,
-    performGetUserCompanyRequestsByCompany,
-  } = useGetUserCompanyRequestsByCompany();
+    getCompanyRequestsResponse,
+    isGettingRequests,
+    perform
+  } = useUsersCompaniesRequestsApiServices.getCompanyRequests();
 
-  const { payloadState: requestPermission, performCanUserMakeRequest } =
+  const { performCanUserMakeRequest } =
     useCanUserMakeRequest();
+
+  const [filters, setFilters] = useState<{status: UserCompanyRequestStatus, page: number}>({
+    status: UserCompanyRequestStatus.PENDING,
+    page: 1
+  });
 
   const navigate = useNavigate();
 
@@ -65,71 +64,55 @@ function CompaniesRequestsAdminPage() {
   }, []);
 
   useEffect(() => {
-    performGetUserCompanyRequestsByCompany({
-      page_number: page,
-      status: requestStatus,
-      company_id: sessionType!.company_id!,
-      token: token!,
-    });
-  }, [requestStatus]);
+    perform(sessionType!.company_id!, token!, filters);
+  }, [filters]);
+
+  function getDataMessageWhenNone() {
+    switch (filters.status) {
+      case UserCompanyRequestStatus.APPROVED:
+        return "No hay solicitudes aprobadas";
+      case UserCompanyRequestStatus.PENDING:
+        return "No hay solicitudes por responder";
+      case UserCompanyRequestStatus.REJECTED:
+        return "No hay solicitudes rechazadas";
+    }
+  }
 
   return (
-    <div className="flex flex-col justify-center w-full h-full">
-      <div className="w-full flex items-center">
-        <Tabs
-          color="primary"
-          key="status"
-          variant="underlined"
-          aria-label="requests status"
-          classNames={{
-            tabList:
-              "gap-6 w-full relative rounded-none p-0 border-b border-divider",
-            cursor: "w-full bg-primary",
-            tab: "max-w-fit px-0 h-12",
-            tabContent: "group-data-[selected=true]:text-primary",
-          }}
-          className="mb-5"
-          onSelectionChange={(value) =>
-            setRequestStatus(value as UserCompanyRequestStatus)
-          }
-        >
-          <Tab
-            key={UserCompanyRequestStatus.PENDING}
-            title="Pendientes por aprobación"
-          />
-          <Tab key={UserCompanyRequestStatus.APPROVED} title="Aprobadas" />
-          <Tab key={UserCompanyRequestStatus.REJECTED} title="Rechazadas" />
-        </Tabs>
+    <div className="w-full flex flex-col justify-center">
+      <div className="w-full flex flex-col gap-5">
+        <p className="font-bold font-inter text-2xl w-full">Solicitudes de registro en la plataforma de la compañia</p>
+        <div className="w-full flex justify-end my-5">
+          <Select
+            className="w-full md:w-96"
+            name="status"
+            radius="sm"
+            size="lg"
+            variant="bordered"
+            placeholder="Estatus"
+            onChange={(e) => setFilters({ ...filters, status: e.target.value as UserCompanyRequestStatus })}
+            startContent={<GoShieldCheck className="size-5 text-black text-opacity-50" />}
+            value={filters.status}
+          >
+            <SelectItem key={UserCompanyRequestStatus.PENDING}>Pendientes</SelectItem>
+            <SelectItem key={UserCompanyRequestStatus.APPROVED}>Aprobadas</SelectItem>
+            <SelectItem key={UserCompanyRequestStatus.REJECTED}>Rechazadas</SelectItem>
+          </Select>
+        </div>
       </div>
-      <div className="w-full flex justify-end">
-        {requestPermission !== "not loaded" && requestPermission.payload && (
-          <div>
-            <ButtonComponent
-              color="primary"
-              text="Crear nueva solicitud"
-              type="button"
-              variant="solid"
-              startContent={<IoMdAdd className="w-5 h-5" />}
-              onClick={() =>
-                navigate(`/dashboard/companies/requests/admin/create`)
-              }
-            />
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 mt-10">
+        {isGettingRequests ? (
+          <div className="col-span-full flex justify-center items-center h-[50vh]">
+            <Spinner size="lg" />
           </div>
-        )}
-      </div>
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {isGettingUserCompanyRequestsByCompanyLoading ? (
-          <div className="col-span-full my-10">
-            <Spinner />
-          </div>
-        ) : payloadState === "not loaded" || !payloadState.payload ? (
+        ) : !getCompanyRequestsResponse || !getCompanyRequestsResponse.data ? (
           <span>No hay data</span>
-        ) : payloadState.payload.data.length === 0 ? (
+        ) : (getCompanyRequestsResponse.data as PaginatedData<UserCompanyRequestModel>).data.length === 0 ? (
           <div className="col-span-full text-center flex justify-center items-center my-10">
-            <span>No hay solicitudes</span>
+            <span>{getDataMessageWhenNone()}</span>
           </div>
         ) : (
-          payloadState.payload.data.map((request) => (
+          (getCompanyRequestsResponse.data as PaginatedData<UserCompanyRequestModel>).data.map((request) => (
             <CardRequestComponent
               user_company_request={request}
               onClick={() =>
@@ -139,18 +122,19 @@ function CompaniesRequestsAdminPage() {
           ))
         )}
       </div>
-      {isGettingUserCompanyRequestsByCompanyLoading ||
-      payloadState === "not loaded" ? null : (
+      {isGettingRequests ||
+      !getCompanyRequestsResponse || !getCompanyRequestsResponse.data ? null : (
         <div className="w-full flex justify-center items-center mt-10">
           <Pagination
             showControls
             total={
-              (payloadState as GetAllUserCompaniesRequestsProps).payload
-                .total_pages
+              'total_pages' in getCompanyRequestsResponse.data
+                ? getCompanyRequestsResponse.data.total_pages
+                : 0
             }
             color="primary"
-            page={page}
-            onChange={setPage}
+            page={filters.page}
+            onChange={(page) => setFilters(prev => ({...prev, page}))}
             variant="light"
           />
         </div>
