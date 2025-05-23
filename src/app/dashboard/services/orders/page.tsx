@@ -7,14 +7,12 @@ import { usePersistedStore } from "../../../../store/store";
 import { useOrderApiServices } from "../../../api/orders";
 import { useNavigate } from "react-router-dom";
 import { OrderStatus } from "../../../../entities/order/model";
-import SelectComponent from "../../../../components/inputs/select";
-import ButtonComponent from "../../../../components/buttons/component";
 import { IoAdd } from "react-icons/io5";
 import DatatableComponent from "../../../../components/datatable/component";
 import DatesHelpers from "../../../../helpers/dates/helper";
 import PaginationComponent from "../../../../components/datatable/pagination";
+import { Button, Input, Select, SelectItem } from "@heroui/react";
 import { UserCompanyRole } from "../../../../entities/users_companies/types";
-import TextComponent from "../../../../components/inputs/text";
 
 const HEADER_BREADCRUMBS: HeaderBreadcrumbItemProps[] = [
   {
@@ -112,7 +110,9 @@ export function CompanyOrdersPage() {
         </p>
         <div className="flex flex-col gap-1 md:flex-row md:gap-5 justify-end items-center w-full">
           <div className="w-52">
-            <TextComponent
+            <Input
+              size="md"
+              radius="sm"
               variant="bordered"
               label="Buscar por placa"
               name="license_plate_filter"
@@ -122,11 +122,24 @@ export function CompanyOrdersPage() {
             />
           </div>
           <div className="w-80">
-            <SelectComponent
+            <Select
               variant="bordered"
               disallowEmptySelection
               label="Estado de la orden de servicio"
-              data={[
+              name="status"
+              size="md"
+              radius="sm"
+              onChange={(e) =>
+                setFilterState(
+                  e.target.value as
+                    | OrderStatus.CANCELED
+                    | OrderStatus.FINISHED
+                    | OrderStatus.IN_PROGRESS
+                )
+              }
+              value={filterState}
+            >
+              {[
                 {
                   key: "All",
                   label: "Todos los servicios",
@@ -143,34 +156,22 @@ export function CompanyOrdersPage() {
                   key: OrderStatus.CANCELED,
                   label: "Canceladas",
                 },
-              ]}
-              name="status"
-              onChange={(e) =>
-                setFilterState(
-                  e.target.value as
-                    | OrderStatus.CANCELED
-                    | OrderStatus.FINISHED
-                    | OrderStatus.IN_PROGRESS
-                )
-              }
-              value={filterState}
-            />
+              ].map( element => (<SelectItem key={element.key}>{element.label}</SelectItem>) )}
+            </Select>
           </div>
-          {sessionType!.roles!.includes(UserCompanyRole.ADMIN) ||
-            (sessionType!.roles!.includes(UserCompanyRole.SUPERVISOR) && (
-              <div className="flex">
-                <div className="w-auto">
-                  <ButtonComponent
-                    color="primary"
-                    text="Crear orden de servicio"
-                    type="button"
-                    variant="solid"
-                    startContent={<IoAdd className="w-5 h-5" />}
-                    onClick={() => navigate("/dashboard/services/orders/new")}
-                  />
-                </div>
-              </div>
-            ))}
+          {sessionType!.roles!.some(role => role === UserCompanyRole.ADMIN || role === UserCompanyRole.SUPERVISOR) && (
+            <Button
+              radius="sm"
+              color="primary"
+              size="lg"
+              type="button"
+              variant="solid"
+              startContent={<IoAdd className="w-5 h-5" />}
+              onPress={() => navigate("/dashboard/services/orders/new")}
+            >
+              Crear orden de servicio
+            </Button>
+            )}
         </div>
       </div>
       <DatatableComponent

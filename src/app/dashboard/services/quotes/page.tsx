@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { HeaderBreadcrumbItemProps } from "../../../../components/breadcrumbs/header";
 import BreadcrumbsContext from "../../../../components/breadcrumbs/context";
-import ButtonComponent from "../../../../components/buttons/component";
 import { IoAdd } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { usePersistedStore } from "../../../../store/store";
@@ -12,9 +11,8 @@ import DatesHelpers from "../../../../helpers/dates/helper";
 import useDatatableAction from "../../../../components/datatable/use_action";
 import { useOrderApiServices } from "../../../api/orders";
 import { OrderStatus } from "../../../../entities/order/model";
-import SelectComponent from "../../../../components/inputs/select";
 import { UserCompanyRole } from "../../../../entities/users_companies/types";
-import TextComponent from "../../../../components/inputs/text";
+import { Button, Input, Select, SelectItem } from "@heroui/react";
 
 const HEADER_BREADCRUMBS: HeaderBreadcrumbItemProps[] = [
   {
@@ -107,21 +105,35 @@ export default function ServicesQuotesPage() {
         <p className="font-inter font-semibold text-2xl">Cotizaciones</p>
         <div className="flex flex-col gap-1 md:flex-row md:gap-5 justify-end items-center w-full">
           <div className="w-52">
-            <TextComponent
+            <Input
+              size="md"
               variant="bordered"
               label="Buscar por placa"
               name="license_plate_filter"
               type="text"
+              radius="sm"
               value={licensePlateFilter}
               onChange={(e) => setLicensePlateFilter(e.target.value)}
             />
           </div>
           <div className="w-80">
-            <SelectComponent
+            <Select
               variant="bordered"
               disallowEmptySelection
               label="Estado de cotización"
-              data={[
+              size="md"
+              radius="sm"
+              name="status"
+              onChange={(e) =>
+                setFilterState(
+                  e.target.value as
+                    | OrderStatus.QUOTE
+                    | OrderStatus.ACTIVE_FOR_ORDER_CREATION
+                )
+              }
+              value={filterState}
+            >
+              {[
                 {
                   key: OrderStatus.QUOTE,
                   label: "Solicitudes por responder",
@@ -134,29 +146,23 @@ export default function ServicesQuotesPage() {
                   key: "All",
                   label: "Todas las solicitudes",
                 },
-              ]}
-              name="status"
-              onChange={(e) =>
-                setFilterState(
-                  e.target.value as
-                    | OrderStatus.QUOTE
-                    | OrderStatus.ACTIVE_FOR_ORDER_CREATION
-                )
-              }
-              value={filterState}
-            />
+              ].map(element => (<SelectItem key={element.key}>{element.label}</SelectItem>))}
+            </Select>
           </div>
           {!sessionType!.roles!.includes(UserCompanyRole.TECHNICIAN) && (
             <div className="flex">
               <div className="w-auto">
-                <ButtonComponent
+                <Button
                   color="primary"
-                  text="Crear cotización"
                   type="button"
                   variant="solid"
+                  size="lg"
+                  radius="sm"
                   startContent={<IoAdd className="w-5 h-5" />}
-                  onClick={() => navigate("/dashboard/services/quotes/new")}
-                />
+                  onPress={() => navigate("/dashboard/services/quotes/new")}
+                >
+                  Crear cotización
+                </Button>
               </div>
             </div>
           )}

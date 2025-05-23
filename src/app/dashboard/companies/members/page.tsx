@@ -286,7 +286,7 @@ export default function CompanyMembersPage() {
             <SelectItem key="active">Activo</SelectItem>
             <SelectItem key="inactive">Inactivo</SelectItem>
           </Select>
-          {sessionType?.roles?.includes(UserCompanyRole.ADMIN) && (
+          {sessionType?.roles?.some(role => role === UserCompanyRole.ADMIN || role === UserCompanyRole.SUPERVISOR) && (
             <Button
               className="w-full"
               color="primary"

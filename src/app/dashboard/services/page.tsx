@@ -1,9 +1,10 @@
 import { IoMdAdd } from "react-icons/io";
 import { HeaderBreadcrumbItemProps } from "../../../components/breadcrumbs/header";
 import ButtonComponent from "../../../components/buttons/component";
-import TextComponent from "../../../components/inputs/text";
 import { IoSearchOutline } from "react-icons/io5";
 import {
+  Button,
+  Input,
   Modal,
   ModalBody,
   ModalContent,
@@ -30,6 +31,7 @@ import ServiceInfoForm from "../../../entities/service/forms/info/component";
 import BreadcrumbsContext from "../../../components/breadcrumbs/context";
 import ServicePricesComponent from "../../../entities/service/components/prices/component";
 import { useCompanyApiServices } from "../../api/companies";
+import { UserCompanyRole } from "../../../entities/users_companies/types";
 
 const HEADER_BREADCRUMBS: HeaderBreadcrumbItemProps[] = [
   {
@@ -335,29 +337,35 @@ function AdminServicesPage() {
       </Modal>
       <div className="flex flex-col">
         <div className="w-full flex justify-between items-center m-auto">
-          <span className="font-inter font-semibold text-2xl">
+          <p className="w-full font-inter font-semibold text-2xl">
             Servicios de la empresa
-          </span>
-          <div className="w-auto flex items-center gap-5">
-            <TextComponent
+          </p>
+          <div className="w-full flex items-center justify-end gap-5">
+            <Input
+              className="w-96"
+              size="lg"
               name="name"
               onChange={() => {}}
               type="text"
               value=""
               placeholder="Buscar por nombre"
               variant="bordered"
-              endContent={<IoSearchOutline />}
+              startContent={<IoSearchOutline />}
+              radius="sm"
             />
-            <div className="w-auto">
-              <ButtonComponent
+            {sessionType?.roles?.some(role => role === UserCompanyRole.ADMIN || role === UserCompanyRole.SUPERVISOR) && (
+              <Button
                 color="primary"
-                text="Crear nuevo servicio"
                 type="button"
+                size="lg"
                 variant="solid"
-                onClick={onCreateNewServiceFormOpen}
+                radius="sm"
+                onPress={onCreateNewServiceFormOpen}
                 startContent={<IoMdAdd className="w-5 h-5" />}
-              />
-            </div>
+              >
+                Crear nuevo servicio
+              </Button>
+            )}
           </div>
         </div>
         <div className="mt-5">
