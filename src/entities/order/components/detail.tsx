@@ -22,6 +22,7 @@ import { useOrderApiServices } from "../../../app/api/orders";
 import { ToasterContext } from "../../../components/toaster/context/context";
 import { StatusCodes } from "http-status-codes";
 import { useNavigate } from "react-router-dom";
+import { FaRegEdit } from "react-icons/fa";
 
 type Props = {
   order: OrderModel;
@@ -207,14 +208,22 @@ export function OrderDetailComponent(props: Props) {
               props.order.is_checked ? "Sí" : "No"
             }`}</p>
             <div className="flex w-full items-center flex-col md:flex-row gap-2">
+              <div className="flex items-center gap-3">
               <p>
                 {`Trabajador a cargo: ${
                   props.order.assigned_to?.user?.first_name ||
                   "No hay técnico a cargo"
                 }`}
               </p>
-              {sessionType?.roles?.includes(
-                UserCompanyRole.ADMIN || UserCompanyRole.SUPERVISOR
+                {props.order.assigned_to_id && (
+                  <FaRegEdit
+                    className="text-black text-opacity-50 hover:text-opacity-100 transition-all ease-in-out duration-200 cursor-pointer"
+                    onClick={handleOpenModal}
+                  />
+                )}
+              </div>
+              {sessionType?.roles?.some(element => element.includes(
+                UserCompanyRole.ADMIN) || element.includes(UserCompanyRole.SUPERVISOR)
               ) &&
               sessionType.company_id === props.order.company_id &&
               !props.order.assigned_to_id ? (

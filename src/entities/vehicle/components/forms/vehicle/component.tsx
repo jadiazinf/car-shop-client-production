@@ -22,6 +22,7 @@ import {
   useDisclosure,
 } from "@heroui/react";
 import ButtonComponent from "../../../../../components/buttons/component";
+import { VehicleHelpers } from '../../../helpers';
 
 function Container(props: { children: ReactNode }) {
   return (
@@ -78,7 +79,7 @@ function VehicleInfoForm(props: {
             label="Color"
             data={VEHICLE_COLORS.map((element) => ({
               key: element,
-              label: element,
+              label: VehicleHelpers.translateVehicleColor(element),
             }))}
             key="color"
             name="color"
@@ -137,7 +138,7 @@ function VehicleInfoForm(props: {
             label="Tipo de vehículo"
             data={VEHICLE_TYPES_ARR.map((type) => ({
               key: type.key,
-              label: type.label,
+              label: VehicleHelpers.translateVehicleType(type.key),
             }))}
             key="vehicle_type"
             name="vehicle_type"

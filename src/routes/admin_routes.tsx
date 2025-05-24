@@ -11,7 +11,7 @@ import CompanyNewMemberPage from "../app/dashboard/companies/members/new/page";
 import UserSessionPage from "../app/user-session";
 import ProfilePage from "../app/profile/page";
 import ProfileVehiclesPage from "../app/profile/vehicles/page";
-import VehicleInfoPage from "../app/profile/vehicles/info/page";
+import VehicleInfoPage from "../app/profile/vehicles/id/page";
 import CreateVehicle from "../app/profile/vehicles/create/page";
 import CompanyInfoForClient from "../app/search/workshops/id/page";
 import ServicesQuotesPage from "../app/dashboard/services/quotes/page";

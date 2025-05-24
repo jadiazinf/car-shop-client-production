@@ -14,7 +14,7 @@ export function updateVehicle() {
   > | null>(null);
   const [isUpdatingVehicle, setIsUpdatingVehicle] = useState(false);
 
-  async function perform(vehicle: VehicleModel, token: string) {
+  async function perform(vehicle: Partial<VehicleModel>, token: string) {
     try {
       setIsUpdatingVehicle(true);
       const { vehicle_images, ...updatedVehicle } = vehicle;

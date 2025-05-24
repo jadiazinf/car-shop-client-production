@@ -5,11 +5,11 @@ export enum VehicleType {
   TRUCK = "truck",
 }
 
-export const VEHICLE_TYPES_ARR: { key: string; label: string }[] = [
-  { key: "motorbike", label: "Moto" },
-  { key: "car", label: "Carro" },
-  { key: "van", label: "Camioneta" },
-  { key: "truck", label: "Camión" },
+export const VEHICLE_TYPES_ARR: { key: VehicleType; label: string }[] = [
+  { key: VehicleType.MOTORBIKE, label: "Moto" },
+  { key: VehicleType.CAR, label: "Carro" },
+  { key: VehicleType.VAN, label: "Camioneta" },
+  { key: VehicleType.TRUCK, label: "Camión" },
 ];
 
 export enum EngineType {

@@ -74,6 +74,7 @@ function UserInfo(props: { user: UserModel; isUpdatable?: boolean }) {
           user: values,
           company_id: sessionType?.company_id || null,
           roles: sessionType?.roles || null,
+          user_company_id: sessionType?.user_company_id || null
         },
         token: token!,
       })

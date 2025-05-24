@@ -435,13 +435,23 @@ export function CompanyOrderInfoComponent(props: Props) {
                       >
                         <DropdownItem
                           key="false"
-                          description="Al aprobarla se le confirmará al usuario que el costo total de los servicios es el indicado por la cotización"
+                          className="whitespace-normal"
+                          description={
+                            <span className="block max-w-xs whitespace-normal">
+                              Al aprobarla se le confirmará al usuario que el costo total de los servicios es el indicado por la cotización
+                            </span>
+                          }
                         >
                           Aprobar cotización
                         </DropdownItem>
                         <DropdownItem
+                          className="whitespace-normal"
                           key="true"
-                          description="Al cerrarla, la cotización no estará disponible para crear una orden de servicio, y se le notificará al usuario que la cotización ha sido cerrada"
+                          description={
+                            <span className="block max-w-xs whitespace-normal">
+                              Al cerrarla, la cotización no estará disponible para crear una orden de servicio, y se le notificará al usuario que la cotización ha sido cerrada
+                            </span>
+                          }
                         >
                           Cerrar cotización
                         </DropdownItem>
@@ -509,13 +519,23 @@ export function CompanyOrderInfoComponent(props: Props) {
                       >
                         <DropdownItem
                           key={OrderStatus.FINISHED}
-                          description="Se le notificará al usuario que la orden de servicio ha sido finalizada. Esta orden ya no podrá ser actualizada. Asegúrese de que todas las órdenes de servicio de esta orden estén en estado Finalizado antes de continuar."
+                          className="whitespace-normal"
+                          description={
+                            <span className="block max-w-xs whitespace-normal">
+                              Se le notificará al usuario que la orden de servicio ha sido finalizada. Esta orden ya no podrá ser actualizada. Asegúrese de que todas las órdenes de servicio de esta orden estén en estado Finalizado antes de continuar.
+                            </span>
+                          }
                         >
                           Dar por finalizada la cotización
                         </DropdownItem>
                         <DropdownItem
                           key={OrderStatus.CANCELED}
-                          description="Se le notificará al usuario que la orden de servicio ha sido cancelada. Solo se considerará aquellos servicios con estado finalizado para el cálculo del total a cobrar al usuario."
+                          className="whitespace-normal"
+                          description={
+                            <span className="block max-w-xs whitespace-normal">
+                              Se le notificará al usuario que la orden de servicio ha sido cancelada. Solo se considerará aquellos servicios con estado finalizado para el cálculo del total a cobrar al usuario.
+                            </span>
+                          }
                         >
                           Dar por cancelada la cotización
                         </DropdownItem>

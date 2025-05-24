@@ -1,10 +1,11 @@
+import { Color } from "../../consts/colors";
 import ModelModel from "../model/model";
 import UserModel from "../user/model";
 import { EngineType, VehicleTransmission, VehicleType } from "./types";
 
 type VehicleModel = {
   id?: number;
-  color: string;
+  color: Color;
   license_plate: string;
   year: number;
   axles: number;

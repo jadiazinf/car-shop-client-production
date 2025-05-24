@@ -51,6 +51,7 @@ export default function VehicleInfoPage() {
         <VehicleInfo
           vehicle={getVehicleResponse?.data as VehicleModel}
           dataCommingFrom="server"
+          isUpdatable
         />
       )}
     </div>

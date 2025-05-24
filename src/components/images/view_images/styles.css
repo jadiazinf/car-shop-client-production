@@ -110,3 +110,72 @@
     height: 300px;
   }
 }
+
+/* Botón para eliminar la imagen actual */
+.delete-image-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 0, 0, 0.7);
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.delete-image-button:hover {
+  background: rgba(255, 0, 0, 0.9);
+  transform: scale(1.1);
+}
+
+/* Botón para eliminar imágenes en las miniaturas */
+.remove-slot-button {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: rgba(255, 0, 0, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+.remove-slot-button:hover {
+  transform: scale(1.1);
+}
+
+/* Slot para añadir nuevas imágenes */
+.add-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px dashed rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.add-slot:hover {
+  background: rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Contenedor de botones de acción */
+.update-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}

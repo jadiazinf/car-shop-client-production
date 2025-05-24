@@ -4,7 +4,7 @@ import SelectComponent from "../../../components/inputs/select";
 import useGetModelsByBrand, { GetModelsByBrandIdProps } from "../services/get_by_brand_id/use_get_by_brand_id";
 import useGetAllBrands, { GetAllBrandsProps } from "../../brand/services/get_all/use_get_all";
 
-function SelectBrandAndModelComponent() {
+function SelectBrandAndModelComponent(props: { orientation?: "vertical" | "horizontal" }) {
 
   const { brandAndModel, setBrandAndModel } = useContext(BrandAndModelContext);
 
@@ -22,7 +22,7 @@ function SelectBrandAndModelComponent() {
   }, [brandAndModel?.brand]);
 
   return (
-    <div className='w-full flex flex-col md:flex-row gap-5'>
+    <div className={`w-full flex ${props.orientation ? props.orientation === "vertical" ? "flex-col" : "flex-row" : 'flex-col md:flex-row'} gap-5`}>
       <SelectComponent
         label="Marca"
         key="brand"
