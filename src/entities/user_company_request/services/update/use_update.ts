@@ -14,9 +14,9 @@ function useUpdateUserCompanyRequest() {
 
   const [ isUpdatingUserCompanyRequestLoading, setIsUpdatingUserCompanyRequestLoading ] = useState<boolean>(false);
 
-  async function performUpdateUserCompanyRequest(data: {request: UpdateUserCompanyRequest, user_company_request_id: number, company_id: number}, callback?: (data: UpdateUserCompanyRequestProps) => void) {
+  async function performUpdateUserCompanyRequest(data: {request: UpdateUserCompanyRequest, user_company_request_id: number, company_id: number, token: string}, callback?: (data: UpdateUserCompanyRequestProps) => void) {
     setIsUpdatingUserCompanyRequestLoading(true);
-    const service = new UpdateUserCompanyRequestService({request: data.request, user_company_request_id: data.user_company_request_id, company_id: data.company_id});
+    const service = new UpdateUserCompanyRequestService({request: data.request, user_company_request_id: data.user_company_request_id, company_id: data.company_id, token: data.token});
     await service.perform();
     const response = {
       payload: service.payload,

@@ -104,7 +104,7 @@ export default function ServicesQuotesPage() {
       <div className="w-full flex flex-col gap-2 md:flex-row md:gap-0 md: md:justify-between items-center mb-5">
         <p className="font-inter font-semibold text-2xl">Cotizaciones</p>
         <div className="flex flex-col gap-1 md:flex-row md:gap-5 justify-end items-center w-full">
-          <div className="w-52">
+          <div className="">
             <Input
               size="md"
               variant="bordered"
@@ -116,8 +116,9 @@ export default function ServicesQuotesPage() {
               onChange={(e) => setLicensePlateFilter(e.target.value)}
             />
           </div>
-          <div className="w-80">
+          <div className="w-96">
             <Select
+              className="w-full"
               variant="bordered"
               disallowEmptySelection
               label="Estado de cotización"

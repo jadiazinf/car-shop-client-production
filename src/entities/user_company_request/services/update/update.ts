@@ -18,11 +18,13 @@ class UpdateUserCompanyRequestService {
   private _request: UpdateUserCompanyRequest;
   private _user_company_request_id: number;
   private _company_id: number;
+  private _token: string;
 
   constructor(data: {
     request: any;
     user_company_request_id: number;
     company_id: number;
+    token: string;
   }) {
     this._request = data.request;
     this._user_company_request_id = data.user_company_request_id;
@@ -30,6 +32,7 @@ class UpdateUserCompanyRequestService {
     this._status = null;
     this._errorMessage = null;
     this._payload = null;
+    this._token = data.token;
   }
 
   get status(): StatusCodes {
@@ -58,6 +61,7 @@ class UpdateUserCompanyRequestService {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Authorization": `Bearer ${this._token}`
           },
         }
       );

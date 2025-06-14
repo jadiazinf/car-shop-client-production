@@ -146,6 +146,7 @@ function CompanyRequestPage() {
       },
       user_company_request_id: parseInt(params.id!),
       company_id: (getUserCompanyRequestResponse!.data as UserCompanyRequestModel).company!.id!,
+      token: token!
     });
   }
 
@@ -286,15 +287,24 @@ function CompanyRequestPage() {
                     className="max-w-[300px]"
                   >
                     <DropdownItem
+                      className="whitespace-normal"
                       key="approved"
-                      description="Al aprobar, la compañía podrá ofrecer sus servicios en la plataforma"
+                      description={
+                        <span className="block max-w-xs whitespace-normal">
+                          Al aprobar, la compañía podrá ofrecer sus servicios en la plataforma"
+                        </span>
+                      }
                     >
                       Aprobar solicitud
                     </DropdownItem>
                     <DropdownItem
+                      className="whitespace-normal"
                       key="rejected"
-                      description="Al rechazar, la compañía no podrá ofrecer sus servicios en la plataforma, pero el usuario podrá volver a crear otra solicitud de registro"
-                    >
+                      description={
+                        <span className="block max-w-xs whitespace-normal">
+                          Al rechazar, la compañía no podrá ofrecer sus servicios en la plataforma, pero el usuario podrá volver a crear otra solicitud de registro
+                        </span>
+                      }>
                       Rechazar solicitud
                     </DropdownItem>
                   </DropdownMenu>

@@ -18,6 +18,9 @@ import UserQuoteInfoPage from "../app/profile/quotes/id/page";
 import NewQuotePage from "../app/search/workshops/id/new_quote/page";
 import { UserWorkshopsPage } from "../app/profile/workshops/page";
 import ProfileNewWorkshopPage from "../app/profile/workshops/new/page";
+import { UserOrdersPage } from "../app/profile/orders/page";
+import UserOrderInfoPage from "../app/profile/orders/id/page";
+import { UserServiceOrderAdvance } from "../app/profile/orders/advances/service_order_id/page";
 
 const superadminRoutes = (
   <>
@@ -42,6 +45,23 @@ const superadminRoutes = (
     <Route path="/profile/vehicles" element={<ProfileVehiclesPage />} />
     <Route path="/profile/vehicles/new" element={<CreateVehicle />} />
     <Route path="/profile/vehicles/:id" element={<VehicleInfoPage />} />
+
+    {/* profile quotes */}
+    <Route path="/profile/quotes" element={<UserQuotesPage />} />
+    <Route path="/profile/quotes/:id" element={<UserQuoteInfoPage />} />
+
+    {/* profile orders */}
+    <Route path="/profile/orders" element={<UserOrdersPage />} />
+    <Route
+      path="/profile/orders/:id/:company_id"
+      element={<UserOrderInfoPage />}
+    />
+
+    {/* profile orders advances */}
+    <Route
+      path="/profile/orders/advances/:service_order_id/:order_id/:company_id"
+      element={<UserServiceOrderAdvance />}
+    />
 
     {/* profile workshops */}
     <Route path="/profile/workshops" element={<UserWorkshopsPage />} />
