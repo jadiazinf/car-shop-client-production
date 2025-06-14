@@ -32,18 +32,25 @@ function LoginForm() {
           type: "ERROR",
         });
 
+      console.log("response", response);
+
+      console.log("status", response.status, response.status === StatusCodes.OK);
+
       if (response.status === StatusCodes.OK)
         appDispatch(
           SetAuthentication({
             status: AuthStatus.AUTHENTICATED,
             sessionType: {
               user: response.data.user!,
+              user_company_id: null,
               company_id: null,
               roles: [],
             },
             token: response.data.token,
           })
         );
+
+    console.log("aqui");
     } catch (error) {
       console.log(error);
     }
