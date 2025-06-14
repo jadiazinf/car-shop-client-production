@@ -98,7 +98,7 @@ function SearchWorkshopsPage() {
         </div>
 
         <div className="w-full flex flex-col md:flex-row">
-          <div className="hidden md:block sticky top-20 h-[calc(100vh-5rem)] w-72 pr-5 overflow-y-auto">
+          <div className="hidden md:block sticky top-20 h-[calc(100vh-5rem)] w-72 pr-5">
             <CompaniesFilterSidebarComponent
               filtersState={filtersState}
               setFiltersChange={setFiltersState}
