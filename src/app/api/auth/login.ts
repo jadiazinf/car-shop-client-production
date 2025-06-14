@@ -20,6 +20,9 @@ export function login() {
         user: { email, password },
       });
 
+      console.log("response response", response);
+      console.log("response headers", response.headers);
+      console.log("response headers auth", response.headers.authorization);
       console.log("response aaaaa", response.data);
       console.log("response aaaaa 2", response.data.data);
       console.log("response aaaaa 3", response.data.data.user);
