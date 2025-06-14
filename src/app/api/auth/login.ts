@@ -19,6 +19,11 @@ export function login() {
       >(`login`, {
         user: { email, password },
       });
+
+      console.log("response aaaaa", response.data);
+      console.log("response aaaaa 2", response.data.data);
+      console.log("response aaaaa 3", response.data.data.user);
+
       setResponse({
         data: {
           user: response.data.data.user!,
