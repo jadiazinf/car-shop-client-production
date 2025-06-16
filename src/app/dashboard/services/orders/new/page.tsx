@@ -184,7 +184,7 @@ export function NewCompanyOrder() {
                     </div>
                   </div>
                   <div className="h-full flex items-center">
-                    <p>{`Categoria: ${
+                    <p>{`Categoría: ${
                       service_order.service!.category!.name
                     }`}</p>
                   </div>

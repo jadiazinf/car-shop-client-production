@@ -92,7 +92,7 @@ function CompaniesFiltersComponent(props: IServicesFilterProps) {
       <div className="flex flex-col mb-10">
         <Divider className="mb-5" />
         <p className="text-sm font-semibold">
-          Buscar por categorias de servicio
+          Buscar por categorías de servicio
         </p>
         <div className="mt-5 flex flex-col gap-2">
           {categories ===

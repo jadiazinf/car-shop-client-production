@@ -49,7 +49,7 @@ class CreateCategoryService {
 
       this._status = response.status;
       this._payload = response.data || null;
-      this._errorMessage = response.status === StatusCodes.CREATED ? null : response.status === StatusCodes.NOT_FOUND ? "No se pudo crear la categoria" : "Error al crear la categoria"
+      this._errorMessage = response.status === StatusCodes.CREATED ? null : response.status === StatusCodes.NOT_FOUND ? "No se pudo crear la categoría" : "Error al crear la categoría"
     } catch(error: any) {
       const axiosError = error as AxiosError;
       this._status = StatusCodes[axiosError.response?.status as unknown as keyof typeof StatusCodes] || StatusCodes.INTERNAL_SERVER_ERROR;

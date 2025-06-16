@@ -49,7 +49,7 @@ class UpdateCategoryService {
 
       this._status = response.status;
       this._payload = response.data || null;
-      this._errorMessage = response.status === StatusCodes.CREATED ? null : response.status === StatusCodes.NOT_FOUND ? "No se pudo actualizar la categoria" : "Error al actualizar la categoria"
+      this._errorMessage = response.status === StatusCodes.CREATED ? null : response.status === StatusCodes.NOT_FOUND ? "No se pudo actualizar la categoría" : "Error al actualizar la categoría"
     } catch(error: any) {
       const axiosError = error as AxiosError;
       this._status = StatusCodes[axiosError.response?.status as unknown as keyof typeof StatusCodes] || StatusCodes.INTERNAL_SERVER_ERROR;

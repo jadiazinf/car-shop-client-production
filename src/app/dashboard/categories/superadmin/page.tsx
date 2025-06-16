@@ -33,7 +33,7 @@ const HEADER_BREADCRUMBS: HeaderBreadcrumbItemProps[] = [
     url: "/dashboard"
   },
   {
-    text: "Categorias de servicios",
+    text: "Categorías de servicios",
     url: "/dashboard/categories"
   }
 ]
@@ -108,11 +108,11 @@ function SuperadminCategoriesPage() {
   useEffect(() => {
     if (createCategoryState !== 'not loaded') {
       if (createCategoryState.status === StatusCodes.CREATED)  {
-        toasterDispatch({payload: 'Creación de categoria exitoso', type: 'SUCCESS'});
+        toasterDispatch({payload: 'Creación de categoría exitoso', type: 'SUCCESS'});
         performGetAllCategories({page});
         setPage(1);
       } else {
-        toasterDispatch({payload: createCategoryState.errorMessage || 'No se pudo crear la nueva categoria', type: 'ERROR'});
+        toasterDispatch({payload: createCategoryState.errorMessage || 'No se pudo crear la nueva categoría', type: 'ERROR'});
       }
     }
   }, [createCategoryState]);
@@ -136,12 +136,12 @@ function SuperadminCategoriesPage() {
   function controlUpdateCategoryResponse(data: UpdateCategoryProps) {
     if (data.status === StatusCodes.OK) {
       onUpdateCategoryFormClose();
-      toasterDispatch({payload: "Categoria actualizada correctamente", type: "SUCCESS"});
+      toasterDispatch({payload: "Categoría actualizada correctamente", type: "SUCCESS"});
       setPage(1);
       return;
     }
 
-    toasterDispatch({payload: "No se pudo actualizar la categoria", type: "ERROR"});
+    toasterDispatch({payload: "No se pudo actualizar la categoría", type: "ERROR"});
   }
 
   function handleUpdateNewCategory(values: CategoryModel) {
@@ -151,12 +151,12 @@ function SuperadminCategoriesPage() {
   function controlDeleteCategoryResponse(data: UpdateCategoryProps) {
     if (data.status === StatusCodes.OK) {
       onDeleteCategoryClose();
-      toasterDispatch({payload: "Categoria eliminada correctamente", type: "SUCCESS"});
+      toasterDispatch({payload: "Categoría eliminada correctamente", type: "SUCCESS"});
       setPage(1);
       return;
     }
 
-    toasterDispatch({payload: "No se pudo eliminar la categoria", type: "ERROR"});
+    toasterDispatch({payload: "No se pudo eliminar la categoría", type: "ERROR"});
   }
 
   function handleDeleteCategory() {
@@ -182,7 +182,7 @@ function SuperadminCategoriesPage() {
       >
         <ModalContent>
           <ModalBody className="flex flex-col">
-            <span className="font-bold text-2xl font-inter">Formulario de nueva categoria</span>
+            <span className="font-bold text-2xl font-inter">Formulario de nueva categoría</span>
             <CategoryInfoForm
               onSubmit={handleCreateNewCategory}
             >
@@ -210,9 +210,9 @@ function SuperadminCategoriesPage() {
           <ModalBody>
             {
               payloadState === "not loaded" ? null :
-              !datatableAction.id ? <span>Seleccione una categoria para edición</span> :
+              !datatableAction.id ? <span>Seleccione una categoría para edición</span> :
                 <div className="flex flex-col gap-5">
-                  <span className="font-bold text-2xl font-inter">Formulario de edición de categoria</span>
+                  <span className="font-bold text-2xl font-inter">Formulario de edición de categoría</span>
                   <CategoryInfoForm
                     onSubmit={handleUpdateNewCategory}
                     initialValues={(payloadState.payload as PaginatedData<CategoryModel>).data.find( element => element.id === datatableAction.id )!}
@@ -243,10 +243,10 @@ function SuperadminCategoriesPage() {
           <ModalBody>
             {
               payloadState === "not loaded" ? null :
-              !datatableAction.id ? <span>Seleccione una categoria para eliminar</span> :
+              !datatableAction.id ? <span>Seleccione una categoría para eliminar</span> :
                 <div className="flex flex-col justify-center items-center gap-5">
                   <LogoComponent />
-                  <span className="font-inter">Está seguro de eliminar la categoria <strong>{(payloadState.payload as PaginatedData<CategoryModel>).data.find( element => element.id === datatableAction.id )!.name}</strong>?</span>
+                  <span className="font-inter">Está seguro de eliminar la categoría <strong>{(payloadState.payload as PaginatedData<CategoryModel>).data.find( element => element.id === datatableAction.id )!.name}</strong>?</span>
                   <ButtonComponent
                     color="primary"
                     text="Confirmar"
@@ -262,7 +262,7 @@ function SuperadminCategoriesPage() {
       </Modal>
       <div className='w-full flex flex-col'>
         <div className="w-full flex justify-between items-center m-auto">
-          <span className="text-3xl font-bold font-inter">Categoria de servicios</span>
+          <span className="text-3xl font-bold font-inter">Categoría de servicios</span>
           <div className='w-auto flex items-center gap-5'>
             <TextComponent
               name="name"
@@ -276,7 +276,7 @@ function SuperadminCategoriesPage() {
             <div className="w-auto">
               <ButtonComponent
                 color="primary"
-                text="Crear nueva categoria"
+                text="Crear nueva categoría"
                 type="button"
                 variant="solid"
                 onClick={onCreateNewCategoryFormOpen}

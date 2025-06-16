@@ -63,7 +63,7 @@ export function CapturedCustomersByServiceCategoryAndPeriodReport({
               <XAxis dataKey="name" tickFormatter={(value) => value} />
               <YAxis
                 label={{
-                  value: "Cantidad de clientes servidos por categoria",
+                  value: "Cantidad de clientes servidos por categoría",
                   angle: -90,
                   position: "insideLeft",
                   dx: -20,

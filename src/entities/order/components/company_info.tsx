@@ -72,7 +72,7 @@ const TABLE_COLUMNS: DatatableColumnsProps[] = [
   },
   {
     key: "category",
-    label: "Categoria",
+    label: "Categoría",
   },
   {
     key: "prices",

@@ -185,7 +185,7 @@ function ServiceInfoForm(props: IServiceInfoFormProps) {
         }
         isError={formik.errors.category_id && formik.touched.category_id}
         errorMessage={formik.errors.category_id}
-        label="Categoria del servicio"
+        label="Categoría del servicio"
       />
       <div className="flex items-center gap-2">
         <Checkbox

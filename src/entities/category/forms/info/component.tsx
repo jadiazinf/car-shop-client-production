@@ -24,7 +24,7 @@ function CategoryInfoForm(props: CategoryInfoFormProps) {
         name="name"
         type="text"
         value={formik.values.name}
-        label="Nombre de la categoria"
+        label="Nombre de la categoría"
         onChange={formik.handleChange}
         errorMessage={formik.errors.name}
         isError={formik.touched.name && formik.errors.name}

@@ -22,8 +22,8 @@ const DASHBOARD_OPTIONS: MenuButtonComponentProps[] = [
     url: "/dashboard/companies"
   },
   {
-    title: "Categoria de servicios",
-    description: "Gestiona las categorias para los servicios ofrecidos dentro de la plataforma",
+    title: "Categoría de servicios",
+    description: "Gestiona las categorías para los servicios ofrecidos dentro de la plataforma",
     icon: <BoxIconComponent
             bgColor={IconColors.pruple}
             icon={

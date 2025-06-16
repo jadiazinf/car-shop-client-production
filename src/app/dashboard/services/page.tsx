@@ -59,7 +59,7 @@ const TABLE_COLUMNS: DatatableColumnsProps[] = [
   },
   {
     key: "category",
-    label: "Categoria",
+    label: "Categoría",
   },
   {
     key: "prices",
@@ -307,12 +307,12 @@ function AdminServicesPage() {
           <ModalBody>
             {!getCompanyServicesResponse ||
             !getCompanyServicesResponse.data ? null : !datatableAction.id ? (
-              <span>Seleccione una categoria para eliminar</span>
+              <span>Seleccione una categoría para eliminar</span>
             ) : (
               <div className="flex flex-col justify-center items-center gap-5">
                 <LogoComponent />
                 <span className="font-inter">
-                  Está seguro de eliminar la categoria{" "}
+                  Está seguro de eliminar la categoría{" "}
                   <strong>
                     {
                       getCompanyServicesResponse.data.data.find(

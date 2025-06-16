@@ -54,13 +54,13 @@ export function ClaimsByServiceCategoryReport({
       ) : (
         <>
           <p className="font-medium mb-5">
-            {/* Cantidad de órdenes con reclamo por categoria de servicios */}
+            {/* Cantidad de órdenes con reclamo por categoría de servicios */}
           </p>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={transformData()}
               margin={{ top: 5, right: 30, left: 80, bottom: 40 }}
-              title="Cantidad de órdenes con reclamo por categoria de servicios"
+              title="Cantidad de órdenes con reclamo por categoría de servicios"
             >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" tickFormatter={(value) => value} />

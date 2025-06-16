@@ -40,7 +40,7 @@ class GetAllCategoryService {
 
       this._status = response.status;
       this._payload = response.data || null;
-      this._errorMessage = response.status === StatusCodes.OK ? null : response.status === StatusCodes.NOT_FOUND ? "Categorias no encontrada" : "Error al buscar las categorias"
+      this._errorMessage = response.status === StatusCodes.OK ? null : response.status === StatusCodes.NOT_FOUND ? "Categorías no encontrada" : "Error al buscar las categorías"
     } catch(error: any) {
       const axiosError = error as AxiosError;
       this._status = StatusCodes[axiosError.response?.status as unknown as keyof typeof StatusCodes] || StatusCodes.INTERNAL_SERVER_ERROR;
