@@ -31,12 +31,17 @@ export default function ViewImagesComponent(props: ViewImagesComponentProps) {
     return typeof value === "string";
   }
 
-  // Función para obtener la URL de la imagen actual
+  function isBase64(value: any): value is string {
+    return typeof value === "string" && value.startsWith("data:image/");
+  }
+
   function getSelectedImageByIndex() {
     const currentImage = props.images[currentImageIndex];
 
     if (isFile(currentImage)) {
       return URL.createObjectURL(currentImage);
+    } else if (isBase64(currentImage)) {
+      return currentImage;
     } else if (isString(currentImage)) {
       return `${
         props.isCommingFrom === "server"
@@ -45,14 +50,15 @@ export default function ViewImagesComponent(props: ViewImagesComponentProps) {
       }${currentImage}`;
     }
 
-    return ""; // En caso de que no sea ni File ni string
+    return "";
   }
 
-  // Función para obtener las URLs de todas las imágenes
   function getImageUrls() {
     return props.images.map((image) => {
       if (isFile(image)) {
         return URL.createObjectURL(image);
+      } else if (isBase64(image)) {
+        return image;
       } else if (isString(image)) {
         return `${
           props.isCommingFrom === "server"
@@ -60,7 +66,7 @@ export default function ViewImagesComponent(props: ViewImagesComponentProps) {
             : ""
         }${image}`;
       }
-      return ""; // En caso de que no sea ni File ni string
+      return "";
     });
   }
 
