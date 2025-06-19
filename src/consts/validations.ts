@@ -7,7 +7,7 @@ class ValidationsConsts {
   static EMAIL_FORMAT = 'Formato de correo electrónico no válido';
   static PASSWORD_CONFIRMAION = 'Las contraseñas no coinciden';
   static VALID_PHONE_NUMBER = 'Número de teléfono no válido';
-  static VALID_AGE = 'Debes tener por lo meno 18 años';
+  static VALID_AGE = 'Debes tener por lo menos 18 años';
 
   static validateImageFile(file: File): boolean {
     const validExtensions = ['image/jpg', 'image/jpeg', 'image/png'];

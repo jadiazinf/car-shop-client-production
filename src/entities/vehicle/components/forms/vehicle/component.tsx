@@ -120,7 +120,7 @@ function VehicleInfoForm(props: {
           />
           <SelectComponent
             label="Cantidad de ejes"
-            data={[1, 2, 3, 4, 5, 6].map((element) => ({
+            data={[2, 3, 4, 5, 6].map((element) => ({
               key: element.toString(),
               label: element.toString(),
             }))}
@@ -149,7 +149,7 @@ function VehicleInfoForm(props: {
             onBlur={formik.handleBlur}
           />
           <TextComponent
-            label="Capacidad de carga"
+            label="Capacidad de carga (Kg)"
             key="load_capacity"
             name="load_capacity"
             onChange={formik.handleChange}
