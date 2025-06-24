@@ -115,6 +115,7 @@ export function SearchUserVehicleForNewOrderService(props: IProps) {
                   label="Kilometraje del vehículo"
                   value={vehicleMileage.toString()}
                   onChange={(event) => setVehicleMileage(Number(event.target.value))}
+                  step={1}
                 />
               </div>
               <div className="w-auto">

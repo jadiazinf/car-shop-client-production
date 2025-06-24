@@ -20,6 +20,7 @@ function TextComponent(props: IBaseInputProps) {
       radius="sm"
       isDisabled={props.isDisabled}
       onKeyDown={props.onKeyDown}
+      step={props.step}
     />
   );
 }

@@ -18,6 +18,7 @@ export interface IBaseInputProps {
     | undefined;
   variant?: "bordered" | "underlined" | "flat" | "faded";
   isDisabled?: boolean;
+  step?: number;
 }
 
 export type SelectDataProps = {

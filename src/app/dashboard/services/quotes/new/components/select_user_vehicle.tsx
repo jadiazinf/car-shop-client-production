@@ -105,6 +105,7 @@ export function SelectUserVehicleForQuoteComponent(props: Props) {
                   type="number"
                   value={vehicleMileage.toString()}
                   onChange={(event) => setVehicleMileage(Number(event.target.value))}
+                  step={1}
                 />
               </div>
               <div className="w-auto mt-5">
