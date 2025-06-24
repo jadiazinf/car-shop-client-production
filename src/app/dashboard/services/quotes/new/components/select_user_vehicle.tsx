@@ -48,7 +48,7 @@ export function SelectUserVehicleForQuoteComponent(props: Props) {
   const { isGettingVehicles, userVehiclesResponse, perform } =
     useUsersApiServices.getUserVehicles();
 
-  const [vehicleMileage, setVehicleMileage] = useState<string>("0.00");
+  const [vehicleMileage, setVehicleMileage] = useState<number>(0);
 
   const [vehicle, setSelectedVehicle] = useState<VehicleModel | null>(
     props.selectedVehicle
@@ -81,7 +81,7 @@ export function SelectUserVehicleForQuoteComponent(props: Props) {
   }
 
   function handleSetVehicleAndMileage() {
-    props.setVehicleMileage(parseFloat(vehicleMileage));
+    props.setVehicleMileage(vehicleMileage);
     props.setSelectedVehicle(vehicle!);
     props.onNextStep();
   }
@@ -103,8 +103,8 @@ export function SelectUserVehicleForQuoteComponent(props: Props) {
                   name="vehicle_mileage"
                   label="Kilometraje del vehículo"
                   type="number"
-                  value={vehicleMileage}
-                  onChange={(event) => setVehicleMileage(event.target.value)}
+                  value={vehicleMileage.toString()}
+                  onChange={(event) => setVehicleMileage(Number(event.target.value))}
                 />
               </div>
               <div className="w-auto mt-5">
@@ -113,7 +113,7 @@ export function SelectUserVehicleForQuoteComponent(props: Props) {
                   text="Confirmar vehículo para cotización"
                   type="button"
                   variant="solid"
-                  isDisabled={!vehicle || parseFloat(vehicleMileage) <= 0}
+                  isDisabled={!vehicle || vehicleMileage <= 0}
                   onClick={handleSetVehicleAndMileage}
                 />
               </div>

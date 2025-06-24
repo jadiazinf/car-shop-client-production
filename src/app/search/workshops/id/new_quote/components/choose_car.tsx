@@ -33,7 +33,7 @@ export function ChooseCarForQuoteComponent(props: Props) {
     null
   );
 
-  const [vehicleMileage, setVehicleMileage] = useState<string>("0.00");
+  const [vehicleMileage, setVehicleMileage] = useState<number>(0);
 
   const { isOpen, onOpenChange, onOpen } = useDisclosure();
 
@@ -47,7 +47,7 @@ export function ChooseCarForQuoteComponent(props: Props) {
   }
 
   function handleSetVehicleAndMileage() {
-    props.setVehicleMileage(parseFloat(vehicleMileage));
+    props.setVehicleMileage(vehicleMileage);
     props.setSelectedCar(selectedVehicle!);
     props.onConfirm();
   }
@@ -69,8 +69,8 @@ export function ChooseCarForQuoteComponent(props: Props) {
                   name="vehicle_mileage"
                   label="Kilometraje del vehículo"
                   type="number"
-                  value={vehicleMileage}
-                  onChange={(event) => setVehicleMileage(event.target.value)}
+                  value={vehicleMileage.toString()}
+                  onChange={(event) => setVehicleMileage(Number(event.target.value))}
                 />
               </div>
               <div className="w-auto mt-5">
@@ -80,7 +80,7 @@ export function ChooseCarForQuoteComponent(props: Props) {
                   type="button"
                   variant="solid"
                   isDisabled={
-                    !selectedVehicle || parseFloat(vehicleMileage) <= 0
+                    !selectedVehicle || vehicleMileage <= 0
                   }
                   onClick={handleSetVehicleAndMileage}
                 />
