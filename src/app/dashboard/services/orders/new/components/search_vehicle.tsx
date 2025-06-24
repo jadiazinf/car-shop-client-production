@@ -14,7 +14,6 @@ import TextComponent from "../../../../../../components/inputs/text";
 import DatatableComponent from "../../../../../../components/datatable/component";
 import { DatatableColumnsProps } from "../../../../../../components/datatable/types";
 import PaginationComponent from "../../../../../../components/datatable/pagination";
-import { NumberInputHelper } from "../../../../../../components/inputs/helpers";
 import { VehicleHelpers } from "../../../../../../entities/vehicle/helpers";
 
 interface IProps {
@@ -63,7 +62,7 @@ export function SearchUserVehicleForNewOrderService(props: IProps) {
     props.selectedVehicle || null
   );
 
-  const [vehicleMileage, setVehicleMileage] = useState<string>("0.00");
+  const [vehicleMileage, setVehicleMileage] = useState<number>(0);
 
   const [page, setPage] = useState(1);
 
@@ -75,7 +74,7 @@ export function SearchUserVehicleForNewOrderService(props: IProps) {
 
   function handleSelectVehicle() {
     props.setSelectedVehicle(vehicle);
-    props.setVehicleMileage(parseFloat(vehicleMileage));
+    props.setVehicleMileage(vehicleMileage);
     props.onNext();
   }
 
@@ -96,13 +95,6 @@ export function SearchUserVehicleForNewOrderService(props: IProps) {
     }
   };
 
-  function handleVehicleMileageChange(
-    e: React.KeyboardEvent<HTMLInputElement>
-  ) {
-    const value = NumberInputHelper.handleChange(e, vehicleMileage);
-    setVehicleMileage(value);
-  }
-
   return (
     <>
       <Modal
@@ -119,10 +111,10 @@ export function SearchUserVehicleForNewOrderService(props: IProps) {
               <div className="w-auto">
                 <TextComponent
                   name="vehicle_mileage"
-                  type="text"
+                  type="number"
                   label="Kilometraje del vehículo"
-                  value={vehicleMileage}
-                  onKeyDown={handleVehicleMileageChange}
+                  value={vehicleMileage.toString()}
+                  onChange={(event) => setVehicleMileage(Number(event.target.value))}
                 />
               </div>
               <div className="w-auto">

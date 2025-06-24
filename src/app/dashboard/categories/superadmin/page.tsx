@@ -261,9 +261,9 @@ function SuperadminCategoriesPage() {
         </ModalContent>
       </Modal>
       <div className='w-full flex flex-col'>
-        <div className="w-full flex justify-between items-center m-auto">
+        <div className="w-full flex flex-col md:flex-row gap-5 justify-between items-center m-auto">
           <span className="text-3xl font-bold font-inter">Categoría de servicios</span>
-          <div className='w-auto flex items-center gap-5'>
+          <div className='w-auto flex flex-col md:flex-row items-center gap-5'>
             <TextComponent
               name="name"
               onChange={() => {}}

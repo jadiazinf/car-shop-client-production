@@ -4,7 +4,7 @@ import { Accordion, AccordionItem } from "@heroui/react";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { MdAppRegistration, MdCategory } from "react-icons/md";
 
-function SuperadminMenuOptions() {
+function TechnicianMenuOptions() {
   return (
     <div className="flex flex-col gap-2 w-full h-full">
       <Accordion variant="light" className="border-b-0.5 border-black">
@@ -26,10 +26,10 @@ function SuperadminMenuOptions() {
       <MenuOptionContainer
         icon={<MdCategory />}
         name="Categoría de servicios"
-        url="/dashboard/categories"
+        url="/dashboard/catetgories"
       />
     </div>
   );
 }
 
-export default SuperadminMenuOptions;
+export default TechnicianMenuOptions;

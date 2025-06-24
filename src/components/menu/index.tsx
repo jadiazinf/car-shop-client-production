@@ -7,6 +7,7 @@ import { usePersistedStore } from "../../store/store";
 import { AuthStatus } from "../../auth/types";
 import { UserCompanyRole } from "../../entities/users_companies/types";
 import AdminMenuOptions from "./admin";
+import SuperadminMenuOptions from "./superadmin";
 
 function MenuComponent() {
   const { status, sessionType } = usePersistedStore().authReducer;
@@ -49,6 +50,9 @@ function MenuComponent() {
   if (sessionType?.roles?.includes(UserCompanyRole.ADMIN))
     options = <AdminMenuOptions />
 
+  if (sessionType?.roles?.includes(UserCompanyRole.SUPERADMIN))
+    options = <SuperadminMenuOptions />
+
   return (
     <div className="relative sm:hidden">
       <button onClick={toggleMenu} className="p-2 text-gray-800 z-50">
@@ -70,7 +74,7 @@ function MenuComponent() {
         <div className="p-4">
           <div className="flex items-center justify-between">
             <LogoComponent />
-            <Button isIconOnly aria-label="Close" className='bg-white' onClick={closeMenu}>
+            <Button isIconOnly aria-label="Close" className='bg-white' onPress={closeMenu}>
               <TfiClose />
             </Button>
           </div>

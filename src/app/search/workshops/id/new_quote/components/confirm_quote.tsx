@@ -38,7 +38,6 @@ export function ConfirmQuoteComponent(props: Props) {
         vehicle_mileage: props.vehicle_mileage,
         is_active: true,
         is_checked: false,
-        created_by: null,
         vehicle_id: props.selectedVehicle.id!,
         company_id: props.selectedCompany.id!,
         services_orders: props.selectedServicesOrders.map((service_order) => ({

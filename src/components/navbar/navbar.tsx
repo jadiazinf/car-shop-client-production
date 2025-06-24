@@ -1,4 +1,4 @@
-import { Navbar, NavbarBrand, NavbarContent } from "@heroui/react";
+import { Link, Navbar, NavbarBrand, NavbarContent, NavbarMenu, NavbarMenuItem } from "@heroui/react";
 import LogoComponent from "../logo/component";
 import { useNavigate } from "react-router-dom";
 import { usePersistedStore } from "../../store/store";
@@ -47,6 +47,23 @@ function NavbarComponent() {
         authStatus={authReducer.status}
         roles={authReducer.sessionType?.roles || null}
       />
+      <NavbarMenu>
+        {menuItems.map((item, index) => (
+          <NavbarMenuItem key={`${item}-${index}`}>
+
+            <Link
+              className="w-full"
+              color={
+                index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"
+              }
+              href="#"
+              size="lg"
+            >
+              {item}
+            </Link>
+          </NavbarMenuItem>
+        ))}
+      </NavbarMenu>
     </Navbar>
   );
 }

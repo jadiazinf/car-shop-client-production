@@ -2,9 +2,10 @@ import MenuOptionContainer from "./components/option_container";
 import { LiaToolsSolid } from "react-icons/lia";
 import { Accordion, AccordionItem } from "@heroui/react";
 import { IoDocumentTextOutline } from "react-icons/io5";
-import { MdAppRegistration, MdCategory } from "react-icons/md";
+import { MdAppRegistration } from "react-icons/md";
+import { GoTools } from "react-icons/go";
 
-function SuperadminMenuOptions() {
+function SupervisorMenuOptions() {
   return (
     <div className="flex flex-col gap-2 w-full h-full">
       <Accordion variant="light" className="border-b-0.5 border-black">
@@ -24,12 +25,12 @@ function SuperadminMenuOptions() {
         </AccordionItem>
       </Accordion>
       <MenuOptionContainer
-        icon={<MdCategory />}
-        name="Categoría de servicios"
-        url="/dashboard/categories"
+        icon={<GoTools />}
+        name="Servicios"
+        url="/dashboard/services"
       />
     </div>
   );
 }
 
-export default SuperadminMenuOptions;
+export default SupervisorMenuOptions;

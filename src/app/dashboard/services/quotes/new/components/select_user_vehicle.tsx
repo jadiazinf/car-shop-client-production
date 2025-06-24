@@ -15,7 +15,6 @@ import ButtonComponent from "../../../../../../components/buttons/component";
 import PaginationComponent from "../../../../../../components/datatable/pagination";
 import LogoComponent from "../../../../../../components/logo/component";
 import TextComponent from "../../../../../../components/inputs/text";
-import { NumberInputHelper } from "../../../../../../components/inputs/helpers";
 
 type Props = {
   user_id: number;
@@ -76,11 +75,6 @@ export function SelectUserVehicleForQuoteComponent(props: Props) {
     }
   }
 
-  function handleMileageChange(e: React.KeyboardEvent<HTMLInputElement>) {
-    const value = NumberInputHelper.handleChange(e, vehicleMileage);
-    setVehicleMileage(value);
-  }
-
   function handleOpenModal() {
     setSelectedVehicle(vehicle);
     onOpen();
@@ -108,9 +102,9 @@ export function SelectUserVehicleForQuoteComponent(props: Props) {
                 <TextComponent
                   name="vehicle_mileage"
                   label="Kilometraje del vehículo"
-                  type="text"
+                  type="number"
                   value={vehicleMileage}
-                  onKeyDown={handleMileageChange}
+                  onChange={(event) => setVehicleMileage(event.target.value)}
                 />
               </div>
               <div className="w-auto mt-5">

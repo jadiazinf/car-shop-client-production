@@ -11,7 +11,6 @@ import {
 } from "@heroui/react";
 import ButtonComponent from "../../../../../../components/buttons/component";
 import TextComponent from "../../../../../../components/inputs/text";
-import { NumberInputHelper } from "../../../../../../components/inputs/helpers";
 import PaginationComponent from "../../../../../../components/datatable/pagination";
 import LogoComponent from "../../../../../../components/logo/component";
 
@@ -42,11 +41,6 @@ export function ChooseCarForQuoteComponent(props: Props) {
     perform(sessionType!.user.id!, page, token!);
   }, []);
 
-  function handleMileageChange(e: React.KeyboardEvent<HTMLInputElement>) {
-    const value = NumberInputHelper.handleChange(e, vehicleMileage);
-    setVehicleMileage(value);
-  }
-
   function handleSelectVehicle(vehicle: VehicleModel) {
     setSelectedVehicle(vehicle);
     onOpen();
@@ -74,9 +68,9 @@ export function ChooseCarForQuoteComponent(props: Props) {
                 <TextComponent
                   name="vehicle_mileage"
                   label="Kilometraje del vehículo"
-                  type="text"
+                  type="number"
                   value={vehicleMileage}
-                  onKeyDown={handleMileageChange}
+                  onChange={(event) => setVehicleMileage(event.target.value)}
                 />
               </div>
               <div className="w-auto mt-5">
