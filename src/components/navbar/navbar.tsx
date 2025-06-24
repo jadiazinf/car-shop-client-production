@@ -47,7 +47,7 @@ function NavbarComponent() {
         authStatus={authReducer.status}
         roles={authReducer.sessionType?.roles || null}
       />
-      <NavbarMenu>
+      {/* <NavbarMenu>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
 
@@ -63,7 +63,7 @@ function NavbarComponent() {
             </Link>
           </NavbarMenuItem>
         ))}
-      </NavbarMenu>
+      </NavbarMenu> */}
     </Navbar>
   );
 }
