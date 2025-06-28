@@ -15,6 +15,7 @@ import PaginationComponent from "../../datatable/pagination";
 import { PaginatedData } from "../../../helpers/application_response/types";
 import { useNavigate } from "react-router-dom";
 import { NotificationHelpers } from "../../../entities/notification/helpers";
+import { NotificationServices } from "../../../entities/notification/services";
 
 export function NotificationComponent() {
   const { token } = usePersistedStore().authReducer;
@@ -29,6 +30,8 @@ export function NotificationComponent() {
   const [page, setPage] = useState(1);
 
   const navigate = useNavigate();
+
+  const { perform: readNotification } = NotificationServices.useReadNotification();
 
   useEffect(() => {
     getNotifications();
@@ -50,6 +53,11 @@ export function NotificationComponent() {
         );
       }
     }
+  }
+
+  function handleNotificationClick(notification: NotificationModel) {
+    readNotification(notification.id, token!);
+    navigate(NotificationHelpers.getNotificationMessage(notification).link)
   }
 
   return (
@@ -86,12 +94,7 @@ export function NotificationComponent() {
                 <DropdownItem
                   key={notification.id}
                   className="h-14 gap-2 p-2 mb-1 rounded-lg hover:bg-gray-100 transition-all duration-200"
-                  onPress={() =>
-                    navigate(
-                      NotificationHelpers.getNotificationMessage(notification)
-                        .link
-                    )
-                  }
+                  onPress={() =>handleNotificationClick(notification)}
                 >
                   <div className="flex items-center gap-2">
                     <p className="text-wrap text-black text-opacity-50 text-sm">
