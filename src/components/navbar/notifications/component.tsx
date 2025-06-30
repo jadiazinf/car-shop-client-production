@@ -57,7 +57,8 @@ export function NotificationComponent() {
 
   function handleNotificationClick(notification: NotificationModel) {
     readNotification(notification.id, token!);
-    navigate(NotificationHelpers.getNotificationMessage(notification).link)
+    getNotifications();
+    navigate(NotificationHelpers.getNotificationMessage(notification).link);
   }
 
   return (

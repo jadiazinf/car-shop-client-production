@@ -92,7 +92,7 @@ function SelectPlace(props: SelectPlaceProps) {
         getDirectionComponent()
           ? getDirectionComponent()
           : `flex-col lg:flex-row`
-      } gap-3`}
+      } gap-3 w-full`}
     >
       {props.selectCountry === false ? null : isGettingLocationsLoading ||
         payloadState === "not loaded" ? (

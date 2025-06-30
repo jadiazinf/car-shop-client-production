@@ -23,6 +23,7 @@ function useReadNotification() {
       setIsReadingNotification(true);
       const response = await api.post<ReadNotificationServerResponseProps>(
         `${API_BASE_ROUTE_EXTENSION}/notifications/${id}/read_notification`,
+        {},
         {
           headers: {
             Authorization: `Bearer ${token}`,

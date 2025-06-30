@@ -284,7 +284,7 @@ function Main() {
           </BreadcrumbItem>
         </Breadcrumbs>
         <div className="mt-10 w-full flex justify-center items-center">
-          <Card radius="sm" className="md:w-4/6 lg:w-1/2 p-10">
+          <Card radius="sm" className="md:w-5/6 lg:w-3/4 p-10">
             <CardBody>
               <div className="w-full h-full flex justify-center items-center flex-col gap-5">
                 {registerStage === PageStage.USER ? (
