@@ -17,11 +17,11 @@ import { ServiceOrderAdvance } from "../app/dashboard/services/orders/advance/se
 import UserOrderInfoPage from "../app/profile/orders/id/page";
 import { UserOrdersPage } from "../app/profile/orders/page";
 import { UserServiceOrderAdvance } from "../app/profile/orders/advances/service_order_id/page";
-import AdminDashboardPage from "../app/dashboard/admin/page";
 import CompaniesTechnicianPage from "../app/dashboard/companies/technician_page";
 import { TehnicianOrdersPage } from "../app/dashboard/services/orders/technician/page";
 import { UserWorkshopsPage } from "../app/profile/workshops/page";
 import ProfileNewWorkshopPage from "../app/profile/workshops/new/page";
+import TechnicianDashboardPage from "../app/dashboard/technician/page";
 
 const technicianRoutes = (
   <>
@@ -67,7 +67,7 @@ const technicianRoutes = (
     <Route path="/profile/vehicles/:id" element={<VehicleInfoPage />} />
 
     {/* dashboard */}
-    <Route path="/dashboard" element={<AdminDashboardPage />} />
+    <Route path="/dashboard" element={<TechnicianDashboardPage />} />
 
     {/* dashboard companies */}
     <Route path="/dashboard/companies" element={<CompaniesTechnicianPage />} />
